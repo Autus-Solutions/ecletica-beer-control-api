@@ -1,2 +1,2 @@
-# Ecletica Beer Control (Web)
-Aplicação desenvolvida .NET 6 / React parar gerenciamento/controle de dispositivos (Ecletica Beer Devices) 
+# Ecletica Beer Control (Api)
+Aplicação desenvolvida .NET 6 para gerenciamento/controle de dispositivos (Ecletica Beer Devices) 
