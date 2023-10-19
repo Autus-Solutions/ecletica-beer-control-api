@@ -1,4 +1,4 @@
-﻿using EcleticaBeerControl.Application.Exceptions;
+﻿using EcleticaBeerControl.Domain.Exceptions;
 using EcleticaBeerControl.Domain.Primitives;
 using FluentValidation;
 using MediatR;
