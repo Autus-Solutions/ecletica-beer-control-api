@@ -1,4 +1,5 @@
 ﻿using EcleticaBeerControl.Api.Middlewares;
+using EcleticaBeerControl.Domain.Primitives;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.IdentityModel.Tokens;
@@ -50,6 +51,8 @@ namespace EcleticaBeerControl.Api
                 };
             });
 
+            services.AddHttpContextAccessor();
+
             var log = new LoggerConfiguration()
                 .WriteTo.Console()
                 .CreateLogger();
@@ -57,6 +60,20 @@ namespace EcleticaBeerControl.Api
             services.AddSingleton<Serilog.ILogger>(log);
 
             services.AddScoped<SupabaseAuthMiddleware>();
+
+            services.AddScoped<User>((provider) =>
+            {
+                var context = provider.GetRequiredService<IHttpContextAccessor>();
+
+                var userId = Guid.Parse(context.HttpContext.Items["userId"].ToString());
+                var userClientId = Guid.Parse(context.HttpContext.Items["userClientId"].ToString());
+
+                return new User
+                {
+                    Id = userId,
+                    ClientId = userClientId
+                };
+            });
 
             return services;
         }

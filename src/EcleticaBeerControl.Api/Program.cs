@@ -1,13 +1,20 @@
+using Carter;
 using EcleticaBeerControl.Api;
 using EcleticaBeerControl.Api.Middlewares;
 using EcleticaBeerControl.Application;
 using EcleticaBeerControl.Infrastructure;
 using Serilog;
+using System.Globalization;
+
+var defaultCultureInfo = new CultureInfo("pt-BR");
+CultureInfo.DefaultThreadCurrentCulture = defaultCultureInfo;
+CultureInfo.DefaultThreadCurrentUICulture = defaultCultureInfo;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddCarter();
 
 builder.Services.AddInfrastructure(builder.Configuration)
                 .AddApplication()
@@ -41,6 +48,7 @@ app.UseSupabaseAuth();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+app.MapCarter();
 app.UseResponseCompression();
 
 app.Run();

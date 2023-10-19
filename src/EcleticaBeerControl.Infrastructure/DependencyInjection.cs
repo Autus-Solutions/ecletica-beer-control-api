@@ -1,4 +1,4 @@
-﻿using EcleticaBeerControl.Application.Repositories;
+﻿using EcleticaBeerControl.Domain.Repositories;
 using EcleticaBeerControl.Infrastructure.Database.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,11 +15,11 @@ namespace EcleticaBeerControl.Infrastructure
                     new Supabase.SupabaseOptions
                     {
                         AutoRefreshToken = true,
-                        AutoConnectRealtime = true
+                        AutoConnectRealtime = true,
                     })
                 );
 
-            services.AddScoped<IClientRepository, ClientRepository>();
+            services.AddScoped<IDeviceRepository, DeviceRepository>();
 
             return services;
         }

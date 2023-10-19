@@ -7,15 +7,23 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.6.0" />
-    <PackageReference Include="MediatR" Version="12.0.1" />
-    <PackageReference Include="supabase-csharp" Version="0.12.1" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.7.1" />
+    <PackageReference Include="MediatR" Version="12.1.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
+    <PackageReference Include="Serilog" Version="3.0.1" />
+    <PackageReference Include="supabase-csharp" Version="0.13.6" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Commands\" />
-    <Folder Include="Validators\" />
+    <Folder Include="CommandHandlers\" />
+    <Folder Include="Members\Events\Devices\" />
+    <Folder Include="Members\Queries\Devices\" />
     <Folder Include="Services\" />
+    <Folder Include="Validators\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EcleticaBeerControl.Domain\EcleticaBeerControl.Domain.csproj" />
   </ItemGroup>
 
 </Project>

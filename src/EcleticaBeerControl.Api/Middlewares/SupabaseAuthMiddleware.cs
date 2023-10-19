@@ -1,30 +1,39 @@
-﻿using Supabase;
+﻿using EcleticaBeerControl.Domain.Primitives;
+using Microsoft.Extensions.DependencyInjection;
+using Supabase;
 using System.Net.Http.Headers;
-using System.Net;
-using ILogger = Serilog.ILogger;
+using System.Security.Claims;
 
 namespace EcleticaBeerControl.Api.Middlewares
 {
     public class SupabaseAuthMiddleware : IMiddleware
     {
         private readonly Client _client;
-        private readonly ILogger _logger;
 
-        public SupabaseAuthMiddleware(Client client, ILogger logger) { 
+        public SupabaseAuthMiddleware(Client client) { 
             _client = client;
-            _logger = logger;
         }
 
-        public Task InvokeAsync(HttpContext context, RequestDelegate next)
+        public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
             if (AuthenticationHeaderValue.TryParse(context.Request.Headers.Authorization, out var headerValue))
             {
-                _client.Auth.SetAuth(headerValue.Parameter ?? string.Empty);
+                var acessToken = headerValue.Parameter ?? string.Empty;
+                var refreshToken = context.Request.Headers["X-Supabase-RefreshToken"].ToString() ?? string.Empty;
+
+                await _client.Auth.SetSession(acessToken, refreshToken);
+
+                var userId = Guid.Parse(_client.Auth.CurrentUser!.Id);
+                var userClientId = Guid.Parse(_client.Auth.CurrentUser!.UserMetadata["client_id"].ToString());
+
+                context.Items.Add(nameof(userId), userId);
+                context.Items.Add(nameof(userClientId), userClientId);
             }
 
-            return next.Invoke(context);
+            await next.Invoke(context);
         }
     }
+
 
     public static class SupabaseAuthMiddlewareExtensions
     {
