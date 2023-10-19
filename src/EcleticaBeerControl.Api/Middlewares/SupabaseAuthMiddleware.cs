@@ -1,8 +1,5 @@
-﻿using EcleticaBeerControl.Domain.Primitives;
-using Microsoft.Extensions.DependencyInjection;
-using Supabase;
+﻿using Supabase;
 using System.Net.Http.Headers;
-using System.Security.Claims;
 
 namespace EcleticaBeerControl.Api.Middlewares
 {

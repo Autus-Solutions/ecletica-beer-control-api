@@ -17,5 +17,6 @@ namespace EcleticaBeerControl.Api
             _logger.Information("Executing background worker...");
             return Task.CompletedTask;
         }
+
     }
 }

@@ -62,6 +62,7 @@ namespace EcleticaBeerControl.Api
 
             services.AddSingleton<Serilog.ILogger>(log);
 
+            services.AddScoped<GlobalErrorHandlingMiddleware>();
             services.AddScoped<SupabaseAuthMiddleware>();
 
             services.AddScoped<User>((provider) =>

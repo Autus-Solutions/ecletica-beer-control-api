@@ -20,6 +20,7 @@ namespace EcleticaBeerControl.Application.Members.Commands.Devices
         {
             var device = Device.Create(
                     request.ClientId,
+                    request.Identifier,
                     request.Name,
                     request.Description,
                     request.CreateBy);

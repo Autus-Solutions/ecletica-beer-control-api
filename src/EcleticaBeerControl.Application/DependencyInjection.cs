@@ -1,7 +1,6 @@
 ﻿using EcleticaBeerControl.Application.Behaviors;
 using EcleticaBeerControl.Application.Processors;
 using FluentValidation;
-using MediatR.NotificationPublishers;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace EcleticaBeerControl.Application
@@ -20,8 +19,6 @@ namespace EcleticaBeerControl.Application
                 configuration.AddOpenBehavior(typeof(FailFastValidationBehavior<,>), ServiceLifetime.Scoped);
                 configuration.AddOpenRequestPreProcessor(typeof(BaseDomainMetadataPreProcessor<>), ServiceLifetime.Scoped);
                 configuration.AddOpenRequestPreProcessor(typeof(ClientBasedDomainMetadataPreProcessor<>), ServiceLifetime.Scoped);
-
-                configuration.NotificationPublisher = new TaskWhenAllPublisher();
             });
 
             services.AddValidatorsFromAssembly(assembly);

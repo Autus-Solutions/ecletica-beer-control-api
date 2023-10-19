@@ -11,6 +11,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EcleticaBeerControl.Infrast
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EcleticaBeerControl.Domain", "EcleticaBeerControl.Domain\EcleticaBeerControl.Domain.csproj", "{EA4813CA-5EF2-49AF-935A-BAB62777A6F7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EcleticaBeerControl.Worker", "EcleticaBeerControl.Worker\EcleticaBeerControl.Worker.csproj", "{4EC12411-5A2A-4C0C-89CB-DA25D63C4697}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EcleticaBeerControl.Persistence", "EcleticaBeerControl.Persistence\EcleticaBeerControl.Persistence.csproj", "{17231CA8-E7F8-4273-9D7A-7E236677BD07}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +37,14 @@ Global
 		{EA4813CA-5EF2-49AF-935A-BAB62777A6F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EA4813CA-5EF2-49AF-935A-BAB62777A6F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EA4813CA-5EF2-49AF-935A-BAB62777A6F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4EC12411-5A2A-4C0C-89CB-DA25D63C4697}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4EC12411-5A2A-4C0C-89CB-DA25D63C4697}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4EC12411-5A2A-4C0C-89CB-DA25D63C4697}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4EC12411-5A2A-4C0C-89CB-DA25D63C4697}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17231CA8-E7F8-4273-9D7A-7E236677BD07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17231CA8-E7F8-4273-9D7A-7E236677BD07}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17231CA8-E7F8-4273-9D7A-7E236677BD07}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17231CA8-E7F8-4273-9D7A-7E236677BD07}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
