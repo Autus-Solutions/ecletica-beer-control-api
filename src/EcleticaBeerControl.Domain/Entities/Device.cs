@@ -1,6 +1,6 @@
-﻿using EcleticaBeerControl.Domain.Entities.Base;
+﻿using EcleticaBeerControl.Domain.DomainEvents.Devices;
+using EcleticaBeerControl.Domain.Entities.Base;
 using EcleticaBeerControl.Domain.Enums;
-using EcleticaBeerControl.Domain.Primitives;
 using Postgrest.Attributes;
 
 namespace EcleticaBeerControl.Domain.Entities
@@ -27,8 +27,9 @@ namespace EcleticaBeerControl.Domain.Entities
                 Status = DeviceStatus.Connecting,
                 CreateBy = createdBy,
                 CreatedAt = DateTime.UtcNow
-
             };
+
+            device.RaiseDomainEvent(new DeviceCreatedEvent(device.Id));
 
             return device;
         }

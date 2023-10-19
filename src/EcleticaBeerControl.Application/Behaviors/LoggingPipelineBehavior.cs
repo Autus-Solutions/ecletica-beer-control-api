@@ -18,7 +18,7 @@ namespace EcleticaBeerControl.Application.Behaviors
 
         public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
         {
-            _logger.Information("Starting Request {@RequestName}, {@DateTimeUtc}", 
+            _logger.Information("Starting Request {RequestName}, {DateTimeUtc}", 
                                 typeof(TRequest).Name,
                                 DateTime.UtcNow);
 
@@ -26,14 +26,14 @@ namespace EcleticaBeerControl.Application.Behaviors
 
             if (result.IsFailure)
             {
-                _logger.Error("Request Failure {@RequestName}, {@Error}, {@DateTimeUtc}",
+                _logger.Error("Request Failure {RequestName}, {Error}, {DateTimeUtc}",
                     typeof(TRequest).Name,
                     result.Error,
                     DateTime.UtcNow);
             }
 
 
-            _logger.Information("Completed Request {@RequestName}, {@DateTimeUtc}",
+            _logger.Information("Completed Request {RequestName}, {DateTimeUtc}",
                                 typeof(TRequest).Name,
                                 DateTime.UtcNow);
 

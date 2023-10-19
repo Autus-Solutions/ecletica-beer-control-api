@@ -9,7 +9,7 @@ namespace EcleticaBeerControl.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddScoped((provider) => new Supabase.Client(
+            services.AddSingleton((provider) => new Supabase.Client(
                     configuration["SupabaseProjectUrl"] ?? string.Empty,
                     configuration["SupabaseProjectKey"],
                     new Supabase.SupabaseOptions

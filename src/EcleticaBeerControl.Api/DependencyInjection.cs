@@ -19,6 +19,9 @@ namespace EcleticaBeerControl.Api
                         options.SerializerSettings.NullValueHandling = NullValueHandling.Include;
                         options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                         options.SerializerSettings.ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor;
+
+                        // Presisting enums as text
+                        options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
                     });
 
             services.AddResponseCompression(options =>

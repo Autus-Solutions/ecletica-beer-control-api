@@ -5,11 +5,13 @@ using MediatR;
 
 namespace EcleticaBeerControl.Application.Members.Commands.Devices
 {
-    public class DeviceCommandHandler : IRequestHandler<CreateDeviceCommand, Result>
+    internal sealed class DeviceCommandHandler 
+        : BaseCommandHandler,
+          IRequestHandler<CreateDeviceCommand, Result>
     {
         private readonly IDeviceRepository _repository;
 
-        public DeviceCommandHandler(IDeviceRepository repository)
+        public DeviceCommandHandler(IDeviceRepository repository, IPublisher publisher) : base(publisher) 
         {
             _repository = repository;
         }
@@ -23,6 +25,7 @@ namespace EcleticaBeerControl.Application.Members.Commands.Devices
                     request.CreateBy);
 
             await _repository.Insert(device, cancellationToken);
+            await PublishEvents(device, cancellationToken);
 
             return new Result();
         }

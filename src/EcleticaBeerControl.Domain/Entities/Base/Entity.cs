@@ -25,7 +25,7 @@ namespace EcleticaBeerControl.Domain.Entities.Base
         [Column("created_at")]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-        protected void Raise(DomainEvent domainEvent)
+        protected void RaiseDomainEvent(DomainEvent domainEvent)
         {
             _domainEvents.Add(domainEvent);
         }

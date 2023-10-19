@@ -15,8 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="CommandHandlers\" />
-    <Folder Include="Members\Events\Devices\" />
     <Folder Include="Members\Queries\Devices\" />
     <Folder Include="Services\" />
     <Folder Include="Validators\" />

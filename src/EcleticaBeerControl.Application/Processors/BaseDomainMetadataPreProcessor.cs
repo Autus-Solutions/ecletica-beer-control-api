@@ -4,7 +4,7 @@ using MediatR.Pipeline;
 
 namespace EcleticaBeerControl.Application.Processors
 {
-    public class BaseDomainMetadataPreProcessor<TRequest> 
+    internal sealed class BaseDomainMetadataPreProcessor<TRequest> 
         : IRequestPreProcessor<TRequest>
         where TRequest : BaseClientCommand
 
