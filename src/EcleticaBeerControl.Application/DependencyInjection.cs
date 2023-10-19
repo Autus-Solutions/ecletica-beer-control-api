@@ -14,8 +14,10 @@ namespace EcleticaBeerControl.Application
 
             services.AddMediatR((configuration) =>
             {
+                configuration.Lifetime = ServiceLifetime.Scoped;
                 configuration.RegisterServicesFromAssembly(assembly);
                 configuration.AddOpenBehavior(typeof(LoggingPipelineBehavior<,>), ServiceLifetime.Scoped);
+                configuration.AddOpenBehavior(typeof(FailFastValidationBehavior<,>), ServiceLifetime.Scoped);
                 configuration.AddOpenRequestPreProcessor(typeof(BaseDomainMetadataPreProcessor<>), ServiceLifetime.Scoped);
                 configuration.AddOpenRequestPreProcessor(typeof(ClientBasedDomainMetadataPreProcessor<>), ServiceLifetime.Scoped);
 
