@@ -1,10 +1,16 @@
 ﻿using EcleticaBeerControl.Api.Middlewares;
+using EcleticaBeerControl.Domain.DomainEvents.Devices;
+using EcleticaBeerControl.Domain.Events;
 using EcleticaBeerControl.Domain.Primitives;
+using MassTransit;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using RabbitMQ.Client;
 using Serilog;
+using System.Security.Authentication;
 using System.Text;
 
 namespace EcleticaBeerControl.Api
@@ -77,6 +83,49 @@ namespace EcleticaBeerControl.Api
                     Id = userId,
                     ClientId = userClientId
                 };
+            });
+
+            services.AddMassTransit((cfg) =>
+            {
+                cfg.SetKebabCaseEndpointNameFormatter();
+
+                cfg.UsingRabbitMq((context, rabbitCfg) =>
+                {
+                    #region Exclusions
+
+                    rabbitCfg.Publish<INotification>((cfg) =>
+                    {
+                        cfg.Exclude = true;
+                    });
+
+                    rabbitCfg.Publish<DomainEvent>((cfg) =>
+                    {
+                        cfg.Exclude = true;
+                    });
+
+                    #endregion
+
+                    rabbitCfg.Message<DeviceCreatedEvent>((cfg) =>
+                    {
+                        cfg.SetEntityName("ebc-devices");
+                    });
+
+                    rabbitCfg.Publish<DeviceCreatedEvent>((cfg) =>
+                    {
+                        cfg.Durable = true;
+                        cfg.ExchangeType = ExchangeType.Direct;
+                    });
+
+                    rabbitCfg.Host(configuration["MessageBroker:Host"], 5671, configuration["MessageBroker:Username"], host =>
+                    {
+                        host.Username(configuration["MessageBroker:Username"]);
+                        host.Password(configuration["MessageBroker:Password"]);
+                        host.UseSsl(s =>
+                        {
+                            s.Protocol = SslProtocols.Tls12;
+                        });
+                    });
+                });
             });
 
             return services;

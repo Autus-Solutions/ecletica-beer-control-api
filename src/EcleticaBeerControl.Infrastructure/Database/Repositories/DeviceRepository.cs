@@ -1,7 +1,7 @@
 ﻿using EcleticaBeerControl.Domain.Entities;
 using EcleticaBeerControl.Domain.Repositories;
 
-namespace EcleticaBeerControl.Persistence.Database.Repositories
+namespace EcleticaBeerControl.Infrastructure.Database.Repositories
 {
     public class DeviceRepository : IDeviceRepository
     {

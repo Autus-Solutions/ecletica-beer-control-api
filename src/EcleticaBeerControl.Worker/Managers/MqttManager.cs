@@ -2,7 +2,7 @@
 using MQTTnet;
 using MQTTnet.Formatter;
 
-namespace EcleticaBeerControl.Infrastructure.Abstractions
+namespace EcleticaBeerControl.Worker.Managers
 {
     public sealed class MqttManager
     {

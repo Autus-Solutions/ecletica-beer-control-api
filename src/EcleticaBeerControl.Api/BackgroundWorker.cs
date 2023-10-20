@@ -4,11 +4,9 @@ namespace EcleticaBeerControl.Api
 {
     public class BackgroundWorker : BackgroundService
     {
-        private readonly IConfiguration _configuration;
         private readonly ILogger _logger;
 
-        public BackgroundWorker(IConfiguration configuration, ILogger logger) {
-            _configuration = configuration;
+        public BackgroundWorker(ILogger logger) {
             _logger = logger;
         }
 
