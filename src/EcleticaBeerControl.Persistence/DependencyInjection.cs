@@ -1,5 +1,4 @@
-﻿using EcleticaBeerControl.Domain.Repositories;
-using EcleticaBeerControl.Persistence.Repositories;
+﻿using EcleticaBeerControl.Persistence.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -19,7 +18,12 @@ namespace EcleticaBeerControl.Persistence
                 })
             );
 
-            services.AddScoped<IDeviceRepository, DeviceRepository>();
+            services.Scan(scan => scan
+                  .FromAssemblyOf<DeviceRepository>()
+                      .AddClasses(classes => classes.Where(type => type.FullName!.EndsWith("Repository")))
+                      .AsImplementedInterfaces()
+                      .AsSelf()
+                      .WithScopedLifetime());
 
             return services;
         }

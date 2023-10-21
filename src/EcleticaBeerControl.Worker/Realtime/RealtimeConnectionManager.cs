@@ -3,18 +3,18 @@ using Supabase;
 using System.Diagnostics;
 using static Supabase.Realtime.PostgresChanges.PostgresChangesOptions;
 
-namespace EcleticaBeerControl.Worker.Managers
+namespace EcleticaBeerControl.Worker.Realtime
 {
-    public sealed class RealtimeClientManager
+    public sealed class RealtimeConnectionManager
     {
         private readonly Client _client;
 
-        public RealtimeClientManager(Client client)
+        public RealtimeConnectionManager(Client client)
         {
             _client = client;
         }
 
-        public async Task Instantiate(CancellationToken cancellationToken = default)
+        public async Task Initialize(CancellationToken cancellationToken = default)
         {
             var client = await _client.InitializeAsync();
             var realtimeClient = await client.Realtime.ConnectAsync();

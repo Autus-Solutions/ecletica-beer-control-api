@@ -18,7 +18,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Jobs\Setups\" />
     <Folder Include="Mapper\Profiles\" />
   </ItemGroup>
 

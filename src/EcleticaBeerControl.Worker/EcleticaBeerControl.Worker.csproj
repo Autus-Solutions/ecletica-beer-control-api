@@ -24,8 +24,4 @@
     <ProjectReference Include="..\EcleticaBeerControl.Infrastructure\EcleticaBeerControl.Infrastructure.csproj" />
     <ProjectReference Include="..\EcleticaBeerControl.Persistence\EcleticaBeerControl.Persistence.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
 </Project>

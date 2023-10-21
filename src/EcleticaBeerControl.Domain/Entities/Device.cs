@@ -33,7 +33,10 @@ namespace EcleticaBeerControl.Domain.Entities
                 CreatedAt = DateTime.UtcNow
             };
 
-            device.RaiseDomainEvent(new DeviceCreatedEvent { Id = device.Id });
+            device.RaiseDomainEvent(new DeviceCreatedEvent { Id = device.Id, 
+                                    Identifier = device.Identifier, 
+                                    ClientId = device.ClientId 
+            });
 
             return device;
         }

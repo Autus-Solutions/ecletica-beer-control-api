@@ -1,8 +1,14 @@
 ﻿using EcleticaBeerControl.Infrastructure.Messaging.RabbitMq;
-using EcleticaBeerControl.Worker.Managers;
-using EcleticaBeerControl.Worker.Messaging.Consumers;
+using EcleticaBeerControl.Infrastructure.Mqtt;
+using EcleticaBeerControl.Persistence.Repositories;
+using EcleticaBeerControl.Worker.Messaging.Handlers;
+using EcleticaBeerControl.Worker.Mqtt;
+using EcleticaBeerControl.Worker.Mqtt.RoutesHandlers;
+using EcleticaBeerControl.Worker.Realtime;
+using MQTTnet;
+using MQTTnet.Client;
+using MQTTnet.Formatter;
 using RabbitMQ.Client.Core.DependencyInjection;
-using RabbitMQ.Client.Core.DependencyInjection.Configuration;
 
 namespace EcleticaBeerControl.Worker
 {
@@ -15,8 +21,45 @@ namespace EcleticaBeerControl.Worker
             services.ConfigureRabbitMqTopology()
                     .ConfigureRabbitMqConsumeres();
 
-            services.AddScoped<RealtimeClientManager>();
-            services.AddScoped<MqttClientManager>();
+            services.AddSupabaseRealtime();
+
+            services.AddMqtt(configuration);
+
+            return services;
+        }
+
+        private static IServiceCollection AddSupabaseRealtime(this IServiceCollection services)
+        {
+            services.AddScoped<RealtimeConnectionManager>();
+            return services;
+        }
+
+        private static IServiceCollection AddMqtt(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddSingleton<MqttClientOptions>((provider) =>
+                 new MqttClientOptionsBuilder()
+                .WithClientId("ebc-api")
+                .WithTcpServer("mqtt.ecletica.beer", 30000)
+                .WithProtocolVersion(MqttProtocolVersion.V500)
+                .WithCleanSession()
+                .WithCleanStart()
+                .Build()
+            ); ;
+
+            services.AddSingleton<IMqttClient>((provider) => new MqttFactory().CreateMqttClient());
+            services.AddSingleton<MqttConnectionManager>();
+            services.AddSingleton<IMqttMessageRouter, MqttMessageRouter>();
+
+            #region RouteHandlers
+
+            services.Scan(scan => scan
+                  .FromAssemblyOf<MqttMessageRouter>()
+                      .AddClasses(classes => classes.Where(type => type.FullName!.EndsWith("RouteHandler")))
+                      .AsImplementedInterfaces()
+                      .AsSelf()
+                      .WithScopedLifetime());
+
+            #endregion
 
             return services;
         }
