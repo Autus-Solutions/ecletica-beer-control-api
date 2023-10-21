@@ -8,7 +8,7 @@ namespace EcleticaBeerControl.Persistence
     {
         public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddScoped((provider) => new Supabase.Client(
+            services.AddSingleton((provider) => new Supabase.Client(
                 configuration["SupabaseProjectUrl"] ?? string.Empty,
                 configuration["SupabaseProjectSecretKey"] ?? string.Empty,
                 new Supabase.SupabaseOptions
