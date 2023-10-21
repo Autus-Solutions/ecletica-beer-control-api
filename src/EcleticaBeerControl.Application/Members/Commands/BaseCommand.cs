@@ -1,7 +1,4 @@
-﻿using EcleticaBeerControl.Domain.Primitives;
-using MediatR;
-
-namespace EcleticaBeerControl.Application.Members.Commands
+﻿namespace EcleticaBeerControl.Application.Members.Commands
 {
     public record BaseCommand
     {

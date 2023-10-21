@@ -1,5 +1,4 @@
 ﻿using EcleticaBeerControl.Domain.Exceptions;
-using EcleticaBeerControl.Domain.Primitives;
 using FluentValidation;
 using MediatR;
 
@@ -8,7 +7,6 @@ namespace EcleticaBeerControl.Application.Behaviors
     internal sealed class FailFastValidationBehavior<TRequest, TResponse>
         : IPipelineBehavior<TRequest, TResponse>
         where TRequest : IRequest<TResponse>
-        where TResponse : Result
     {
         private readonly IEnumerable<IValidator<TRequest>> _validators;
 

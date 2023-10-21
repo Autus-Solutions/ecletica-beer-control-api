@@ -4,7 +4,7 @@
     {
         public IReadOnlyCollection<ValidationError> Errors { get; private set; }
 
-        public DomainValidationException(IReadOnlyCollection<ValidationError> errors) : base("Validation failed")
+        public DomainValidationException(IReadOnlyCollection<ValidationError> errors) : base("Validation failed !")
         {
             Errors = errors;
         }

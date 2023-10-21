@@ -9,31 +9,24 @@ namespace EcleticaBeerControl.Application.Behaviors
         where TRequest : IRequest<TResponse>
         where TResponse : Result
     {
-        private readonly ILogger _logger;
-
-        public LoggingPipelineBehavior(ILogger logger)
-        {
-            _logger = logger;
-        }
-
         public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
         {
-            _logger.Information("Starting Request {RequestName}, {DateTimeUtc}", 
+            Log.Information("Starting Request {RequestName}, {DateTimeUtc}", 
                                 typeof(TRequest).Name,
                                 DateTime.UtcNow);
 
             var result = await next();
 
-            if (result.IsFailure)
+            if (!result.IsSuccess)
             {
-                _logger.Error("Request Failure {RequestName}, {Error}, {DateTimeUtc}",
+                Log.Error("Request Failure {RequestName}, {Error}, {DateTimeUtc}",
                     typeof(TRequest).Name,
-                    result.Error,
+                    result.Errors,
                     DateTime.UtcNow);
             }
 
 
-            _logger.Information("Completed Request {RequestName}, {DateTimeUtc}",
+            Log.Information("Completed Request {RequestName}, {DateTimeUtc}",
                                 typeof(TRequest).Name,
                                 DateTime.UtcNow);
 

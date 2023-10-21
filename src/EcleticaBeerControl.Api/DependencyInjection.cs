@@ -1,17 +1,14 @@
 ﻿using EcleticaBeerControl.Api.Middlewares;
-using EcleticaBeerControl.Domain.DomainEvents.Devices;
-using EcleticaBeerControl.Domain.Events;
 using EcleticaBeerControl.Domain.Primitives;
-using MassTransit;
-using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
-using RabbitMQ.Client;
-using Serilog;
+using RabbitMQ.Client.Core.DependencyInjection.Configuration;
+using RabbitMQ.Client.Core.DependencyInjection;
 using System.Security.Authentication;
 using System.Text;
+using EcleticaBeerControl.Infrastructure.Messaging.RabbitMq;
 
 namespace EcleticaBeerControl.Api
 {
@@ -19,15 +16,14 @@ namespace EcleticaBeerControl.Api
     {
         public static IServiceCollection AddPresentation(this IServiceCollection services, IConfiguration configuration)
         {
+            #region API Authentication/Authorization
+
             services.AddControllers()
                     .AddNewtonsoftJson(options =>
                     {
                         options.SerializerSettings.NullValueHandling = NullValueHandling.Include;
                         options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                         options.SerializerSettings.ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor;
-
-                        // Presisting enums as text
-                        options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
                     });
 
             services.AddResponseCompression(options =>
@@ -39,20 +35,20 @@ namespace EcleticaBeerControl.Api
             });
 
             services.AddAuthentication(o =>
-                {
-                    o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                    o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                    o.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-                })
+            {
+                o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                o.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
             .AddJwtBearer(o =>
-                {
-                    o.IncludeErrorDetails = true;
-                    o.SaveToken = true;
-                    o.TokenValidationParameters = new TokenValidationParameters
+            {
+                o.IncludeErrorDetails = true;
+                o.SaveToken = true;
+                o.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidAudience = "authenticated",
                     ValidIssuer = configuration.GetValue<string>("SupabaseProjectUrl"),
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration.GetValue<string>("SupabaseProjectJwtSecret") ?? string.Empty)),
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration.GetValue<string>("SupabaseProjectJwtSecretKey") ?? string.Empty)),
                     ValidateIssuer = false,
                     ValidateAudience = true,
                     ValidateLifetime = true,
@@ -60,17 +56,11 @@ namespace EcleticaBeerControl.Api
                 };
             });
 
+            #endregion
+
+            #region HttpContext
+
             services.AddHttpContextAccessor();
-
-            var log = new LoggerConfiguration()
-                .WriteTo.Console()
-                .CreateLogger();
-
-            services.AddSingleton<Serilog.ILogger>(log);
-
-            services.AddScoped<GlobalErrorHandlingMiddleware>();
-            services.AddScoped<SupabaseAuthMiddleware>();
-
             services.AddScoped<User>((provider) =>
             {
                 var context = provider.GetRequiredService<IHttpContextAccessor>();
@@ -85,49 +75,23 @@ namespace EcleticaBeerControl.Api
                 };
             });
 
-            services.AddMassTransit((cfg) =>
-            {
-                cfg.SetKebabCaseEndpointNameFormatter();
+            #endregion
 
-                cfg.UsingRabbitMq((context, rabbitCfg) =>
-                {
-                    #region Exclusions
+            #region Middlewares
 
-                    rabbitCfg.Publish<INotification>((cfg) =>
-                    {
-                        cfg.Exclude = true;
-                    });
+            services.AddScoped<GlobalErrorHandlingMiddleware>();
+            services.AddScoped<SupabaseAuthMiddleware>();
 
-                    rabbitCfg.Publish<DomainEvent>((cfg) =>
-                    {
-                        cfg.Exclude = true;
-                    });
+            #endregion
 
-                    #endregion
+            services.ConfigureRabbitMqTopology();
 
-                    rabbitCfg.Message<DeviceCreatedEvent>((cfg) =>
-                    {
-                        cfg.SetEntityName("ebc-devices");
-                    });
+            return services;
+        }
 
-                    rabbitCfg.Publish<DeviceCreatedEvent>((cfg) =>
-                    {
-                        cfg.Durable = true;
-                        cfg.ExchangeType = ExchangeType.Direct;
-                    });
-
-                    rabbitCfg.Host(configuration["MessageBroker:Host"], 5671, configuration["MessageBroker:Username"], host =>
-                    {
-                        host.Username(configuration["MessageBroker:Username"]);
-                        host.Password(configuration["MessageBroker:Password"]);
-                        host.UseSsl(s =>
-                        {
-                            s.Protocol = SslProtocols.Tls12;
-                        });
-                    });
-                });
-            });
-
+        private static IServiceCollection ConfigureRabbitMqTopology(this IServiceCollection services)
+        {
+            services.AddProductionExchange("ebc.devices", RabbitMqConfiguration.Topology);
             return services;
         }
     }

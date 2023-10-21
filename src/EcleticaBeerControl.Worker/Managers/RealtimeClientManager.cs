@@ -1,14 +1,15 @@
-﻿using Supabase;
+﻿using EcleticaBeerControl.Domain.Entities;
+using Supabase;
 using System.Diagnostics;
 using static Supabase.Realtime.PostgresChanges.PostgresChangesOptions;
 
 namespace EcleticaBeerControl.Worker.Managers
 {
-    public class RealtimeManager
+    public sealed class RealtimeClientManager
     {
         private readonly Client _client;
 
-        public RealtimeManager(Client client)
+        public RealtimeClientManager(Client client)
         {
             _client = client;
         }
@@ -19,12 +20,12 @@ namespace EcleticaBeerControl.Worker.Managers
             var realtimeClient = await client.Realtime.ConnectAsync();
             var channel = realtimeClient.Channel("realtime", "public", "devices");
 
-            channel.AddPostgresChangeHandler(ListenType.All, (sender, change) =>
+            channel.AddPostgresChangeHandler(ListenType.Inserts, (sender, change) =>
             {
                 // The event type
                 Debug.WriteLine(change.Event);
                 // The changed record
-                Debug.WriteLine(change.Payload);
+                Debug.WriteLine(change.Model<Device>());
             });
 
             await channel.Subscribe();

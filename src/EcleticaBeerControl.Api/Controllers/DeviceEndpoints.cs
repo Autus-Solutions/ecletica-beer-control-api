@@ -16,11 +16,14 @@ namespace EcleticaBeerControl.Api.Controllers
                     .WithName(nameof(CreateDevice));
         }
 
-        public static async Task<Results<Ok,BadRequest>> CreateDevice(CreateDeviceCommand command, ISender sender)
+        public static async Task<Results<Ok<Guid>, BadRequest<string[]>>> CreateDevice(CreateDeviceCommand command, ISender sender)
         {
-            await sender.Send(command);
-            return TypedResults.Ok();
-        }
+            var response = await sender.Send(command);
 
+            if (response.IsSuccess)
+                return TypedResults.Ok(response.Value);
+
+            return TypedResults.BadRequest(response.Errors);
+        }
     }
 }

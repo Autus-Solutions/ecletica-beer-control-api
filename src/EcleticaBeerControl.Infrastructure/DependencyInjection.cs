@@ -1,8 +1,7 @@
-﻿using EcleticaBeerControl.Domain.Repositories;
-using EcleticaBeerControl.Infrastructure.Database.Repositories;
-using MassTransit;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using RabbitMQ.Client.Core.DependencyInjection;
+using RabbitMQ.Client.Core.DependencyInjection.Configuration;
 
 namespace EcleticaBeerControl.Infrastructure
 {
@@ -10,17 +9,21 @@ namespace EcleticaBeerControl.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddScoped((provider) => new Supabase.Client(
-                configuration["SupabaseProjectUrl"] ?? string.Empty,
-                configuration["SupabaseProjectKey"] ?? configuration["SupabaseProjectServiceRoleSecretKey"] ?? string.Empty,
-                new Supabase.SupabaseOptions
-                {
-                    AutoRefreshToken = bool.TryParse(configuration["SupabaseClientAutoRefreshToken"], out var autoRefresh),
-                    AutoConnectRealtime = true,
-                })
-            );
+            services.ConfigureRabbitMq(configuration);
 
-            services.AddScoped<IDeviceRepository, DeviceRepository>();
+            return services;
+        }
+
+        private static IServiceCollection ConfigureRabbitMq(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddRabbitMqServices(new RabbitMqServiceOptions
+            {
+                HostName = configuration["MessageBroker:Host"]!,
+                Port = int.Parse(configuration["MessageBroker:Port"]!),
+                VirtualHost = configuration["MessageBroker:VHost"]!,
+                UserName = configuration["MessageBroker:Username"]!,
+                Password = configuration["MessageBroker:Password"]!
+            });
 
             return services;
         }

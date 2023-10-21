@@ -1,4 +1,5 @@
 ﻿using EcleticaBeerControl.Application.Members.Commands.Devices;
+using EcleticaBeerControl.Application.Resources;
 using FluentValidation;
 
 namespace EcleticaBeerControl.Application.Validators.Devices
@@ -7,15 +8,13 @@ namespace EcleticaBeerControl.Application.Validators.Devices
     {
         public CreateDeviceValidator() {
 
-            RuleFor(d => d.Identifier).NotNull()
-                                      .WithMessage("O identificador do dispositivo não pode ser vazio.")
-                                      .NotEmpty()
-                                      .WithMessage("O identificador do dispositivo não pode ser vazio.");
+            RuleFor(d => d.Identifier)
+                    .NotEmpty()
+                    .WithMessage(Messages.DeviceIdentifierCannotBeNullOrEmpty);
 
-            RuleFor(d => d.Name).NotNull()
-                                .WithMessage("O nome do dispositivo não pode ser vazio.")
-                                .NotEmpty()
-                                .WithMessage("O nome do dispositivo não pode ser vazio.");
+            RuleFor(d => d.Name)
+                    .NotEmpty()
+                    .WithMessage(Messages.DeviceNameCannotBeNullOrEmpty);
         }
     }
 }

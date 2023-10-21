@@ -3,10 +3,10 @@ using MediatR;
 
 namespace EcleticaBeerControl.Application.Members.Commands.Devices
 {
-    public record CreateDeviceCommand : BaseClientCommand, IRequest<Result>
+    public record CreateDeviceCommand : BaseClientCommand, IRequest<Result<Guid>>
     {
-        public string Identifier { get; init; }
-        public string Name { get; init; }
-        public string Description { get; init; }
+        public required string Identifier { get; init; }
+        public required string Name { get; init; }
+        public string? Description { get; init; }
     }
 }

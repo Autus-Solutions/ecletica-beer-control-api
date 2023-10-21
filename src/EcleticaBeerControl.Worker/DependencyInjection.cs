@@ -1,11 +1,8 @@
-﻿using EcleticaBeerControl.Domain.DomainEvents.Devices;
-using EcleticaBeerControl.Domain.Events;
+﻿using EcleticaBeerControl.Infrastructure.Messaging.RabbitMq;
 using EcleticaBeerControl.Worker.Managers;
-using MassTransit;
-using MassTransit.RabbitMqTransport.Topology;
-using MediatR;
-using RabbitMQ.Client;
-using System.Security.Authentication;
+using EcleticaBeerControl.Worker.Messaging.Consumers;
+using RabbitMQ.Client.Core.DependencyInjection;
+using RabbitMQ.Client.Core.DependencyInjection.Configuration;
 
 namespace EcleticaBeerControl.Worker
 {
@@ -15,42 +12,23 @@ namespace EcleticaBeerControl.Worker
         {
             var assembly = typeof(DependencyInjection).Assembly;
 
-            services.AddMassTransit((cfg) =>
-            {
-                cfg.SetKebabCaseEndpointNameFormatter();
+            services.ConfigureRabbitMqTopology()
+                    .ConfigureRabbitMqConsumeres();
 
-                cfg.UsingRabbitMq((context, rabbitCfg) =>
-                {
-                    rabbitCfg.ReceiveEndpoint("device-created", e =>
-                    {
-                        e.Bind("ebc-devices", x =>
-                        {
-                            x.Durable = false;
-                            x.AutoDelete = true;
-                            x.ExchangeType = ExchangeType.Direct;
-                            x.RoutingKey = nameof(DeviceCreatedEvent).ToLower();
-                        });
+            services.AddScoped<RealtimeClientManager>();
+            services.AddScoped<MqttClientManager>();
 
-                        e.Bind<DeviceCreatedEvent>();
-                    });
+            return services;
+        }
 
-                    rabbitCfg.Host(configuration["MessageBroker:Host"], 5671, configuration["MessageBroker:Username"], host =>
-                    {
-                        host.Username(configuration["MessageBroker:Username"]);
-                        host.Password(configuration["MessageBroker:Password"]);
-                        host.UseSsl(s =>
-                        {
-                            s.Protocol = SslProtocols.Tls12;
-                        });
-                    });
+        private static IServiceCollection ConfigureRabbitMqTopology(this IServiceCollection services) {
+            services.AddConsumptionExchange("ebc.devices", RabbitMqConfiguration.Topology);
+            return services;
+        }
 
-                    rabbitCfg.ConfigureEndpoints(context);
-                });
-            });
-
-            services.AddScoped<RealtimeManager>();
-            services.AddScoped<MqttManager>();
-
+        private static IServiceCollection ConfigureRabbitMqConsumeres(this IServiceCollection services)
+        {
+            services.AddAsyncMessageHandlerSingleton<DeviceCreatedMessageHandler>("device-created");
             return services;
         }
     }

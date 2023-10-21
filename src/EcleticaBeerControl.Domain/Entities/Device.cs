@@ -15,12 +15,12 @@ namespace EcleticaBeerControl.Domain.Entities
         public string Identifier { get; init; }
 
         [Column("description")]
-        public string Description { get; init; }
+        public string? Description { get; init; }
 
         [Column("status")]
         public DeviceStatus Status { get; init; } = DeviceStatus.Connecting;
 
-        public static Device Create(Guid clientId, string identifier, string name, string description, Guid createdBy)
+        public static Device Create(Guid clientId, string identifier, string name, string? description, Guid createdBy)
         {
             var device = new Device
             {
@@ -33,7 +33,7 @@ namespace EcleticaBeerControl.Domain.Entities
                 CreatedAt = DateTime.UtcNow
             };
 
-            device.RaiseDomainEvent(new DeviceCreatedEvent(device.Id));
+            device.RaiseDomainEvent(new DeviceCreatedEvent { Id = device.Id });
 
             return device;
         }

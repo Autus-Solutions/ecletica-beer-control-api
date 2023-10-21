@@ -11,8 +11,4 @@
     <PackageReference Include="postgrest-csharp" Version="3.2.9" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Dtos\" />
-  </ItemGroup>
-
 </Project>

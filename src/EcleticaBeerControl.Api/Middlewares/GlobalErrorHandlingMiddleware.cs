@@ -1,18 +1,11 @@
 ﻿using EcleticaBeerControl.Domain.Exceptions;
 using Microsoft.AspNetCore.Mvc;
-using ILogger = Serilog.ILogger;
+using Serilog;
 
 namespace EcleticaBeerControl.Api.Middlewares
 {
     public class GlobalErrorHandlingMiddleware : IMiddleware
     {
-        private readonly ILogger _logger;
-
-        public GlobalErrorHandlingMiddleware(ILogger logger)
-        {
-            _logger = logger;
-        }
-
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
             try
@@ -21,7 +14,7 @@ namespace EcleticaBeerControl.Api.Middlewares
             }
             catch (Exception e)
             {
-                _logger.Error(e, "Exception occurred: {Message}", e.Message);
+                Log.Error(e, "Exception occurred: {Message}", e.Message);
 
                 var exeptionDetails = GetExceptionDetails(e);
 

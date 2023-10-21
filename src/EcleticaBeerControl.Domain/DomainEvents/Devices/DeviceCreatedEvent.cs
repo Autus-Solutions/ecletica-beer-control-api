@@ -2,5 +2,5 @@
 
 namespace EcleticaBeerControl.Domain.DomainEvents.Devices
 {
-    public record DeviceCreatedEvent(Guid Id) : DomainEvent(Id);
+    public record DeviceCreatedEvent : DomainEvent;
 }

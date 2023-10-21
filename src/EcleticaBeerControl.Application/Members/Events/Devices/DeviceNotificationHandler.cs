@@ -1,6 +1,6 @@
 ﻿using EcleticaBeerControl.Domain.DomainEvents.Devices;
-using MassTransit;
 using MediatR;
+using RabbitMQ.Client.Core.DependencyInjection.Services.Interfaces;
 using Serilog;
 
 namespace EcleticaBeerControl.Application.Members.Events.Devices
@@ -8,22 +8,17 @@ namespace EcleticaBeerControl.Application.Members.Events.Devices
     internal sealed class DeviceNotificationHandler 
         : INotificationHandler<DeviceCreatedEvent>
     {
-        private readonly ILogger _logger;
-        private readonly IPublishEndpoint _publisher;
+        private readonly IProducingService _producingService;
 
-        public DeviceNotificationHandler(ILogger logger, IPublishEndpoint publisher)
+        public DeviceNotificationHandler(IProducingService producingService)
         {
-            _logger = logger;
-            _publisher = publisher;
+            _producingService = producingService;
         }
 
-        public Task Handle(DeviceCreatedEvent notification, CancellationToken cancellationToken)
+        public async Task Handle(DeviceCreatedEvent notification, CancellationToken cancellationToken)
         {
-            _logger.Information("Publishing {EventName}, {EventId}", nameof(DeviceCreatedEvent), notification.Id);
-
-            _publisher.Publish(notification, cancellationToken);
-
-            return Task.CompletedTask;
+            Log.Information("Publishing {EventName}, {EventId}", nameof(DeviceCreatedEvent), notification.Id);
+            await _producingService.SendAsync(notification, "ebc.devices", "device-created");
         }
     }
 }
