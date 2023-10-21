@@ -1,9 +1,7 @@
 ﻿using EcleticaBeerControl.Infrastructure.Messaging.RabbitMq;
 using EcleticaBeerControl.Infrastructure.Mqtt;
-using EcleticaBeerControl.Persistence.Repositories;
 using EcleticaBeerControl.Worker.Messaging.Handlers;
 using EcleticaBeerControl.Worker.Mqtt;
-using EcleticaBeerControl.Worker.Mqtt.RoutesHandlers;
 using EcleticaBeerControl.Worker.Realtime;
 using MQTTnet;
 using MQTTnet.Client;
@@ -48,9 +46,10 @@ namespace EcleticaBeerControl.Worker
 
             services.AddSingleton<IMqttClient>((provider) => new MqttFactory().CreateMqttClient());
             services.AddSingleton<MqttConnectionManager>();
-            services.AddSingleton<IMqttMessageRouter, MqttMessageRouter>();
 
-            #region RouteHandlers
+            #region MqttMessageRouter and Handlers
+
+            services.AddScoped<IMqttMessageRouter, MqttMessageRouter>();
 
             services.Scan(scan => scan
                   .FromAssemblyOf<MqttMessageRouter>()

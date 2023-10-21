@@ -9,6 +9,7 @@ CultureInfo.DefaultThreadCurrentCulture = defaultCultureInfo;
 CultureInfo.DefaultThreadCurrentUICulture = defaultCultureInfo;
 
 IHost host = Host.CreateDefaultBuilder(args)
+    .UseEnvironment(Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")!)
     .ConfigureHostConfiguration(builder =>
     {
         builder.AddUserSecrets<Program>();
@@ -25,6 +26,7 @@ IHost host = Host.CreateDefaultBuilder(args)
                 .AddWorker(builder.Configuration)
                 .AddHostedService<Worker>();
     })
+    .UseDefaultServiceProvider(options => options.ValidateScopes = false)
     .UseSerilog((context, lc) => lc.ReadFrom.Configuration(context.Configuration))
     .Build();
 
