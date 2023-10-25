@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Members\Queries\Devices\" />
+    <Folder Include="Members\Queries\" />
     <Folder Include="Messaging\Producers\" />
     <Folder Include="Services\" />
   </ItemGroup>
@@ -23,6 +23,7 @@
   <ItemGroup>
     <ProjectReference Include="..\EcleticaBeerControl.Domain\EcleticaBeerControl.Domain.csproj" />
     <ProjectReference Include="..\EcleticaBeerControl.Infrastructure\EcleticaBeerControl.Infrastructure.csproj" />
+    <ProjectReference Include="..\EcleticaBeerControl.Persistence\EcleticaBeerControl.Persistence.csproj" />
   </ItemGroup>
 
   <ItemGroup>

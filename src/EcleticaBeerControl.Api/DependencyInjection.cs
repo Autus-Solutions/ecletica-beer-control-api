@@ -4,9 +4,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
-using RabbitMQ.Client.Core.DependencyInjection.Configuration;
 using RabbitMQ.Client.Core.DependencyInjection;
-using System.Security.Authentication;
 using System.Text;
 using EcleticaBeerControl.Infrastructure.Messaging.RabbitMq;
 
@@ -61,17 +59,17 @@ namespace EcleticaBeerControl.Api
             #region HttpContext
 
             services.AddHttpContextAccessor();
-            services.AddScoped<User>((provider) =>
+            services.AddScoped((provider) =>
             {
                 var context = provider.GetRequiredService<IHttpContextAccessor>();
 
-                var userId = Guid.Parse(context.HttpContext.Items["userId"].ToString());
-                var userClientId = Guid.Parse(context.HttpContext.Items["userClientId"].ToString());
-
-                return new User
+                return new BreweryUser
                 {
-                    Id = userId,
-                    ClientId = userClientId
+                    Id = Guid.Parse(context.HttpContext!.Items["id"]!.ToString()!),
+                    BreweryId = Guid.Parse(context.HttpContext!.Items["brewery_id"]!.ToString()!),
+                    BreweryName = context.HttpContext!.Items["brewery_name"]!.ToString()!,
+                    BreweryRegistred = bool.Parse(context.HttpContext!.Items["brewery_registred"]!.ToString()!),
+                    Owner = bool.Parse(context.HttpContext!.Items["owner"]!.ToString()!),
                 };
             });
 

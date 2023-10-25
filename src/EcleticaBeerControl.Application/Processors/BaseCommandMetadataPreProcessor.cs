@@ -4,20 +4,22 @@ using MediatR.Pipeline;
 
 namespace EcleticaBeerControl.Application.Processors
 {
-    internal sealed class ClientBasedDomainMetadataPreProcessor<TRequest> 
+    internal sealed class BaseCommandMetadataPreProcessor<TRequest> 
         : IRequestPreProcessor<TRequest>
-        where TRequest : BaseClientCommand
+        where TRequest : BaseCommand
 
     {
-        private readonly User _user;
+        private readonly BreweryUser _brewer;
 
-        public ClientBasedDomainMetadataPreProcessor(User user) {
-            _user = user;
+        public BaseCommandMetadataPreProcessor(BreweryUser brewer) {
+            _brewer = brewer;
         }
 
         public Task Process(TRequest request, CancellationToken cancellationToken)
         {
-            request.ClientId = _user.ClientId;
+            request.CreateBy = _brewer.Id;
+            request.CreatedAt = DateTime.UtcNow;
+
             return Task.CompletedTask;
         }
     }

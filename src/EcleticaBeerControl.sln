@@ -15,6 +15,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EcleticaBeerControl.Worker"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EcleticaBeerControl.Persistence", "EcleticaBeerControl.Persistence\EcleticaBeerControl.Persistence.csproj", "{1E393339-1A50-45AE-98B9-E449F4B28793}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CronJobs", "CronJobs", "{AC493738-48AB-4F09-BC53-9737C870100D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EcleticaBeerControl.Job.DevicesConnectivityCheck", "EcleticaBeerControl.Job.DevicesConnectivityCheck\EcleticaBeerControl.Job.DevicesConnectivityCheck.csproj", "{00044143-2AA7-4290-B575-5789C23482FD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,9 +49,16 @@ Global
 		{1E393339-1A50-45AE-98B9-E449F4B28793}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1E393339-1A50-45AE-98B9-E449F4B28793}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1E393339-1A50-45AE-98B9-E449F4B28793}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00044143-2AA7-4290-B575-5789C23482FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00044143-2AA7-4290-B575-5789C23482FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00044143-2AA7-4290-B575-5789C23482FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00044143-2AA7-4290-B575-5789C23482FD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{00044143-2AA7-4290-B575-5789C23482FD} = {AC493738-48AB-4F09-BC53-9737C870100D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BFE3509C-C637-4FE3-86AD-0D61605E57BC}

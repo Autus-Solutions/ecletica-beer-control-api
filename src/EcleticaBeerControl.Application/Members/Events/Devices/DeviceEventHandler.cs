@@ -5,19 +5,19 @@ using Serilog;
 
 namespace EcleticaBeerControl.Application.Members.Events.Devices
 {
-    internal sealed class DeviceNotificationHandler 
+    internal sealed class DeviceEventHandler 
         : INotificationHandler<DeviceCreatedEvent>
     {
         private readonly IProducingService _producingService;
 
-        public DeviceNotificationHandler(IProducingService producingService)
+        public DeviceEventHandler(IProducingService producingService)
         {
             _producingService = producingService;
         }
 
         public async Task Handle(DeviceCreatedEvent notification, CancellationToken cancellationToken)
         {
-            Log.Information("Publishing {EventName}, {EventId}", nameof(DeviceCreatedEvent), notification.Id);
+            Log.Information("Publishing {EventName}, {EventId}", nameof(DeviceCreatedEvent), notification.Identifier);
             await _producingService.SendAsync(notification, "ebc.devices", "device-created");
         }
     }

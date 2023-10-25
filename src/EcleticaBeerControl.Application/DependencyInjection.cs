@@ -17,11 +17,12 @@ namespace EcleticaBeerControl.Application
                 configuration.RegisterServicesFromAssembly(assembly);
                 configuration.AddOpenBehavior(typeof(LoggingPipelineBehavior<,>), ServiceLifetime.Scoped);
                 configuration.AddOpenBehavior(typeof(FailFastValidationBehavior<,>), ServiceLifetime.Scoped);
-                configuration.AddOpenRequestPreProcessor(typeof(BaseDomainMetadataPreProcessor<>), ServiceLifetime.Scoped);
-                configuration.AddOpenRequestPreProcessor(typeof(ClientBasedDomainMetadataPreProcessor<>), ServiceLifetime.Scoped);
+                configuration.AddOpenRequestPreProcessor(typeof(BaseCommandMetadataPreProcessor<>), ServiceLifetime.Scoped);
+                configuration.AddOpenRequestPreProcessor(typeof(BreweryBaseCommandMetadataPreProcessor<>), ServiceLifetime.Scoped);
             });
 
             services.AddValidatorsFromAssembly(assembly);
+
             return services;
         }
     }

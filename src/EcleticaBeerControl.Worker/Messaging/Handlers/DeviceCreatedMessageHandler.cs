@@ -26,10 +26,9 @@ namespace EcleticaBeerControl.Worker.Messaging.Handlers
 
             await _mqttClient.PublishAsync(new MQTTnet.MqttApplicationMessage
             {
-                Topic = RouteKeys.DeviceMeIdentifierRoute(deviceDto!.Identifier),
-                ContentType = "application/json",
-                PayloadSegment = Encoding.UTF8.GetBytes(deviceDto!.ClientId.ToString()),
-                ResponseTopic = RouteKeys.DeviceFeedbackRoute,
+                Topic = RouteKeys.ApplicationDeviceHandshakeRoute(deviceDto!.Identifier),
+                ContentType = "text/plain",
+                PayloadSegment = Encoding.UTF8.GetBytes(deviceDto!.ClientId.ToString())
             });
         }
     }

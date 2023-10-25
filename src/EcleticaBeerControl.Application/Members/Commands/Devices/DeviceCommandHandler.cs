@@ -21,7 +21,7 @@ namespace EcleticaBeerControl.Application.Members.Commands.Devices
             try
             {
                 var device = Device.Create(
-                request.ClientId,
+                request.BreweryId,
                 request.Identifier,
                 request.Name,
                 request.Description,

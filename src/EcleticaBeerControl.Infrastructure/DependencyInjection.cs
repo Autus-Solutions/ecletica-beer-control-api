@@ -21,7 +21,7 @@ namespace EcleticaBeerControl.Infrastructure
                 HostName = configuration["MessageBroker:Host"]!,
                 Port = int.Parse(configuration["MessageBroker:Port"]!),
                 VirtualHost = configuration["MessageBroker:VHost"]!,
-                UserName = configuration["MessageBroker:Username"]!,
+                UserName = configuration["MessageBroker:UserName"]!,
                 Password = configuration["MessageBroker:Password"]!
             });
 

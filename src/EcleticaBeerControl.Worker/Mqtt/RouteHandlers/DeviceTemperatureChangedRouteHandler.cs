@@ -5,7 +5,7 @@ namespace EcleticaBeerControl.Worker.Mqtt.RoutesHandlers
 {
     public sealed class DeviceTemperatureChangedRouteHandler : IMqttRouteHandler
     {
-        public string Route => RouteKeys.DeviceTemepratureChangedRoute;
+        public string Route => RouteKeys.DeviceApplicationTemepratureChangedRoute;
 
         public Task Handle(string payload, string contentType, IDictionary<string, string> userProperties)
         {

@@ -18,20 +18,21 @@ namespace EcleticaBeerControl.Api.Middlewares
                 var acessToken = headerValue.Parameter ?? string.Empty;
                 var refreshToken = context.Request.Headers["X-Supabase-RefreshToken"].ToString() ?? string.Empty;
 
-                await _client.Auth.SetSession(acessToken, refreshToken);
+                var client = await _client.InitializeAsync();
+                await client.Auth.SetSession(acessToken, refreshToken);
 
-                var userId = Guid.Parse(_client.Auth.CurrentUser!.Id);
-                var userClientId = Guid.Parse(_client.Auth.CurrentUser!.UserMetadata["client_id"].ToString());
+                var user = client.Auth.CurrentUser!;
 
-                context.Items.Add(nameof(userId), userId);
-                context.Items.Add(nameof(userClientId), userClientId);
+                context.Items.Add("id", Guid.Parse(user.Id!));
+                context.Items.Add("brewery_id", Guid.Parse(user.UserMetadata["brewery_id"]!.ToString()!));
+                context.Items.Add("brewery_name", Guid.Parse(user.UserMetadata["brewery_name"]!.ToString()!));
+                context.Items.Add("brewery_registred", bool.Parse(user.UserMetadata["brewery_registred"]!.ToString()!));
+                context.Items.Add("owner", bool.Parse(user.UserMetadata["owner"]!.ToString()!));
             }
 
             await next.Invoke(context);
         }
     }
-
-
     public static class SupabaseAuthMiddlewareExtensions
     {
         public static IApplicationBuilder UseSupabaseAuth(this IApplicationBuilder app)

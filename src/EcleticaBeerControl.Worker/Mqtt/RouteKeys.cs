@@ -2,8 +2,19 @@
 {
     public static class RouteKeys
     {
-        public static readonly string DeviceTemepratureChangedRoute = "device/temperature-changed";
-        public static readonly string DeviceFeedbackRoute = "device/feedback";
-        public static string DeviceMeIdentifierRoute(string deviceIdentifier) => $"device/me/{deviceIdentifier}";
+        #region Device To Application Subscriptions
+
+            public static readonly string DeviceApplicationTemepratureChangedRoute = "device/application/temperature-changed";
+            public static readonly string DeviceApplicationHandshakeResultRoute = "device/application/handshake-result";
+
+        #endregion
+
+        #region Application To Device Publications
+
+            public static string ApplicationDeviceHandshakeRoute(string deviceIdentifier) => $"application/device/handshake/{deviceIdentifier}";
+            public static string ApplicationDeviceDisconnectRoute(string deviceIdentifier) => $"application/device/disconnect/{deviceIdentifier}";
+            public static string ApplicationDeviceTemperatureChangeRoute(string deviceIdentifier) => $"application/device/temperature-change/{deviceIdentifier}";
+
+        #endregion
     }
 }

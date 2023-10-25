@@ -7,9 +7,9 @@ namespace EcleticaBeerControl.Worker.Realtime
 {
     public sealed class RealtimeConnectionManager
     {
-        private readonly Client _client;
+        private readonly Supabase.Client _client;
 
-        public RealtimeConnectionManager(Client client)
+        public RealtimeConnectionManager(Supabase.Client client)
         {
             _client = client;
         }

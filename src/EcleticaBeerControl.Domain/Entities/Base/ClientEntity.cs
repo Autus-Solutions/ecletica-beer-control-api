@@ -8,7 +8,7 @@ namespace EcleticaBeerControl.Domain.Entities.Base
         { 
         }
 
-        [Column("client_id")]
-        public Guid ClientId { get; set; }
+        [Column("brewery_id")]
+        public Guid BreweryId { get; set; }
     }
 }

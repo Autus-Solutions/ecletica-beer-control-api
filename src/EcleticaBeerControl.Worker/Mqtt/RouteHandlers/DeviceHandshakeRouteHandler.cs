@@ -3,20 +3,20 @@ using Serilog;
 
 namespace EcleticaBeerControl.Worker.Mqtt.RoutesHandlers
 {
-    public sealed class DeviceFeedbackRouteHandler : IMqttRouteHandler
+    public sealed class DeviceHandshakeRouteHandler : IMqttRouteHandler
     {
-        public string Route => RouteKeys.DeviceFeedbackRoute;
+        public string Route => RouteKeys.DeviceApplicationHandshakeResultRoute;
 
-        public Task Handle(string payload, string contentType, IDictionary<string, string> userProperties)
+        public Task Handle(string payload, string contentType, IDictionary<string, string> brewerProperties)
         {
             Log.Information(@"Message arrived: Route => {Route}, 
                                 Payload => {Payload}, 
                                 ContentType => {ContentType}
-                                UserProperties => {UserProperties}",
+                                brewerProperties => {brewerProperties}",
                                 Route,
                                 payload,
                                 contentType,
-                                userProperties);
+                                brewerProperties);
 
             return Task.CompletedTask;
         }

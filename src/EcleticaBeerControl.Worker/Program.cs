@@ -9,7 +9,7 @@ CultureInfo.DefaultThreadCurrentCulture = defaultCultureInfo;
 CultureInfo.DefaultThreadCurrentUICulture = defaultCultureInfo;
 
 IHost host = Host.CreateDefaultBuilder(args)
-    .UseEnvironment(Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")!)
+    .UseEnvironment(Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT") ?? "Development")
     .ConfigureHostConfiguration(builder =>
     {
         builder.AddUserSecrets<Program>();

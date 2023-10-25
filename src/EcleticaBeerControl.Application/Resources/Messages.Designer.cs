@@ -61,6 +61,24 @@ namespace EcleticaBeerControl.Application.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to O identificador da cervejaria não pode ser vazio..
+        /// </summary>
+        internal static string BreweryIdCannotBeNullOrEmpty {
+            get {
+                return ResourceManager.GetString("BreweryIdCannotBeNullOrEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to O nome da cervejaria não pode ser vazio..
+        /// </summary>
+        internal static string BreweryNameCannotBeNullOrEmpty {
+            get {
+                return ResourceManager.GetString("BreweryNameCannotBeNullOrEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to O identificador do dispositivo não pode ser vazio..
         /// </summary>
         internal static string DeviceIdentifierCannotBeNullOrEmpty {
