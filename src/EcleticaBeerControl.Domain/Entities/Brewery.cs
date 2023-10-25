@@ -1,5 +1,4 @@
-﻿using EcleticaBeerControl.Domain.DomainEvents.Devices;
-using EcleticaBeerControl.Domain.Entities.Base;
+﻿using EcleticaBeerControl.Domain.Entities.Base;
 using Postgrest.Attributes;
 
 namespace EcleticaBeerControl.Domain.Entities

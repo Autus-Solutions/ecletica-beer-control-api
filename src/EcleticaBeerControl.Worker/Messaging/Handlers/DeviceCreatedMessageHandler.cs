@@ -28,7 +28,7 @@ namespace EcleticaBeerControl.Worker.Messaging.Handlers
             {
                 Topic = RouteKeys.ApplicationDeviceHandshakeRoute(deviceDto!.Identifier),
                 ContentType = "text/plain",
-                PayloadSegment = Encoding.UTF8.GetBytes(deviceDto!.ClientId.ToString())
+                PayloadSegment = Encoding.UTF8.GetBytes(deviceDto!.BreweryId.ToString())
             });
         }
     }

@@ -1,4 +1,4 @@
-﻿using EcleticaBeerControl.Domain.Events;
+﻿using EcleticaBeerControl.Domain.DomainEvents;
 using Newtonsoft.Json;
 using Postgrest.Attributes;
 using Postgrest.Models;
@@ -24,6 +24,19 @@ namespace EcleticaBeerControl.Domain.Entities.Base
 
         [Column("created_at")]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+        [Column("updated_by")]
+        public Guid? UpdatedBy { get; set; }
+
+        [Column("created_at")]
+        public DateTime? UpdatedAt { get; set; }
+
+        [Column("deleted_by")]
+        public Guid? DeletedBy { get; set; }
+
+        [Column("deleted_at")]
+        public DateTime? DeletedAt { get; set; }
+
 
         protected void RaiseDomainEvent(DomainEvent domainEvent)
         {
