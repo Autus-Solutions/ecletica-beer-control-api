@@ -1,13 +1,14 @@
 ﻿using EcleticaBeerControl.Domain.Entities;
 using EcleticaBeerControl.Domain.Repositories;
+using Supabase;
 
-namespace EcleticaBeerControl.Persistence.Repositories
+namespace EcleticaBeerControl.Persistence.Supabase.Repositories
 {
     public class DeviceRepository : IDeviceRepository
     {
-        private readonly Supabase.Client _client;
+        private readonly Client _client;
 
-        public DeviceRepository(Supabase.Client client)
+        public DeviceRepository(Client client)
         {
             _client = client;
         }

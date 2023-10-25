@@ -4,14 +4,14 @@ using Serilog;
 
 namespace EcleticaBeerControl.Application.Behaviors
 {
-    internal sealed class LoggingPipelineBehavior<TRequest, TResponse> 
+    public sealed class LoggingPipelineBehavior<TRequest, TResponse>
         : IPipelineBehavior<TRequest, TResponse>
         where TRequest : IRequest<TResponse>
         where TResponse : Result
     {
         public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
         {
-            Log.Information("Starting Request {RequestName}, {DateTimeUtc}", 
+            Log.Information("Starting Request {RequestName}, {DateTimeUtc}",
                                 typeof(TRequest).Name,
                                 DateTime.UtcNow);
 

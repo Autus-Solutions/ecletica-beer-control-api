@@ -1,13 +1,16 @@
 ﻿using EcleticaBeerControl.Domain.Entities;
+using EcleticaBeerControl.Persistence.EF.Mapping.Base;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace EcleticaBeerControl.Persistence.Mapping
+namespace EcleticaBeerControl.Persistence.EF.Mapping
 {
-    internal sealed class DeviceMapping : IEntityTypeConfiguration<Device>
+    internal sealed class DeviceMapping : EntityMapping<Device>
     {
-        public void Configure(EntityTypeBuilder<Device> builder)
+        public override void Configure(EntityTypeBuilder<Device> builder)
         {
+            base.Configure(builder);
+
             builder.ToTable("devices");
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Identifier)
@@ -21,13 +24,7 @@ namespace EcleticaBeerControl.Persistence.Mapping
                     .IsRequired();
             builder.HasIndex(x => x.Identifier)
                     .IsUnique();
-            builder.HasQueryFilter(x => x.DeletedBy == null);
 
-            builder.Ignore(x => x.DomainEvents);
-            builder.Ignore(x => x.BaseUrl);
-            builder.Ignore(x => x.RequestClientOptions);
-            builder.Ignore(x => x.TableName);
-            builder.Ignore(x => x.PrimaryKey);
         }
     }
 }

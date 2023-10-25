@@ -1,6 +1,6 @@
 ﻿namespace EcleticaBeerControl.Domain.Primitives
 {
-    public class BreweryUser
+    public class BreweryUserContext
     {
         public Guid Id { get; set; }
         public Guid BreweryId { get; set; }

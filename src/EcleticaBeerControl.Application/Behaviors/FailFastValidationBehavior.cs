@@ -4,7 +4,7 @@ using MediatR;
 
 namespace EcleticaBeerControl.Application.Behaviors
 {
-    internal sealed class FailFastValidationBehavior<TRequest, TResponse>
+    public sealed class FailFastValidationBehavior<TRequest, TResponse>
         : IPipelineBehavior<TRequest, TResponse>
         where TRequest : IRequest<TResponse>
     {
@@ -13,7 +13,7 @@ namespace EcleticaBeerControl.Application.Behaviors
         public FailFastValidationBehavior(IEnumerable<IValidator<TRequest>> validators)
         {
             _validators = validators;
-        }   
+        }
 
         public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
         {
@@ -28,7 +28,8 @@ namespace EcleticaBeerControl.Application.Behaviors
                 .Select(vf => new ValidationError(vf.PropertyName, vf.ErrorMessage))
                 .ToList();
 
-            if (errors.Any()) {
+            if (errors.Any())
+            {
 
                 throw new DomainValidationException(errors);
             }

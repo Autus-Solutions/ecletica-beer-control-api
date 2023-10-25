@@ -2,19 +2,19 @@
 using EcleticaBeerControl.Domain.Primitives;
 using MediatR;
 using Serilog;
-using Supabase;
+using Supabase.Gotrue;
 
 namespace EcleticaBeerControl.Application.Members.Events.Devices
 {
-    internal sealed class BreweryEventHandler 
+    internal sealed class BreweryEventHandler
         : INotificationHandler<BreweryRegistredEvent>
     {
-        private readonly Client _supabase;
-        private readonly BreweryUser _brewer;
+        private readonly Client _auth;
+        private readonly BreweryUserContext _brewer;
 
-        public BreweryEventHandler(Client supabase, BreweryUser brewer)
+        public BreweryEventHandler(Client auth, BreweryUserContext brewer)
         {
-            _supabase = supabase;
+            _auth = auth;
             _brewer = brewer;
         }
 
@@ -22,7 +22,7 @@ namespace EcleticaBeerControl.Application.Members.Events.Devices
         {
             Log.Information("Updating current user metadata");
 
-            await _supabase.Auth.Update(new Supabase.Gotrue.UserAttributes
+            await _auth.Update(new UserAttributes
             {
                 Data = _brewer.ToUserMetadata()
             });

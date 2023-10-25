@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 
-namespace EcleticaBeerControl.Persistence.Database.Options
+namespace EcleticaBeerControl.Persistence.EF.Database.Options
 {
     internal sealed class DatabaseOptionsSetup : IConfigureOptions<DatabaseOptions>
     {

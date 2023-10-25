@@ -1,14 +1,14 @@
 ﻿using EcleticaBeerControl.Domain.Entities;
 using EcleticaBeerControl.Domain.Repositories;
+using Supabase;
 
-
-namespace EcleticaBeerControl.Persistence.Repositories
+namespace EcleticaBeerControl.Persistence.Supabase.Repositories
 {
     public class BreweryRepository : IBreweryRepository
     {
-        private readonly Supabase.Client _client;
+        private readonly Client _client;
 
-        public BreweryRepository(Supabase.Client client)
+        public BreweryRepository(Client client)
         {
             _client = client;
         }

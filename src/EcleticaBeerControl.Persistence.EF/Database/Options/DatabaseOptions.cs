@@ -1,4 +1,4 @@
-﻿namespace EcleticaBeerControl.Persistence.Database.Options
+﻿namespace EcleticaBeerControl.Persistence.EF.Database.Options
 {
     internal sealed class DatabaseOptions
     {

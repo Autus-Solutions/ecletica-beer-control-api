@@ -7,22 +7,47 @@ using Newtonsoft.Json;
 using RabbitMQ.Client.Core.DependencyInjection;
 using System.Text;
 using EcleticaBeerControl.Infrastructure.Messaging.RabbitMq;
+using FluentValidation;
+using EcleticaBeerControl.Application;
+using EcleticaBeerControl.Application.Processors;
+using EcleticaBeerControl.Application.Behaviors;
+using Supabase.Gotrue;
 
 namespace EcleticaBeerControl.Api
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddPresentation(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
         {
-            #region API Authentication/Authorization
+            services.AddApiMiddlewares()
+                    .AddApiAuthentication(configuration)
+                    .AddHttpContextAccessor()
+                    .AddBreweryUserContext()
+                    .AddSupabaseAuth()
+                    .AddMediatR()
+                    .AddFluentValidator()
+                    .AddRabbitMq();
 
+            return services;
+        }
+
+        private static IServiceCollection AddApiMiddlewares(this IServiceCollection services)
+        {
+
+            services.AddScoped<GlobalErrorHandlingMiddleware>();
+            services.AddScoped<SupabaseAuthMiddleware>();
+
+            return services;
+        }
+        private static IServiceCollection AddApiAuthentication(this IServiceCollection services, IConfiguration configuration)
+        {
             services.AddControllers()
-                    .AddNewtonsoftJson(options =>
-                    {
-                        options.SerializerSettings.NullValueHandling = NullValueHandling.Include;
-                        options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-                        options.SerializerSettings.ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor;
-                    });
+                                .AddNewtonsoftJson(options =>
+                                {
+                                    options.SerializerSettings.NullValueHandling = NullValueHandling.Include;
+                                    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                                    options.SerializerSettings.ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor;
+                                });
 
             services.AddResponseCompression(options =>
             {
@@ -54,16 +79,20 @@ namespace EcleticaBeerControl.Api
                 };
             });
 
-            #endregion
-
-            #region HttpContext
-
-            services.AddHttpContextAccessor();
+            return services;
+        }
+        private static IServiceCollection AddSupabaseAuth(this IServiceCollection services)
+        {
+            services.AddScoped<Client>();
+            return services;
+        }
+        private static IServiceCollection AddBreweryUserContext(this IServiceCollection services)
+        {
             services.AddScoped((provider) =>
             {
                 var context = provider.GetRequiredService<IHttpContextAccessor>();
 
-                return new BreweryUser
+                return new BreweryUserContext
                 {
                     Id = Guid.Parse(context.HttpContext!.Items["id"]!.ToString()!),
                     BreweryId = Guid.Parse(context.HttpContext!.Items["brewery_id"]!.ToString()!),
@@ -72,22 +101,27 @@ namespace EcleticaBeerControl.Api
                     Owner = bool.Parse(context.HttpContext!.Items["owner"]!.ToString()!),
                 };
             });
-
-            #endregion
-
-            #region Middlewares
-
-            services.AddScoped<GlobalErrorHandlingMiddleware>();
-            services.AddScoped<SupabaseAuthMiddleware>();
-
-            #endregion
-
-            services.ConfigureRabbitMqTopology();
-
             return services;
         }
-
-        private static IServiceCollection ConfigureRabbitMqTopology(this IServiceCollection services)
+        private static IServiceCollection AddMediatR(this IServiceCollection services)
+        {
+            services.AddMediatR((configuration) =>
+            {
+                configuration.Lifetime = ServiceLifetime.Scoped;
+                configuration.RegisterServicesFromAssembly(typeof(ApplicationAssemblyReference).Assembly);
+                configuration.AddOpenBehavior(typeof(LoggingPipelineBehavior<,>), ServiceLifetime.Scoped);
+                configuration.AddOpenBehavior(typeof(FailFastValidationBehavior<,>), ServiceLifetime.Scoped);
+                configuration.AddOpenRequestPreProcessor(typeof(BaseCommandMetadataPreProcessor<>), ServiceLifetime.Scoped);
+                configuration.AddOpenRequestPreProcessor(typeof(BreweryBaseCommandMetadataPreProcessor<>), ServiceLifetime.Scoped);
+            });
+            return services;
+        }
+        private static IServiceCollection AddFluentValidator(this IServiceCollection services)
+        {
+            services.AddValidatorsFromAssembly(typeof(ApplicationAssemblyReference).Assembly);
+            return services;
+        }
+        private static IServiceCollection AddRabbitMq(this IServiceCollection services)
         {
             services.AddProductionExchange("ebc.devices", RabbitMqConfiguration.Topology);
             return services;

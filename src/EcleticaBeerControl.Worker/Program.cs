@@ -1,5 +1,5 @@
 using EcleticaBeerControl.Infrastructure;
-using EcleticaBeerControl.Persistence;
+using EcleticaBeerControl.Persistence.EF;
 using EcleticaBeerControl.Worker;
 using Serilog;
 using System.Globalization;
@@ -22,9 +22,10 @@ IHost host = Host.CreateDefaultBuilder(args)
         });
 
         services.AddInfrastructure(builder.Configuration)
-                .AddPersistence(builder.Configuration)
-                .AddWorker(builder.Configuration)
-                .AddHostedService<Worker>();
+                .AddEFPersistence(builder.Configuration)
+                .AddWorker(builder.Configuration);
+
+        services.AddHostedService<Worker>();
     })
     .UseDefaultServiceProvider(options => options.ValidateScopes = false)
     .UseSerilog((context, lc) => lc.ReadFrom.Configuration(context.Configuration))

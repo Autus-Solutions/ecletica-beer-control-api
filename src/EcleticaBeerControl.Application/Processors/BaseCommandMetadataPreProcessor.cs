@@ -4,14 +4,15 @@ using MediatR.Pipeline;
 
 namespace EcleticaBeerControl.Application.Processors
 {
-    internal sealed class BaseCommandMetadataPreProcessor<TRequest> 
+    public sealed class BaseCommandMetadataPreProcessor<TRequest>
         : IRequestPreProcessor<TRequest>
         where TRequest : BaseCommand
 
     {
-        private readonly BreweryUser _brewer;
+        private readonly BreweryUserContext _brewer;
 
-        public BaseCommandMetadataPreProcessor(BreweryUser brewer) {
+        public BaseCommandMetadataPreProcessor(BreweryUserContext brewer)
+        {
             _brewer = brewer;
         }
 

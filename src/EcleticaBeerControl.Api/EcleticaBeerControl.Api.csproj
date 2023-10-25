@@ -27,7 +27,7 @@
   <ItemGroup>
     <ProjectReference Include="..\EcleticaBeerControl.Application\EcleticaBeerControl.Application.csproj" />
     <ProjectReference Include="..\EcleticaBeerControl.Infrastructure\EcleticaBeerControl.Infrastructure.csproj" />
-    <ProjectReference Include="..\EcleticaBeerControl.Persistence\EcleticaBeerControl.Persistence.csproj" />
+    <ProjectReference Include="..\EcleticaBeerControl.Persistence.Supabase\EcleticaBeerControl.Persistence.Supabase.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,7 +1,7 @@
 ﻿using EcleticaBeerControl.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace EcleticaBeerControl.Persistence.Database
+namespace EcleticaBeerControl.Persistence.EF.Database
 {
     public sealed class ApplicationDbContext : DbContext
     {
