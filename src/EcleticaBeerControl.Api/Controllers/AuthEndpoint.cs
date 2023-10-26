@@ -13,21 +13,8 @@ namespace EcleticaBeerControl.Api.Controllers
             var group = app.MapGroup("api/auth")
                             .RequireAuthorization();
 
-            group.MapPost("/user/register", RegisterUser)
-                    .WithName(nameof(RegisterUser));
-
             group.MapPost("/brewery/register", RegisterBrewery)
                     .WithName(nameof(RegisterBrewery));
-        }
-
-        public static async Task<Results<Ok<Guid>, BadRequest<string[]>>> RegisterUser(RegisterUserCommand command, ISender sender)
-        {
-            var response = await sender.Send(command);
-
-            if (response.IsSuccess)
-                return TypedResults.Ok(response.Value);
-
-            return TypedResults.BadRequest(response.Errors);
         }
 
         public static async Task<Results<Ok<Guid>, BadRequest<string[]>>> RegisterBrewery(RegisterBreweryIfNeededCommand command, ISender sender)
