@@ -9,7 +9,9 @@ FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 COPY ["EcleticaBeerControl.Api/EcleticaBeerControl.Api.csproj", "EcleticaBeerControl.Api/"]
 COPY ["EcleticaBeerControl.Application/EcleticaBeerControl.Application.csproj", "EcleticaBeerControl.Application/"]
+COPY ["EcleticaBeerControl.Domain/EcleticaBeerControl.Domain.csproj", "EcleticaBeerControl.Domain/"]
 COPY ["EcleticaBeerControl.Infrastructure/EcleticaBeerControl.Infrastructure.csproj", "EcleticaBeerControl.Infrastructure/"]
+COPY ["EcleticaBeerControl.Persistence.Supabase/EcleticaBeerControl.Persistence.Supabase.csproj", "EcleticaBeerControl.Persistence.Supabase/"]
 RUN dotnet restore "EcleticaBeerControl.Api/EcleticaBeerControl.Api.csproj"
 COPY . .
 WORKDIR "/src/EcleticaBeerControl.Api"

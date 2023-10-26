@@ -18,8 +18,6 @@
 
   <ItemGroup>
     <Folder Include="Members\Queries\" />
-    <Folder Include="Messaging\Producers\" />
-    <Folder Include="Services\" />
   </ItemGroup>
 
   <ItemGroup>

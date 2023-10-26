@@ -9,6 +9,7 @@ COPY ["EcleticaBeerControl.Worker/EcleticaBeerControl.Worker.csproj", "EcleticaB
 COPY ["EcleticaBeerControl.Application/EcleticaBeerControl.Application.csproj", "EcleticaBeerControl.Application/"]
 COPY ["EcleticaBeerControl.Domain/EcleticaBeerControl.Domain.csproj", "EcleticaBeerControl.Domain/"]
 COPY ["EcleticaBeerControl.Infrastructure/EcleticaBeerControl.Infrastructure.csproj", "EcleticaBeerControl.Infrastructure/"]
+COPY ["EcleticaBeerControl.Persistence.EF/EcleticaBeerControl.Persistence.EF.csproj", "EcleticaBeerControl.Persistence.EF/"]
 RUN dotnet restore "EcleticaBeerControl.Worker/EcleticaBeerControl.Worker.csproj"
 COPY . .
 WORKDIR "/src/EcleticaBeerControl.Worker"
