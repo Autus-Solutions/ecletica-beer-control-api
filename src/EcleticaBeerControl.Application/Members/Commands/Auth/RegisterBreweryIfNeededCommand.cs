@@ -1,7 +1,7 @@
 ﻿using EcleticaBeerControl.Domain.Primitives;
 using MediatR;
 
-namespace EcleticaBeerControl.Application.Members.Commands.Breweries
+namespace EcleticaBeerControl.Application.Members.Commands.Auth
 {
     public record RegisterBreweryIfNeededCommand : BaseCommand, IRequest<Result<Guid>>
     {

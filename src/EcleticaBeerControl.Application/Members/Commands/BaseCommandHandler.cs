@@ -3,10 +3,11 @@ using MediatR;
 
 namespace EcleticaBeerControl.Application.Members.Commands
 {
-    internal abstract class BaseCommandHandler
+    public abstract class BaseCommandHandler
     {
-        protected readonly IPublisher _publisher; 
-        protected BaseCommandHandler(IPublisher publisher) {
+        protected readonly IPublisher _publisher;
+        protected BaseCommandHandler(IPublisher publisher)
+        {
             _publisher = publisher;
         }
 

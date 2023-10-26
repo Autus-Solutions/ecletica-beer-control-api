@@ -1,8 +1,9 @@
 ﻿using EcleticaBeerControl.Domain.Entities;
 
+
 namespace EcleticaBeerControl.Domain.Repositories
 {
-    public interface IUserRepository : IEntityRepository<User>
+    public interface IBreweryRepository : IEntityRepository<Brewery>
     {
     }
 }

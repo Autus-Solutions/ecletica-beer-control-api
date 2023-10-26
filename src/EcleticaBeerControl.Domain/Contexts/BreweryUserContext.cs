@@ -1,4 +1,4 @@
-﻿namespace EcleticaBeerControl.Domain.Primitives
+﻿namespace EcleticaBeerControl.Domain.Contexts
 {
     public class BreweryUserContext
     {

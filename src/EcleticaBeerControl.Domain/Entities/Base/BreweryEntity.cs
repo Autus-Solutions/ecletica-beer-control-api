@@ -2,13 +2,10 @@
 
 namespace EcleticaBeerControl.Domain.Entities.Base
 {
-    public abstract class ClientEntity : Entity
+    public abstract class BreweryEntity : Entity
     {
-        protected ClientEntity() : base()
-        { 
-        }
-
         [Column("brewery_id")]
         public Guid BreweryId { get; set; }
+        public virtual Brewery Brewery { get; set; }
     }
 }

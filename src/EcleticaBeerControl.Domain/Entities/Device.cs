@@ -6,13 +6,13 @@ using Postgrest.Attributes;
 namespace EcleticaBeerControl.Domain.Entities
 {
     [Table("devices")]
-    public class Device : ClientEntity
+    public class Device : BreweryEntity
     {
         [Column("name")]
-        public string Name { get; init; }
+        public string Name { get; init; } = string.Empty;
 
         [Column("identifier")]
-        public string Identifier { get; init; }
+        public string Identifier { get; init; } = string.Empty;
 
         [Column("description")]
         public string? Description { get; init; }
@@ -22,22 +22,23 @@ namespace EcleticaBeerControl.Domain.Entities
 
         public static Device Create(Guid breweryId, string identifier, string name, string? description, Guid createdBy)
         {
-            var device = new Device
+            var entity = new Device
             {
                 BreweryId = breweryId,
                 Name = name,
                 Identifier = identifier,
                 Description = description,
                 Status = DeviceStatus.Connecting,
-                CreateBy = createdBy,
-                CreatedAt = DateTime.UtcNow
+                CreateBy = createdBy
             };
 
-            device.RaiseDomainEvent(new DeviceCreatedEvent { Identifier = device.Identifier, 
-                                    BreweryId = device.BreweryId 
+            entity.RaiseDomainEvent(new DeviceCreatedEvent
+            {
+                Identifier = entity.Identifier,
+                BreweryId = entity.BreweryId
             });
 
-            return device;
+            return entity;
         }
     }
 }

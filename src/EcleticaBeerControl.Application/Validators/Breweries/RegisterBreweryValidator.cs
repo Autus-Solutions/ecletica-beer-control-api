@@ -1,4 +1,4 @@
-﻿using EcleticaBeerControl.Application.Members.Commands.Breweries;
+﻿using EcleticaBeerControl.Application.Members.Commands.Auth;
 using EcleticaBeerControl.Application.Resources;
 using FluentValidation;
 

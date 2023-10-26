@@ -1,5 +1,5 @@
 ﻿using EcleticaBeerControl.Application.Members.Commands;
-using EcleticaBeerControl.Domain.Primitives;
+using EcleticaBeerControl.Domain.Contexts;
 using MediatR.Pipeline;
 
 namespace EcleticaBeerControl.Application.Processors

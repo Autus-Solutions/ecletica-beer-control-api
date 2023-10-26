@@ -1,5 +1,5 @@
 ﻿using EcleticaBeerControl.Application.Members.Commands;
-using EcleticaBeerControl.Domain.Primitives;
+using EcleticaBeerControl.Domain.Contexts;
 using MediatR.Pipeline;
 
 namespace EcleticaBeerControl.Application.Processors
@@ -19,8 +19,6 @@ namespace EcleticaBeerControl.Application.Processors
         public Task Process(TRequest request, CancellationToken cancellationToken)
         {
             request.CreateBy = _brewer.Id;
-            request.CreatedAt = DateTime.UtcNow;
-
             return Task.CompletedTask;
         }
     }

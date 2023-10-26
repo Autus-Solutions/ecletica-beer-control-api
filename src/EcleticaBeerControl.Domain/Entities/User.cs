@@ -3,21 +3,19 @@ using Postgrest.Attributes;
 
 namespace EcleticaBeerControl.Domain.Entities
 {
-    [Table("breweries")]
-    public class Brewery : Entity
+    [Table("users")]
+    public class User : Entity
     {
-        [Column("logo")]
-        public string? Logo { get; init; }
         [Column("name")]
         public string Name { get; init; } = string.Empty;
 
-        public static Brewery Register(Guid id, string name, Guid createdBy)
+        public static User Register(Guid id, string name, Guid createdBy)
         {
-            var entity = new Brewery
+            var entity = new User
             {
                 Id = id,
                 Name = name,
-                CreateBy = createdBy
+                CreateBy = createdBy,
             };
 
             return entity;

@@ -5,7 +5,7 @@ using Serilog;
 
 namespace EcleticaBeerControl.Application.Members.Events.Devices
 {
-    internal sealed class DeviceEventHandler 
+    public sealed class DeviceEventHandler
         : INotificationHandler<DeviceCreatedEvent>
     {
         private readonly IProducingService _producingService;

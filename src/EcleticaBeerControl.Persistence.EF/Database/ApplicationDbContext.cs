@@ -17,5 +17,8 @@ namespace EcleticaBeerControl.Persistence.EF.Database
 
         public DbSet<Brewery> Breweries { get; set; }
         public DbSet<Device> Devices { get; set; }
+        public DbSet<FermentationProfile> FermentationProfiles { get; set; }
+        public DbSet<FermentationDefinition> FermentationDefinitions { get; set; }
+        public DbSet<FermentationSession> FermentationSessions { get; set; }
     }
 }

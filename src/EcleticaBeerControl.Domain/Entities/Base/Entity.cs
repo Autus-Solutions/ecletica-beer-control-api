@@ -10,7 +10,7 @@ namespace EcleticaBeerControl.Domain.Entities.Base
         private readonly List<DomainEvent> _domainEvents = new();
         protected Entity()
         {
-            Id = Guid.NewGuid();    
+            Id = Guid.NewGuid();
         }
 
         [JsonIgnore]
@@ -36,7 +36,6 @@ namespace EcleticaBeerControl.Domain.Entities.Base
 
         [Column("deleted_at")]
         public DateTime? DeletedAt { get; set; }
-
 
         protected void RaiseDomainEvent(DomainEvent domainEvent)
         {

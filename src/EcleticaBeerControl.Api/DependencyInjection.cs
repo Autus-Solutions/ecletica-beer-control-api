@@ -1,5 +1,4 @@
 ﻿using EcleticaBeerControl.Api.Middlewares;
-using EcleticaBeerControl.Domain.Primitives;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.IdentityModel.Tokens;
@@ -12,6 +11,7 @@ using EcleticaBeerControl.Application;
 using EcleticaBeerControl.Application.Processors;
 using EcleticaBeerControl.Application.Behaviors;
 using Supabase.Gotrue;
+using EcleticaBeerControl.Domain.Contexts;
 
 namespace EcleticaBeerControl.Api
 {

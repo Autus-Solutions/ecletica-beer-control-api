@@ -5,29 +5,24 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace EcleticaBeerControl.Persistence.EF.Mapping
 {
-    internal sealed class DeviceMapping : BreweryEntityMapping<Device>
+    internal sealed class FermentationProfileMapping : BreweryEntityMapping<FermentationProfile>
     {
-        public override void Configure(EntityTypeBuilder<Device> builder)
+        public override void Configure(EntityTypeBuilder<FermentationProfile> builder)
         {
             base.Configure(builder);
 
-            builder.ToTable("devices");
+            builder.ToTable("fermentation_profiles");
 
-            builder.HasKey(x => x.Identifier);
+            builder.HasKey(x => x.Id);
 
-            builder.Property(x => x.Identifier)
-                    .IsRequired();
             builder.Property(x => x.Name).
                     HasMaxLength(100)
                     .IsRequired();
             builder.Property(x => x.Description)
                     .HasMaxLength(200);
-            builder.Property(x => x.Status)
+            builder.Property(x => x.Steps)
+                    .HasColumnType("jsonb")
                     .IsRequired();
-
-            builder.HasIndex(x => x.Identifier)
-                    .IsUnique();
-
         }
     }
 }

@@ -21,7 +21,8 @@ namespace EcleticaBeerControl.Persistence.EF
                 {
                     options.EnableRetryOnFailure(databaseOptions.MaxRetryCount);
                     options.CommandTimeout(databaseOptions.CommandTimeout);
-                });
+                })
+                .UseSnakeCaseNamingConvention();
 
                 options.EnableDetailedErrors(databaseOptions.EnableDetailedErrors);
                 options.EnableSensitiveDataLogging(databaseOptions.EnableSensitiveDataLogging);
