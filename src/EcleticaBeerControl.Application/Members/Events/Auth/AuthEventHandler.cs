@@ -1,5 +1,4 @@
-﻿using EcleticaBeerControl.Domain.Contexts;
-using EcleticaBeerControl.Domain.DomainEvents.Devices;
+﻿using EcleticaBeerControl.Domain.DomainEvents.Devices;
 using MediatR;
 using Serilog;
 using Supabase.Gotrue;
@@ -10,9 +9,9 @@ namespace EcleticaBeerControl.Application.Members.Events.Devices
         : INotificationHandler<BreweryRegistredEvent>
     {
         private readonly Client _authClient;
-        private readonly BreweryUserContext _brewer;
+        private readonly Domain.Models.User _brewer;
 
-        public AuthEventHandler(Client authClient, BreweryUserContext brewer)
+        public AuthEventHandler(Client authClient, Domain.Models.User brewer)
         {
             _authClient = authClient;
             _brewer = brewer;

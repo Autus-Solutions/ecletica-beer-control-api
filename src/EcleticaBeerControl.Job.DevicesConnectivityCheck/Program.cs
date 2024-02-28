@@ -14,11 +14,6 @@ IHost host = Host.CreateDefaultBuilder(args)
     })
     .ConfigureServices((builder, services) =>
     {
-        services.Configure<HostOptions>(hostOptions =>
-        {
-            hostOptions.BackgroundServiceExceptionBehavior = BackgroundServiceExceptionBehavior.Ignore;
-        });
-
         services//.AddInfrastructure(builder.Configuration)
                 //.AddPersistence(builder.Configuration)
                 //.AddWorker(builder.Configuration)

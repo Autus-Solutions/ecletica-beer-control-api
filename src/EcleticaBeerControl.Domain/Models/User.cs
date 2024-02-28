@@ -1,6 +1,8 @@
-﻿namespace EcleticaBeerControl.Domain.Contexts
+﻿using EcleticaBeerControl.Domain.Interfaces;
+
+namespace EcleticaBeerControl.Domain.Models
 {
-    public class BreweryUserContext
+    public class User : IUser
     {
         public Guid Id { get; set; }
         public Guid BreweryId { get; set; }

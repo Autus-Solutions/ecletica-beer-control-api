@@ -2,11 +2,12 @@
 using EcleticaBeerControl.Application.Resources;
 using FluentValidation;
 
-namespace EcleticaBeerControl.Application.Validators.Devices
+namespace EcleticaBeerControl.Application.Members.Validators.Devices
 {
     public class CreateDeviceValidator : AbstractValidator<CreateDeviceCommand>
     {
-        public CreateDeviceValidator() {
+        public CreateDeviceValidator()
+        {
 
             RuleFor(d => d.Identifier)
                     .NotEmpty()

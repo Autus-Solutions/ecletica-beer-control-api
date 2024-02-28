@@ -21,9 +21,9 @@ namespace EcleticaBeerControl.Worker.Mqtt
 
         public async Task Initialize(CancellationToken cancellationToken = default)
         {
-            Log.Information("MqttMessageRouter initializing ...");
+            Log.Information("Mqtt Message Router initializing ...");
 
-            while(true)
+            while (true)
             {
                 if (_mqttClient.IsConnected)
                 {
@@ -33,24 +33,24 @@ namespace EcleticaBeerControl.Worker.Mqtt
                     .Build());
 
                     await Task.WhenAll(topicFilters.Select(tf => _mqttClient.SubscribeAsync(tf, cancellationToken)));
-                    
+
                     break;
                 }
 
                 await Task.Delay(TimeSpan.FromSeconds(5), cancellationToken);
             };
 
-            Log.Information("MqttMessageRouter initialized");
+            Log.Information("Mqtt Message Router initialized");
         }
 
         private async Task Instance_ApplicationMessageReceivedAsync(MqttApplicationMessageReceivedEventArgs arg)
         {
-            IMqttRouteHandler route = _mqttRoutes.Single(r => 
-                                            r.Route.Equals(arg.ApplicationMessage.Topic, 
+            IMqttRouteHandler route = _mqttRoutes.Single(r =>
+                                            r.Route.Equals(arg.ApplicationMessage.Topic,
                                             StringComparison.InvariantCultureIgnoreCase));
 
-            await route.Handle(Encoding.UTF8.GetString(arg.ApplicationMessage.PayloadSegment), 
-                            arg.ApplicationMessage.ContentType, 
+            await route.Handle(Encoding.UTF8.GetString(arg.ApplicationMessage.PayloadSegment),
+                            arg.ApplicationMessage.ContentType,
                             arg.ApplicationMessage.UserProperties.ToDictionary(k => k.Name, v => v.Value));
         }
     }

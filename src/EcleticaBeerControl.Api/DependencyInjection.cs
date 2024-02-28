@@ -11,7 +11,7 @@ using EcleticaBeerControl.Application;
 using EcleticaBeerControl.Application.Processors;
 using EcleticaBeerControl.Application.Behaviors;
 using Supabase.Gotrue;
-using EcleticaBeerControl.Domain.Contexts;
+using EcleticaBeerControl.Domain.Interfaces;
 
 namespace EcleticaBeerControl.Api
 {
@@ -88,11 +88,11 @@ namespace EcleticaBeerControl.Api
         }
         private static IServiceCollection AddBreweryUserContext(this IServiceCollection services)
         {
-            services.AddScoped((provider) =>
+            services.AddScoped<IUser>((provider) =>
             {
                 var context = provider.GetRequiredService<IHttpContextAccessor>();
 
-                return new BreweryUserContext
+                return new Domain.Models.User
                 {
                     Id = Guid.Parse(context.HttpContext!.Items["id"]!.ToString()!),
                     BreweryId = Guid.Parse(context.HttpContext!.Items["brewery_id"]!.ToString()!),

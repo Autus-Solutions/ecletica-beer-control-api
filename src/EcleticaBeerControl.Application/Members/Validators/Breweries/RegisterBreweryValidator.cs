@@ -2,7 +2,7 @@
 using EcleticaBeerControl.Application.Resources;
 using FluentValidation;
 
-namespace EcleticaBeerControl.Application.Validators.Breweries
+namespace EcleticaBeerControl.Application.Members.Validators.Breweries
 {
     public class RegisterBreweryValidator : AbstractValidator<RegisterBreweryIfNeededCommand>
     {

@@ -7,7 +7,7 @@ using MQTTnet;
 using MQTTnet.Client;
 using MQTTnet.Formatter;
 using RabbitMQ.Client.Core.DependencyInjection;
-using Supabase.Realtime;
+using Supabase;
 
 namespace EcleticaBeerControl.Worker
 {
@@ -20,16 +20,19 @@ namespace EcleticaBeerControl.Worker
             services.ConfigureRabbitMqTopology()
                     .ConfigureRabbitMqConsumeres();
 
-            services.AddSupabaseRealtime();
+            services.AddSupabaseRealtime(configuration);
 
             services.AddMqtt(configuration);
 
             return services;
         }
 
-        private static IServiceCollection AddSupabaseRealtime(this IServiceCollection services)
+        private static IServiceCollection AddSupabaseRealtime(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddScoped<Client>();
+            services.AddScoped((provider) => new Client(
+                configuration["SupabaseProjectUrl"] ?? string.Empty,
+                configuration["SupabaseProjectSecretKey"] ?? string.Empty)
+            );
             services.AddScoped<RealtimeConnectionManager>();
             return services;
         }

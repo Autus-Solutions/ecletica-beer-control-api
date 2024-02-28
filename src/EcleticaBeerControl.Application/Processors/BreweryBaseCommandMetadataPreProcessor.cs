@@ -1,5 +1,5 @@
 ﻿using EcleticaBeerControl.Application.Members.Commands;
-using EcleticaBeerControl.Domain.Contexts;
+using EcleticaBeerControl.Domain.Interfaces;
 using MediatR.Pipeline;
 
 namespace EcleticaBeerControl.Application.Processors
@@ -8,16 +8,16 @@ namespace EcleticaBeerControl.Application.Processors
         : IRequestPreProcessor<TRequest>
         where TRequest : BaseBreweryCommand
     {
-        private readonly BreweryUserContext _brewer;
+        private readonly IUser _user;
 
-        public BreweryBaseCommandMetadataPreProcessor(BreweryUserContext brewer)
+        public BreweryBaseCommandMetadataPreProcessor(IUser user)
         {
-            _brewer = brewer;
+            _user = user;
         }
 
         public Task Process(TRequest request, CancellationToken cancellationToken)
         {
-            request.BreweryId = _brewer.BreweryId;
+            request.BreweryId = _user.BreweryId;
             return Task.CompletedTask;
         }
     }

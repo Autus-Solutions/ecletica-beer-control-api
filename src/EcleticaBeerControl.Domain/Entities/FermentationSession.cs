@@ -40,24 +40,12 @@ namespace EcleticaBeerControl.Domain.Entities
 
         public static FermentationSession Create(Guid breweryId,
                 string deviceIdentifier,
-                int currentTemperature,
-                int targetTemperature,
-                string currentStepTitle,
-                DateTime currentStepStart,
-                DateTime currentStepEnd,
-                int currentStepTotalDays,
                 Guid createdBy)
         {
             var entity = new FermentationSession
             {
                 BreweryId = breweryId,
                 DeviceIdentifier = deviceIdentifier,
-                CurrentTemperature = currentTemperature,
-                TargetTemperature = targetTemperature,
-                CurrentStepTitle = currentStepTitle,
-                CurrentStepStart = currentStepStart,
-                CurrentStepEnd = currentStepEnd,
-                CurrentStepTotalDays = currentStepTotalDays,
                 CreateBy = createdBy
             };
 

@@ -14,8 +14,7 @@ namespace EcleticaBeerControl.Persistence.Supabase
                 configuration["SupabaseProjectSecretKey"] ?? string.Empty,
                 new SupabaseOptions
                 {
-                    AutoRefreshToken = bool.TryParse(configuration["SupabaseClientAutoRefreshToken"], out var autoRefresh),
-                    AutoConnectRealtime = true,
+                    AutoRefreshToken = true,
                 })
             );
 

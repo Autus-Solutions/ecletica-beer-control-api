@@ -1,5 +1,6 @@
 ﻿using EcleticaBeerControl.Domain.Entities;
-using Supabase.Realtime;
+using Serilog;
+using Supabase;
 using System.Diagnostics;
 using static Supabase.Realtime.PostgresChanges.PostgresChangesOptions;
 
@@ -16,8 +17,11 @@ namespace EcleticaBeerControl.Worker.Realtime
 
         public async Task Initialize(CancellationToken cancellationToken = default)
         {
-            var client = await _client.ConnectAsync();
-            var channel = client.Channel("realtime", "public", "devices");
+            Log.Information("Supabase Realtime initializing ...");
+
+            var client = await _client.InitializeAsync();
+            var realtimeClient = await client.Realtime.ConnectAsync();
+            var channel = realtimeClient.Channel("realtime", "public", "devices");
 
             channel.AddPostgresChangeHandler(ListenType.Inserts, (sender, change) =>
             {
@@ -28,6 +32,8 @@ namespace EcleticaBeerControl.Worker.Realtime
             });
 
             await channel.Subscribe();
+
+            Log.Information("Supabase Realtime initialized");
         }
     }
 }
