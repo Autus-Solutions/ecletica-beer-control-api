@@ -1,8 +1,9 @@
 ﻿using EcleticaBeerControl.Domain.Interfaces;
+using Microsoft.AspNetCore.Identity;
 
 namespace EcleticaBeerControl.Domain.Models
 {
-    public class User : IUser
+    public class User : IdentityUser, IUser
     {
         public Guid Id { get; set; }
         public Guid BreweryId { get; set; }

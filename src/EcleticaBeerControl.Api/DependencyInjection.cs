@@ -33,10 +33,9 @@ namespace EcleticaBeerControl.Api
         {
 
             services.AddScoped<GlobalErrorHandlingMiddleware>();
-            services.AddScoped<AuthMiddleware>();
-
             return services;
         }
+
         private static IServiceCollection AddApiAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddControllers()

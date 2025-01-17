@@ -1,8 +1,10 @@
 using Carter;
 using EcleticaBeerControl.Api;
 using EcleticaBeerControl.Api.Middlewares;
+using EcleticaBeerControl.Domain.Models;
 using EcleticaBeerControl.Infrastructure;
 using EcleticaBeerControl.Persistence.EF;
+using EcleticaBeerControl.Persistence.EF.Database;
 using Serilog;
 using System.Globalization;
 
@@ -19,6 +21,12 @@ builder.Services.AddCarter();
 builder.Services.AddInfrastructure(builder.Configuration)
                 .AddEFPersistence()
                 .AddApplication(builder.Configuration);
+
+builder.Services.AddAuthorization();
+
+builder.Services.AddIdentityApiEndpoints<User>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+
 
 builder.Host.UseSerilog((context, lc) => lc.ReadFrom.Configuration(context.Configuration));
 
@@ -38,12 +46,14 @@ if (app.Environment.IsProduction())
 }
 
 app.UseGlobalErrorHandling();
-app.UseAuth();
 
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 app.MapCarter();
+
+app.MapIdentityApi<User>();
+
 app.UseResponseCompression();
 
 app.Run();
