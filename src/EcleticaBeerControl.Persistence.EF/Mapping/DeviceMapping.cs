@@ -1,6 +1,5 @@
 ﻿using EcleticaBeerControl.Domain.Entities;
 using EcleticaBeerControl.Persistence.EF.Mapping.Base;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace EcleticaBeerControl.Persistence.EF.Mapping
@@ -10,8 +9,6 @@ namespace EcleticaBeerControl.Persistence.EF.Mapping
         public override void Configure(EntityTypeBuilder<Device> builder)
         {
             base.Configure(builder);
-
-            builder.ToTable("devices");
 
             builder.HasKey(x => x.Identifier);
 

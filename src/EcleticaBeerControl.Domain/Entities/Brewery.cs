@@ -1,14 +1,10 @@
 ﻿using EcleticaBeerControl.Domain.Entities.Base;
-using Postgrest.Attributes;
 
 namespace EcleticaBeerControl.Domain.Entities
 {
-    [Table("breweries")]
     public class Brewery : Entity
     {
-        [Column("logo")]
         public string? Logo { get; init; }
-        [Column("name")]
         public string Name { get; init; } = string.Empty;
 
         public static Brewery Register(Guid id, string name, Guid createdBy)

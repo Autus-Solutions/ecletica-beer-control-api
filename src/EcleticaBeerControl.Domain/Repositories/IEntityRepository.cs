@@ -1,5 +1,4 @@
-﻿using EcleticaBeerControl.Domain.Entities;
-using EcleticaBeerControl.Domain.Entities.Base;
+﻿using EcleticaBeerControl.Domain.Entities.Base;
 
 namespace EcleticaBeerControl.Domain.Repositories
 {

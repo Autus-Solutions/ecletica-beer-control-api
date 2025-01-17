@@ -13,8 +13,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EcleticaBeerControl.Domain"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EcleticaBeerControl.Worker", "EcleticaBeerControl.Worker\EcleticaBeerControl.Worker.csproj", "{4EC12411-5A2A-4C0C-89CB-DA25D63C4697}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EcleticaBeerControl.Persistence.Supabase", "EcleticaBeerControl.Persistence.Supabase\EcleticaBeerControl.Persistence.Supabase.csproj", "{1E393339-1A50-45AE-98B9-E449F4B28793}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "7.1 - CronJobs", "7.1 - CronJobs", "{AC493738-48AB-4F09-BC53-9737C870100D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EcleticaBeerControl.Job.DevicesConnectivityCheck", "EcleticaBeerControl.Job.DevicesConnectivityCheck\EcleticaBeerControl.Job.DevicesConnectivityCheck.csproj", "{00044143-2AA7-4290-B575-5789C23482FD}"
@@ -37,9 +35,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "7 - Jobs", "7 - Jobs", "{9F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "8 - Tests", "8 - Tests", "{7A6FF518-8F8F-40CE-B1C5-7AC16086B387}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EcleticaBeerControl.Tests.Unit", "EcleticaBeerControl.Tests.Unit\EcleticaBeerControl.Tests.Unit.csproj", "{2188863A-CC4F-4CAA-9822-6DD488DD0CC3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EcleticaBeerControl.Tests.Unit", "EcleticaBeerControl.Tests.Unit\EcleticaBeerControl.Tests.Unit.csproj", "{2188863A-CC4F-4CAA-9822-6DD488DD0CC3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EcleticaBeerControl.Tests.Generator", "EcleticaBeerControl.Tests.Generator\EcleticaBeerControl.Tests.Generator.csproj", "{F8030AF7-8CD8-406C-8B21-CCFBC0D77E57}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EcleticaBeerControl.Tests.Generator", "EcleticaBeerControl.Tests.Generator\EcleticaBeerControl.Tests.Generator.csproj", "{F8030AF7-8CD8-406C-8B21-CCFBC0D77E57}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -67,10 +65,6 @@ Global
 		{4EC12411-5A2A-4C0C-89CB-DA25D63C4697}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4EC12411-5A2A-4C0C-89CB-DA25D63C4697}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4EC12411-5A2A-4C0C-89CB-DA25D63C4697}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1E393339-1A50-45AE-98B9-E449F4B28793}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1E393339-1A50-45AE-98B9-E449F4B28793}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1E393339-1A50-45AE-98B9-E449F4B28793}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1E393339-1A50-45AE-98B9-E449F4B28793}.Release|Any CPU.Build.0 = Release|Any CPU
 		{00044143-2AA7-4290-B575-5789C23482FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{00044143-2AA7-4290-B575-5789C23482FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{00044143-2AA7-4290-B575-5789C23482FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -97,7 +91,6 @@ Global
 		{E0F40D29-AA8A-4072-BBF6-F4E0F6423CC9} = {AFA814BC-4B5C-4A5C-B380-6C81C5938D6F}
 		{EA4813CA-5EF2-49AF-935A-BAB62777A6F7} = {4F6C19AE-C273-4E2F-9979-5874C00EDD2F}
 		{4EC12411-5A2A-4C0C-89CB-DA25D63C4697} = {5534E047-821E-4607-976D-44CAD1A49C3D}
-		{1E393339-1A50-45AE-98B9-E449F4B28793} = {943375EB-E29B-4461-B180-D10540806277}
 		{AC493738-48AB-4F09-BC53-9737C870100D} = {9FFA1501-29E6-45BC-9EF8-6CE9AADE294B}
 		{00044143-2AA7-4290-B575-5789C23482FD} = {AC493738-48AB-4F09-BC53-9737C870100D}
 		{E8B4F6DA-2A8F-4A12-8C79-8834B3743ABC} = {943375EB-E29B-4461-B180-D10540806277}

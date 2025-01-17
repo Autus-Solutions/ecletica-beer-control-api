@@ -2,7 +2,7 @@ using Carter;
 using EcleticaBeerControl.Api;
 using EcleticaBeerControl.Api.Middlewares;
 using EcleticaBeerControl.Infrastructure;
-using EcleticaBeerControl.Persistence.Supabase;
+using EcleticaBeerControl.Persistence.EF;
 using Serilog;
 using System.Globalization;
 
@@ -17,7 +17,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddCarter();
 
 builder.Services.AddInfrastructure(builder.Configuration)
-                .AddSupabasePersistence(builder.Configuration)
+                .AddEFPersistence()
                 .AddApplication(builder.Configuration);
 
 builder.Host.UseSerilog((context, lc) => lc.ReadFrom.Configuration(context.Configuration));
@@ -38,7 +38,7 @@ if (app.Environment.IsProduction())
 }
 
 app.UseGlobalErrorHandling();
-app.UseSupabaseAuth();
+app.UseAuth();
 
 app.UseAuthentication();
 app.UseAuthorization();

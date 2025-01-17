@@ -1,6 +1,6 @@
 ﻿using EcleticaBeerControl.Domain.Enums;
 
-namespace EcleticaBeerControl.Domain.Entities
+namespace EcleticaBeerControl.Domain.ValueObjects
 {
     public class FermentationProfileStep
     {

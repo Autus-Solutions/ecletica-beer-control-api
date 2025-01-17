@@ -1,6 +1,5 @@
 using Carter;
 using EcleticaBeerControl.Application.Members.Commands.Auth;
-using EcleticaBeerControl.Application.Members.Commands.Devices;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
 

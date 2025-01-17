@@ -10,7 +10,6 @@ using FluentValidation;
 using EcleticaBeerControl.Application;
 using EcleticaBeerControl.Application.Processors;
 using EcleticaBeerControl.Application.Behaviors;
-using Supabase.Gotrue;
 using EcleticaBeerControl.Domain.Interfaces;
 
 namespace EcleticaBeerControl.Api
@@ -23,7 +22,6 @@ namespace EcleticaBeerControl.Api
                     .AddApiAuthentication(configuration)
                     .AddHttpContextAccessor()
                     .AddBreweryUserContext()
-                    .AddSupabaseAuth()
                     .AddMediatR()
                     .AddFluentValidator()
                     .AddRabbitMq();
@@ -35,19 +33,19 @@ namespace EcleticaBeerControl.Api
         {
 
             services.AddScoped<GlobalErrorHandlingMiddleware>();
-            services.AddScoped<SupabaseAuthMiddleware>();
+            services.AddScoped<AuthMiddleware>();
 
             return services;
         }
         private static IServiceCollection AddApiAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddControllers()
-                                .AddNewtonsoftJson(options =>
-                                {
-                                    options.SerializerSettings.NullValueHandling = NullValueHandling.Include;
-                                    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-                                    options.SerializerSettings.ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor;
-                                });
+                    .AddNewtonsoftJson(options =>
+                    {
+                        options.SerializerSettings.NullValueHandling = NullValueHandling.Include;
+                        options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                        options.SerializerSettings.ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor;
+                    });
 
             services.AddResponseCompression(options =>
             {
@@ -63,29 +61,25 @@ namespace EcleticaBeerControl.Api
                 o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
                 o.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-            .AddJwtBearer(o =>
-            {
-                o.IncludeErrorDetails = true;
-                o.SaveToken = true;
-                o.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidAudience = "authenticated",
-                    ValidIssuer = configuration.GetValue<string>("SupabaseProjectUrl"),
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration.GetValue<string>("SupabaseProjectJwtSecretKey") ?? string.Empty)),
-                    ValidateIssuer = false,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                };
-            });
+                    .AddJwtBearer(o =>
+                    {
+                        o.IncludeErrorDetails = true;
+                        o.SaveToken = true;
+                        o.TokenValidationParameters = new TokenValidationParameters
+                        {
+                            ValidAudience = "authenticated",
+                            ValidIssuer = configuration.GetValue<string>("IssuerUrl"),
+                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration.GetValue<string>("JwtSecretKey") ?? string.Empty)),
+                            ValidateIssuer = false,
+                            ValidateAudience = true,
+                            ValidateLifetime = true,
+                            ValidateIssuerSigningKey = true,
+                        };
+                    });
 
             return services;
         }
-        private static IServiceCollection AddSupabaseAuth(this IServiceCollection services)
-        {
-            services.AddScoped<Client>();
-            return services;
-        }
+
         private static IServiceCollection AddBreweryUserContext(this IServiceCollection services)
         {
             services.AddScoped<IUser>((provider) =>

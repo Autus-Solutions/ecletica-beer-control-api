@@ -1,12 +1,10 @@
-﻿using EcleticaBeerControl.Domain.Entities;
-
-namespace EcleticaBeerControl.Tests.Generator
+﻿namespace EcleticaBeerControl.Tests.Generator
 {
     public static class FermentationProfileStepGenerator
     {
-        IEnumerable<FermentationProfileStep> GetFermentationProfileSteps(int quantity = 5)
-        {
+        //IEnumerable<FermentationProfileStep> GetFermentationProfileSteps(int quantity = 5)
+        //{
 
-        }
+        //}
     }
 }

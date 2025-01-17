@@ -11,8 +11,6 @@ namespace EcleticaBeerControl.Persistence.EF.Mapping
         {
             base.Configure(builder);
 
-            builder.ToTable("fermentation_definitions");
-
             builder.HasKey(x => x.Id);
 
             builder.HasOne(x => x.Device)

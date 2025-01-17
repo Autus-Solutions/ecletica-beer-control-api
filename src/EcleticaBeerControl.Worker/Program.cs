@@ -22,7 +22,7 @@ IHost host = Host.CreateDefaultBuilder(args)
         });
 
         services.AddInfrastructure(builder.Configuration)
-                .AddEFPersistence(builder.Configuration)
+                .AddEFPersistence()
                 .AddWorker(builder.Configuration);
 
         services.AddHostedService<Worker>();

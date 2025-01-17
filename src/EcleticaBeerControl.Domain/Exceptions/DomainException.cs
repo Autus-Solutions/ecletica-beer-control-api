@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace EcleticaBeerControl.Domain.Exceptions
+﻿namespace EcleticaBeerControl.Domain.Exceptions
 {
     public class DomainException : Exception
     {

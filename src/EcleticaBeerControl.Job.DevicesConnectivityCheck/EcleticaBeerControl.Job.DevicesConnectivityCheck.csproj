@@ -6,6 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <brewerSecretsId>dotnet-EcleticaBeerControl.DevicesConnectivityCheck-05ac71ed-2b1b-4382-85af-407cecfa70b4</brewerSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <UserSecretsId>7524ec07-e896-40e2-8251-211e0c20df6e</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

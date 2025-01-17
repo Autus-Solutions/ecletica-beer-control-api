@@ -1,7 +1,6 @@
 ﻿using EcleticaBeerControl.Persistence.EF.Database;
 using EcleticaBeerControl.Persistence.EF.Database.Options;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
@@ -9,7 +8,7 @@ namespace EcleticaBeerControl.Persistence.EF
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddEFPersistence(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddEFPersistence(this IServiceCollection services)
         {
             services.ConfigureOptions<DatabaseOptionsSetup>();
 
@@ -21,8 +20,7 @@ namespace EcleticaBeerControl.Persistence.EF
                 {
                     options.EnableRetryOnFailure(databaseOptions.MaxRetryCount);
                     options.CommandTimeout(databaseOptions.CommandTimeout);
-                })
-                .UseSnakeCaseNamingConvention();
+                });
 
                 options.EnableDetailedErrors(databaseOptions.EnableDetailedErrors);
                 options.EnableSensitiveDataLogging(databaseOptions.EnableSensitiveDataLogging);

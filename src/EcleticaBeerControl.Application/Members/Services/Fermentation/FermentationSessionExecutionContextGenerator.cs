@@ -1,5 +1,5 @@
 ﻿using EcleticaBeerControl.Domain.Contexts;
-using EcleticaBeerControl.Domain.Entities;
+using EcleticaBeerControl.Domain.ValueObjects;
 
 namespace EcleticaBeerControl.Application.Members.Services.Fermentation
 {

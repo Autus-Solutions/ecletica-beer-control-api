@@ -10,7 +10,6 @@ namespace EcleticaBeerControl.Infrastructure
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             services.ConfigureRabbitMq(configuration);
-
             return services;
         }
 
