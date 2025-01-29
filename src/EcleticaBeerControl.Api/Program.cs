@@ -1,59 +1,80 @@
-using Carter;
 using EcleticaBeerControl.Api;
+using EcleticaBeerControl.Api.Extensions;
 using EcleticaBeerControl.Api.Middlewares;
 using EcleticaBeerControl.Domain.Models;
 using EcleticaBeerControl.Infrastructure;
 using EcleticaBeerControl.Persistence.EF;
-using EcleticaBeerControl.Persistence.EF.Database;
 using Serilog;
+using Serilog.Events;
+using Serilog.Templates.Themes;
+using SerilogTracing;
+using SerilogTracing.Expressions;
 using System.Globalization;
 
 var defaultCultureInfo = new CultureInfo("pt-BR");
 CultureInfo.DefaultThreadCurrentCulture = defaultCultureInfo;
 CultureInfo.DefaultThreadCurrentUICulture = defaultCultureInfo;
 
-var builder = WebApplication.CreateBuilder(args);
+const string ApplicationName = "Ecletica Beer Control";
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-builder.Services.AddCarter();
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Override("Microsoft.AspNetCore.Hosting", LogEventLevel.Warning)
+    .MinimumLevel.Override("Microsoft.AspNetCore.Routing", LogEventLevel.Warning)
+    .Enrich.WithProperty("Application", ApplicationName)
+    .WriteTo.Console(Formatters.CreateConsoleTextFormatter(theme: TemplateTheme.Code))
+    .CreateLogger();
 
-builder.Services.AddInfrastructure(builder.Configuration)
-                .AddEFPersistence()
-                .AddApplication(builder.Configuration);
+using var listener = new ActivityListenerConfiguration()
+    .Instrument.AspNetCoreRequests()
+    .TraceToSharedLogger();
 
-builder.Services.AddAuthorization();
+Log.Information($"{ApplicationName} Starting...");
 
-builder.Services.AddIdentityApiEndpoints<User>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
-
-
-builder.Host.UseSerilog((context, lc) => lc.ReadFrom.Configuration(context.Configuration));
-
-var app = builder.Build();
-
-app.UseSerilogRequestLogging();
-
-if (app.Environment.IsDevelopment())
+try
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    var builder = WebApplication.CreateBuilder(args);
+
+    builder.Services.AddEndpointsApiExplorer();
+    builder.Services.AddSwaggerGen();
+    builder.Services.AddSerilog();
+
+    builder.Services.AddInfrastructure(builder.Configuration)
+                    .AddEFPersistence()
+                    .AddApplication();
+
+    var app = builder.Build();
+
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI();
+    }
+
+    if (app.Environment.IsProduction())
+    {
+        app.UseHttpsRedirection();
+    }
+
+    app.UseGlobalErrorHandling();
+    app.UseAuthentication();
+    app.UseAuthorization();
+    app.MapControllers();
+    app.MapControllersEndpoints();
+    app.MapIdentityApi<User>();
+    app.UseResponseCompression();
+
+    await app.MigrateDatabaseIfNeededAsync();
+    await app.RunAsync();
+
+    return 0;
+}
+catch (Exception ex)
+{
+    Log.Fatal(ex, "Unhandled Exception");
+    return 1;
+}
+finally
+{
+    await Log.CloseAndFlushAsync();
 }
 
-if (app.Environment.IsProduction())
-{
-    app.UseHttpsRedirection();
-}
-
-app.UseGlobalErrorHandling();
-
-app.UseAuthentication();
-app.UseAuthorization();
-app.MapControllers();
-app.MapCarter();
-
-app.MapIdentityApi<User>();
-
-app.UseResponseCompression();
-
-app.Run();

@@ -11,7 +11,7 @@ namespace EcleticaBeerControl.Domain.Entities
         public string? Description { get; init; }
         public DeviceStatus Status { get; init; } = DeviceStatus.Connecting;
 
-        public static Device Create(Guid breweryId, string identifier, string name, string? description, Guid createdBy)
+        public static Device Create(string breweryId, string identifier, string name, string? description, string createdBy)
         {
             var entity = new Device
             {

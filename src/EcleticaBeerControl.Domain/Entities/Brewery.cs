@@ -7,7 +7,7 @@ namespace EcleticaBeerControl.Domain.Entities
         public string? Logo { get; init; }
         public string Name { get; init; } = string.Empty;
 
-        public static Brewery Register(Guid id, string name, Guid createdBy)
+        public static Brewery Register(string id, string name, string createdBy)
         {
             var entity = new Brewery
             {

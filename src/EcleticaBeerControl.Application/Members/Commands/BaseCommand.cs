@@ -2,6 +2,6 @@
 {
     public record BaseCommand
     {
-        public Guid CreateBy { get; set; }
+        public required string CreateBy { get; set; }
     }
 }

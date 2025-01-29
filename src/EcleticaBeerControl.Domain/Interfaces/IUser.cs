@@ -2,11 +2,10 @@
 {
     public interface IUser
     {
-        Guid Id { get; set; }
-        Guid BreweryId { get; set; }
+        string Id { get; }
+        string BreweryId { get; set; }
         string BreweryName { get; set; }
         bool BreweryRegistred { get; set; }
         bool Owner { get; set; }
-        Dictionary<string, object> ToUserMetadata();
     }
 }

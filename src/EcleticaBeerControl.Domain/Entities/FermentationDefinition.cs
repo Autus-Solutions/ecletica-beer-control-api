@@ -11,12 +11,12 @@ namespace EcleticaBeerControl.Domain.Entities
         public JsonDocument FermentationProfile { get; init; } = JsonDocument.Parse("{}");
         public virtual Device Device { get; set; }
 
-        public static FermentationDefinition Create(Guid breweryId,
+        public static FermentationDefinition Create(string breweryId,
                 string deviceIdentifier,
                 string title,
                 string? description,
                 JsonDocument profile,
-                Guid createdBy)
+                string createdBy)
         {
             var entity = new FermentationDefinition
             {

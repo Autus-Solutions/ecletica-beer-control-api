@@ -2,6 +2,6 @@
 {
     public record BaseBreweryCommand : BaseCommand
     {
-        public Guid BreweryId { get; set; }
+        public required string BreweryId { get; set; }
     }
 }

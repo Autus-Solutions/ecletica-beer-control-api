@@ -9,7 +9,7 @@ namespace EcleticaBeerControl.Domain.Entities
         public string? Description { get; set; }
         public JsonDocument Steps { get; set; } = JsonDocument.Parse("[]");
 
-        public static FermentationProfile Create(Guid breweryId, string name, string? description, JsonDocument profileSteps, Guid createdBy)
+        public static FermentationProfile Create(string breweryId, string name, string? description, JsonDocument profileSteps, string createdBy)
         {
             var entity = new FermentationProfile
             {

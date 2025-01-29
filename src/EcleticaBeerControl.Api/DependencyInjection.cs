@@ -1,43 +1,26 @@
 ﻿using EcleticaBeerControl.Api.Middlewares;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.ResponseCompression;
-using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
 using RabbitMQ.Client.Core.DependencyInjection;
-using System.Text;
 using EcleticaBeerControl.Infrastructure.Messaging.RabbitMq;
 using FluentValidation;
 using EcleticaBeerControl.Application;
 using EcleticaBeerControl.Application.Processors;
 using EcleticaBeerControl.Application.Behaviors;
-using EcleticaBeerControl.Domain.Interfaces;
+using EcleticaBeerControl.Domain.Models;
+using EcleticaBeerControl.Persistence.EF.Database;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.ResponseCompression;
+using Newtonsoft.Json;
+using EcleticaBeerControl.Application.Members.Services;
+using EcleticaBeerControl.Domain.Interfaces.Services;
 
 namespace EcleticaBeerControl.Api
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddApplication(this IServiceCollection services)
         {
-            services.AddApiMiddlewares()
-                    .AddApiAuthentication(configuration)
-                    .AddHttpContextAccessor()
-                    .AddBreweryUserContext()
-                    .AddMediatR()
-                    .AddFluentValidator()
-                    .AddRabbitMq();
+            services.AddScoped<IBreweryService, BreweryService>();
 
-            return services;
-        }
-
-        private static IServiceCollection AddApiMiddlewares(this IServiceCollection services)
-        {
-
-            services.AddScoped<GlobalErrorHandlingMiddleware>();
-            return services;
-        }
-
-        private static IServiceCollection AddApiAuthentication(this IServiceCollection services, IConfiguration configuration)
-        {
             services.AddControllers()
                     .AddNewtonsoftJson(options =>
                     {
@@ -54,55 +37,64 @@ namespace EcleticaBeerControl.Api
                 options.MimeTypes = ResponseCompressionDefaults.MimeTypes;
             });
 
-            services.AddAuthentication(o =>
-            {
-                o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                o.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-                    .AddJwtBearer(o =>
-                    {
-                        o.IncludeErrorDetails = true;
-                        o.SaveToken = true;
-                        o.TokenValidationParameters = new TokenValidationParameters
-                        {
-                            ValidAudience = "authenticated",
-                            ValidIssuer = configuration.GetValue<string>("IssuerUrl"),
-                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration.GetValue<string>("JwtSecretKey") ?? string.Empty)),
-                            ValidateIssuer = false,
-                            ValidateAudience = true,
-                            ValidateLifetime = true,
-                            ValidateIssuerSigningKey = true,
-                        };
-                    });
+            services.AddHttpContextAccessor()
+                    .AddApiMiddlewares()
+                    .AddApiIdentitySecurity()
+                    .AddMediatR()
+                    .AddFluentValidator()
+                    .AddRabbitMq();
 
             return services;
         }
 
-        private static IServiceCollection AddBreweryUserContext(this IServiceCollection services)
+        private static IServiceCollection AddApiMiddlewares(this IServiceCollection services)
         {
-            services.AddScoped<IUser>((provider) =>
-            {
-                var context = provider.GetRequiredService<IHttpContextAccessor>();
-
-                return new Domain.Models.User
-                {
-                    Id = Guid.Parse(context.HttpContext!.Items["id"]!.ToString()!),
-                    BreweryId = Guid.Parse(context.HttpContext!.Items["brewery_id"]!.ToString()!),
-                    BreweryName = context.HttpContext!.Items["brewery_name"]!.ToString()!,
-                    BreweryRegistred = bool.Parse(context.HttpContext!.Items["brewery_registred"]!.ToString()!),
-                    Owner = bool.Parse(context.HttpContext!.Items["owner"]!.ToString()!),
-                };
-            });
+            services.AddScoped<BreweryResolverMiddleware>();
+            services.AddScoped<GlobalErrorHandlingMiddleware>();
             return services;
         }
+
+        private static IServiceCollection AddApiIdentitySecurity(this IServiceCollection services)
+        {
+            services.Configure<IdentityOptions>(options =>
+            {
+                // Password settings.
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireNonAlphanumeric = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequiredLength = 6;
+                options.Password.RequiredUniqueChars = 1;
+
+                // Lockout settings.
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                options.Lockout.MaxFailedAccessAttempts = 5;
+                options.Lockout.AllowedForNewUsers = true;
+
+                // User settings.
+                options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+                options.User.RequireUniqueEmail = true;
+            });
+
+            services.AddAuthentication();
+            services.AddAuthorizationBuilder();
+
+            services.AddIdentityApiEndpoints<User>(options =>
+            {
+                options.SignIn.RequireConfirmedEmail = true;
+            })
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddApiEndpoints();
+
+            return services;
+        }
+
         private static IServiceCollection AddMediatR(this IServiceCollection services)
         {
             services.AddMediatR((configuration) =>
             {
                 configuration.Lifetime = ServiceLifetime.Scoped;
                 configuration.RegisterServicesFromAssembly(typeof(ApplicationAssemblyReference).Assembly);
-                configuration.AddOpenBehavior(typeof(LoggingPipelineBehavior<,>), ServiceLifetime.Scoped);
                 configuration.AddOpenBehavior(typeof(FailFastValidationBehavior<,>), ServiceLifetime.Scoped);
                 configuration.AddOpenRequestPreProcessor(typeof(BaseCommandMetadataPreProcessor<>), ServiceLifetime.Scoped);
                 configuration.AddOpenRequestPreProcessor(typeof(BreweryBaseCommandMetadataPreProcessor<>), ServiceLifetime.Scoped);

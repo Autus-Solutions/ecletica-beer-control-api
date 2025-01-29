@@ -14,7 +14,7 @@ namespace EcleticaBeerControl.Persistence.EF
 
             services.AddDbContext<ApplicationDbContext>((provider, options) =>
             {
-                var databaseOptions = provider.GetRequiredService<IOptions<DatabaseOptions>>()!.Value;
+                var databaseOptions = provider.GetRequiredService<IOptions<DatabaseOptions>>().Value;
 
                 options.UseNpgsql(databaseOptions.ConnectionString, options =>
                 {

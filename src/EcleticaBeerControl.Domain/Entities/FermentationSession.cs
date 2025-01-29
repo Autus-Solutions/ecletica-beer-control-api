@@ -17,9 +17,9 @@ namespace EcleticaBeerControl.Domain.Entities
         public FementationSessionStatus Status { get; set; } = FementationSessionStatus.Draft;
         public virtual Device Device { get; set; }
 
-        public static FermentationSession Create(Guid breweryId,
+        public static FermentationSession Create(string breweryId,
                 string deviceIdentifier,
-                Guid createdBy)
+                string createdBy)
         {
             var entity = new FermentationSession
             {

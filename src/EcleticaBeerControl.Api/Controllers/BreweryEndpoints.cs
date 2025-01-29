@@ -1,20 +1,20 @@
-using EcleticaBeerControl.Application.Members.Commands.Devices;
+using EcleticaBeerControl.Application.Members.Commands.Breweries;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace EcleticaBeerControl.Api.Controllers
 {
-    public class DeviceEndpoints
+    public class BreweryEndpoints
     {
         public static void AddRoutes(IEndpointRouteBuilder app)
         {
-            var group = app.MapGroup("devices")
+            var brewery = app.MapGroup("brewery")
                             .RequireAuthorization();
 
-            group.MapPost("/", CreateDevice);
+            brewery.MapPost("/", RegisterBrewery);
         }
 
-        private static async Task<Results<Ok<string>, BadRequest<string[]>>> CreateDevice(CreateDeviceCommand command, ISender sender)
+        private static async Task<Results<Ok<string>, BadRequest<string[]>>> RegisterBrewery(RegisterBreweryIfNeededCommand command, ISender sender)
         {
             var response = await sender.Send(command);
 

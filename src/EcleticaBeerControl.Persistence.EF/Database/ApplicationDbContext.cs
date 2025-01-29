@@ -1,15 +1,31 @@
-﻿using EcleticaBeerControl.Domain.Entities;
+﻿using EcleticaBeerControl.Domain.DomainEvents;
+using EcleticaBeerControl.Domain.Entities;
+using EcleticaBeerControl.Domain.Entities.Base;
+using EcleticaBeerControl.Domain.Interfaces;
+using EcleticaBeerControl.Domain.Interfaces.Services;
 using EcleticaBeerControl.Domain.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace EcleticaBeerControl.Persistence.EF.Database
 {
-    public class ApplicationDbContext(DbContextOptions options) : IdentityDbContext<User>(options)
+    public sealed class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IBreweryService breweryService) : IdentityDbContext<User>(options)
     {
+        private readonly IBreweryService breweryService = breweryService;
+        private string CurrentBreweryId => breweryService.BreweryId!;
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+
+            modelBuilder.Entity<Device>().HasQueryFilter(x => x.BreweryId == CurrentBreweryId);
+            modelBuilder.Entity<FermentationDefinition>().HasQueryFilter(x => x.BreweryId == CurrentBreweryId);
+            modelBuilder.Entity<FermentationProfile>().HasQueryFilter(x => x.BreweryId == CurrentBreweryId);
+            modelBuilder.Entity<FermentationSession>().HasQueryFilter(x => x.BreweryId == CurrentBreweryId);
+
+            modelBuilder.Ignore<DomainEvent>();
+
+            base.OnModelCreating(modelBuilder);
         }
 
         public DbSet<Brewery> Breweries { get; set; }
@@ -17,5 +33,43 @@ namespace EcleticaBeerControl.Persistence.EF.Database
         public DbSet<FermentationProfile> FermentationProfiles { get; set; }
         public DbSet<FermentationDefinition> FermentationDefinitions { get; set; }
         public DbSet<FermentationSession> FermentationSessions { get; set; }
+
+        public override int SaveChanges()
+        {
+            InterceptSaveChangesForBreweriesBasedEntities();
+            return base.SaveChanges();
+        }
+
+        public override int SaveChanges(bool acceptAllChangesOnSuccess)
+        {
+            InterceptSaveChangesForBreweriesBasedEntities();
+            return base.SaveChanges(acceptAllChangesOnSuccess);
+        }
+
+        public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
+        {
+            InterceptSaveChangesForBreweriesBasedEntities();
+            return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+        }
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            InterceptSaveChangesForBreweriesBasedEntities();
+            return base.SaveChangesAsync(cancellationToken);
+        }
+
+        private void InterceptSaveChangesForBreweriesBasedEntities()
+        {
+            foreach (var entry in ChangeTracker.Entries<IBreweryEntity>().ToList())
+            {
+                switch (entry.State)
+                {
+                    case EntityState.Added:
+                    case EntityState.Modified:
+                        entry.Entity.BreweryId = CurrentBreweryId;
+                        break;
+                }
+            }
+        }
     }
 }

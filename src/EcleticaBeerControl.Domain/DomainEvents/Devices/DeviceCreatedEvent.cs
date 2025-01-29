@@ -2,7 +2,7 @@
 {
     public record DeviceCreatedEvent : DomainEvent
     {
-        public required Guid BreweryId { get; set; }
+        public required string BreweryId { get; set; }
         public required string Identifier { get; set; }
     };
 }

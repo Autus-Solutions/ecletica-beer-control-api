@@ -1,22 +1,21 @@
 ﻿using EcleticaBeerControl.Domain.Entities;
 using EcleticaBeerControl.Domain.Primitives;
-using EcleticaBeerControl.Domain.Repositories;
 using MediatR;
 
 namespace EcleticaBeerControl.Application.Members.Commands.Devices
 {
-    public sealed class DeviceCommandHandler
+    internal sealed class DeviceCommandHandler
         : BaseCommandHandler,
-          IRequestHandler<CreateDeviceCommand, Result<Guid>>
+          IRequestHandler<CreateDeviceCommand, Result<string>>
     {
-        private readonly IDeviceRepository _repository;
+        //private readonly IDeviceRepository _repository;
 
-        public DeviceCommandHandler(IDeviceRepository repository, IPublisher publisher) : base(publisher)
+        public DeviceCommandHandler(/*IDeviceRepository repository, */ IPublisher publisher) : base(publisher)
         {
-            _repository = repository;
+            //_repository = repository;
         }
 
-        public async Task<Result<Guid>> Handle(CreateDeviceCommand request, CancellationToken cancellationToken)
+        public async Task<Result<string>> Handle(CreateDeviceCommand request, CancellationToken cancellationToken)
         {
             try
             {
@@ -27,15 +26,15 @@ namespace EcleticaBeerControl.Application.Members.Commands.Devices
                 request.Description,
                 request.CreateBy);
 
-                await _repository.Insert(device, cancellationToken);
+                //await _repository.Insert(device, cancellationToken);
                 await PublishEvents(device, cancellationToken);
 
-                return Result<Guid>.Success(device.Id);
+                return Result<string>.Success(device.Id);
 
             }
             catch (Exception ex)
             {
-                return Result<Guid>.Failure(ex.Message);
+                return Result<string>.Failure(ex.Message);
             }
         }
     }
