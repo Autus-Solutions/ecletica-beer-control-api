@@ -1,5 +1,4 @@
-﻿using EcleticaBeerControl.Application.Members.Services;
-using EcleticaBeerControl.Domain.Interfaces.Services;
+﻿using EcleticaBeerControl.Domain.Interfaces.Services;
 
 namespace EcleticaBeerControl.Api.Middlewares
 {

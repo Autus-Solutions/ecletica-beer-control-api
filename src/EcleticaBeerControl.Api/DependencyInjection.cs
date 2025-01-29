@@ -76,13 +76,10 @@ namespace EcleticaBeerControl.Api
                 options.User.RequireUniqueEmail = true;
             });
 
+            services.AddAuthorization();
             services.AddAuthentication();
-            services.AddAuthorizationBuilder();
 
-            services.AddIdentityApiEndpoints<User>(options =>
-            {
-                options.SignIn.RequireConfirmedEmail = true;
-            })
+            services.AddIdentityApiEndpoints<User>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddApiEndpoints();
 

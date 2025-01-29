@@ -1,6 +1,5 @@
 ﻿using EcleticaBeerControl.Domain.DomainEvents;
 using EcleticaBeerControl.Domain.Entities;
-using EcleticaBeerControl.Domain.Entities.Base;
 using EcleticaBeerControl.Domain.Interfaces;
 using EcleticaBeerControl.Domain.Interfaces.Services;
 using EcleticaBeerControl.Domain.Models;
@@ -16,6 +15,8 @@ namespace EcleticaBeerControl.Persistence.EF.Database
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
 
             modelBuilder.Entity<Device>().HasQueryFilter(x => x.BreweryId == CurrentBreweryId);
@@ -24,8 +25,6 @@ namespace EcleticaBeerControl.Persistence.EF.Database
             modelBuilder.Entity<FermentationSession>().HasQueryFilter(x => x.BreweryId == CurrentBreweryId);
 
             modelBuilder.Ignore<DomainEvent>();
-
-            base.OnModelCreating(modelBuilder);
         }
 
         public DbSet<Brewery> Breweries { get; set; }

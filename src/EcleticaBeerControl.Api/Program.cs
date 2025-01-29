@@ -1,6 +1,9 @@
+using Asp.Versioning;
+using Asp.Versioning.ApiExplorer;
 using EcleticaBeerControl.Api;
 using EcleticaBeerControl.Api.Extensions;
 using EcleticaBeerControl.Api.Middlewares;
+using EcleticaBeerControl.Api.OpenApi;
 using EcleticaBeerControl.Domain.Models;
 using EcleticaBeerControl.Infrastructure;
 using EcleticaBeerControl.Persistence.EF;
@@ -29,12 +32,40 @@ try
                     .AddEFPersistence()
                     .AddApplication();
 
+    builder.Services.AddApiVersioning(options =>
+    {
+        options.DefaultApiVersion = new ApiVersion(1);
+        options.ApiVersionReader = new UrlSegmentApiVersionReader();
+    })
+    .AddApiExplorer(options =>
+    {
+        options.GroupNameFormat = "'v'V";
+        options.SubstituteApiVersionInUrl = true;
+    });
+
+    builder.Services.ConfigureOptions<ConfigureSwaggerGenOptions>();
+
     var app = builder.Build();
 
     if (app.Environment.IsDevelopment())
     {
         app.UseSwagger();
-        app.UseSwaggerUI();
+        app.UseSwaggerUI(options =>
+        {
+            IReadOnlyList<ApiVersionDescription> descriptions = app.DescribeApiVersions();
+
+            foreach (ApiVersionDescription description in descriptions)
+            {
+
+                string url = $"/swagger/{description.GroupName}/swagger.json";
+                string name = description.GroupName.ToUpperInvariant();
+
+                options.SwaggerEndpoint(url, name);
+            }
+
+        });
+
+        await app.ApplyMigrationsIfNeededAsync();
     }
 
     if (app.Environment.IsProduction())
@@ -43,16 +74,12 @@ try
     }
 
     app.UseGlobalErrorHandling();
-    app.UseAuthentication();
-    app.UseAuthorization();
     app.MapControllers();
-    app.MapControllersEndpoints();
+    app.MapApplicationEndpoints();
     app.MapIdentityApi<User>();
     app.UseResponseCompression();
 
-    await app.MigrateDatabaseIfNeededAsync();
     await app.RunAsync();
-
     return 0;
 }
 catch (Exception ex)

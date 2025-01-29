@@ -2,11 +2,11 @@ using EcleticaBeerControl.Application.Members.Commands.Devices;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
 
-namespace EcleticaBeerControl.Api.Controllers
+namespace EcleticaBeerControl.Api.Endpoints
 {
-    public class DeviceEndpoints
+    public static class DeviceEndpoints
     {
-        public static void AddRoutes(IEndpointRouteBuilder app)
+        public static void MapDeviceEndpoints(this IEndpointRouteBuilder app)
         {
             var group = app.MapGroup("devices")
                             .RequireAuthorization();

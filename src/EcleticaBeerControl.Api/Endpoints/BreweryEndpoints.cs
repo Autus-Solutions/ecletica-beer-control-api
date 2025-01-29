@@ -1,12 +1,13 @@
+using Asp.Versioning.Builder;
 using EcleticaBeerControl.Application.Members.Commands.Breweries;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
 
-namespace EcleticaBeerControl.Api.Controllers
+namespace EcleticaBeerControl.Api.Endpoints
 {
-    public class BreweryEndpoints
+    public static class BreweryEndpoints
     {
-        public static void AddRoutes(IEndpointRouteBuilder app)
+        public static void MapBreweryEndpoints(this IEndpointRouteBuilder app)
         {
             var brewery = app.MapGroup("brewery")
                             .RequireAuthorization();

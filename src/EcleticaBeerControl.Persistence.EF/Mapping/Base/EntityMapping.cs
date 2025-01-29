@@ -10,8 +10,6 @@ namespace EcleticaBeerControl.Persistence.EF.Mapping.Base
         public virtual void Configure(EntityTypeBuilder<TEntity> builder)
         {
             builder.HasQueryFilter(x => x.DeletedBy == null);
-
-            builder.Ignore(x => x.DomainEvents);
         }
     }
 }
