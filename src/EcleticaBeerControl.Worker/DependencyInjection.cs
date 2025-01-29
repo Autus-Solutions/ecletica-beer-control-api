@@ -16,24 +16,23 @@ namespace EcleticaBeerControl.Worker
             var assembly = typeof(DependencyInjection).Assembly;
 
             services.ConfigureRabbitMqTopology()
-                    .ConfigureRabbitMqConsumeres();
-
-            services.AddMqtt(configuration);
+                    .ConfigureRabbitMqConsumeres()
+                    .ConfigureMqtt(configuration);
 
             return services;
         }
 
-        private static IServiceCollection AddMqtt(this IServiceCollection services, IConfiguration configuration)
+        private static IServiceCollection ConfigureMqtt(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddSingleton<MqttClientOptions>((provider) =>
                  new MqttClientOptionsBuilder()
-                .WithClientId("ebc-api")
-                .WithTcpServer("mqtt.ecletica.beer", 30000)
+                .WithClientId("ecletica-beer-control-api")
+                .WithTcpServer(configuration["MqttBroker:Host"]!, int.Parse(configuration["MqttBroker:Port"]!))
                 .WithProtocolVersion(MqttProtocolVersion.V500)
                 .WithCleanSession()
                 .WithCleanStart()
                 .Build()
-            ); ;
+            );
 
             services.AddSingleton<IMqttClient>((provider) => new MqttFactory().CreateMqttClient());
             services.AddSingleton<MqttConnectionManager>();

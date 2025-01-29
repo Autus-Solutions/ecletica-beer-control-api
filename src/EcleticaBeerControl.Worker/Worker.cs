@@ -13,7 +13,6 @@ namespace EcleticaBeerControl.Worker
             _mqttConnectionManager = mqttConnectionManager;
             _mqttMessageRouter = mqttMessageRouter;
         }
-
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             Log.Information("IoT Communication initializing ...");

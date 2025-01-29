@@ -1,8 +1,6 @@
 using EcleticaBeerControl.DevicesConnectivityCheck;
+using EcleticaBeerControl.Infrastructure;
 using Serilog;
-using Serilog.Events;
-using Serilog.Templates.Themes;
-using SerilogTracing.Expressions;
 using SerilogTracing;
 using System.Globalization;
 
@@ -10,22 +8,14 @@ var defaultCultureInfo = new CultureInfo("pt-BR");
 CultureInfo.DefaultThreadCurrentCulture = defaultCultureInfo;
 CultureInfo.DefaultThreadCurrentUICulture = defaultCultureInfo;
 
-Log.Logger = new LoggerConfiguration()
-    .MinimumLevel.Override("Microsoft.AspNetCore.Hosting", LogEventLevel.Warning)
-    .MinimumLevel.Override("Microsoft.AspNetCore.Routing", LogEventLevel.Warning)
-    .Enrich.WithProperty("Application", "Ecletica Beer Control")
-    .WriteTo.Console(Formatters.CreateConsoleTextFormatter(theme: TemplateTheme.Code))
-    .CreateLogger();
-
-using var listener = new ActivityListenerConfiguration()
-    .Instrument.AspNetCoreRequests()
-    .TraceToSharedLogger();
-
-Log.Information("Starting UP");
-
 try
 {
-    IHostBuilder host = Host.CreateDefaultBuilder(args)
+    using var listener = new ActivityListenerConfiguration()
+            .Instrument.WithDefaultInstrumentation(true)
+            .Instrument.HttpClientRequests()
+            .TraceToSharedLogger();
+
+    var host = Host.CreateDefaultBuilder(args)
     .UseEnvironment(Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT") ?? "Development")
     .ConfigureHostConfiguration(builder =>
     {
@@ -35,9 +25,7 @@ try
     {
         services.AddSerilog();
 
-        services//.AddInfrastructure(builder.Configuration)
-                //.AddPersistence(builder.Configuration)
-                //.AddWorker(builder.Configuration)
+        services.AddInfrastructure(builder.Configuration)
                 .AddHostedService<Job>();
     })
     .UseDefaultServiceProvider(options => options.ValidateScopes = false);

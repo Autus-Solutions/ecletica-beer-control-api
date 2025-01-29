@@ -2,6 +2,11 @@
 using Microsoft.Extensions.DependencyInjection;
 using RabbitMQ.Client.Core.DependencyInjection;
 using RabbitMQ.Client.Core.DependencyInjection.Configuration;
+using Serilog;
+using Serilog.Events;
+using Serilog.Templates.Themes;
+using SerilogTracing;
+using SerilogTracing.Expressions;
 
 namespace EcleticaBeerControl.Infrastructure
 {
@@ -9,7 +14,26 @@ namespace EcleticaBeerControl.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            services.ConfigureRabbitMq(configuration);
+            services.ConfigureSerilog(configuration)
+                    .ConfigureRabbitMq(configuration);
+
+            return services;
+        }
+
+        private static IServiceCollection ConfigureSerilog(this IServiceCollection services, IConfiguration configuration)
+        {
+            const string ApplicationName = "Ecletica Beer Control";
+
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Override("Microsoft.AspNetCore.Hosting", LogEventLevel.Warning)
+                .MinimumLevel.Override("Microsoft.AspNetCore.Routing", LogEventLevel.Warning)
+                .Enrich.WithProperty("Application", ApplicationName)
+                .WriteTo.BetterStack(sourceToken: configuration["BetterStack:SourceToken"]!)
+                .WriteTo.Console(Formatters.CreateConsoleTextFormatter(theme: TemplateTheme.Code))
+                .CreateLogger();
+
+            Log.Information($"{ApplicationName} Starting...");
+
             return services;
         }
 

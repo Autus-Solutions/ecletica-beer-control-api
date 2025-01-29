@@ -5,33 +5,20 @@ using EcleticaBeerControl.Domain.Models;
 using EcleticaBeerControl.Infrastructure;
 using EcleticaBeerControl.Persistence.EF;
 using Serilog;
-using Serilog.Events;
-using Serilog.Templates.Themes;
 using SerilogTracing;
-using SerilogTracing.Expressions;
 using System.Globalization;
 
 var defaultCultureInfo = new CultureInfo("pt-BR");
 CultureInfo.DefaultThreadCurrentCulture = defaultCultureInfo;
 CultureInfo.DefaultThreadCurrentUICulture = defaultCultureInfo;
 
-const string ApplicationName = "Ecletica Beer Control";
-
-Log.Logger = new LoggerConfiguration()
-    .MinimumLevel.Override("Microsoft.AspNetCore.Hosting", LogEventLevel.Warning)
-    .MinimumLevel.Override("Microsoft.AspNetCore.Routing", LogEventLevel.Warning)
-    .Enrich.WithProperty("Application", ApplicationName)
-    .WriteTo.Console(Formatters.CreateConsoleTextFormatter(theme: TemplateTheme.Code))
-    .CreateLogger();
-
-using var listener = new ActivityListenerConfiguration()
-    .Instrument.AspNetCoreRequests()
-    .TraceToSharedLogger();
-
-Log.Information($"{ApplicationName} Starting...");
-
 try
 {
+    using var listener = new ActivityListenerConfiguration()
+            .Instrument.AspNetCoreRequests()
+            .Instrument.HttpClientRequests()
+            .TraceToSharedLogger();
+
     var builder = WebApplication.CreateBuilder(args);
 
     builder.Services.AddEndpointsApiExplorer();
