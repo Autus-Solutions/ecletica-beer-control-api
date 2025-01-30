@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using RabbitMQ.Client;
 using RabbitMQ.Client.Core.DependencyInjection;
 using RabbitMQ.Client.Core.DependencyInjection.Configuration;
 using Serilog;
@@ -14,7 +15,8 @@ namespace EcleticaBeerControl.Infrastructure
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             services.ConfigureSerilog(configuration)
-                    .ConfigureRabbitMq(configuration);
+                    .ConfigureRabbitMq(configuration)
+                    .ConfigurHealthChecks(configuration);
 
             return services;
         }
@@ -46,6 +48,17 @@ namespace EcleticaBeerControl.Infrastructure
                 UserName = configuration["MessageBroker:UserName"]!,
                 Password = configuration["MessageBroker:Password"]!
             });
+
+            return services;
+        }
+
+        private static IServiceCollection ConfigurHealthChecks(this IServiceCollection services, IConfiguration configuration)
+        {
+            var databaseConnectionString = configuration.GetConnectionString("Database");
+            var amqpConnectionString = configuration.GetConnectionString("Amqp");
+
+            services.AddHealthChecks()
+                    .AddNpgSql(databaseConnectionString!);
 
             return services;
         }

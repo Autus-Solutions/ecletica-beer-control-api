@@ -7,6 +7,8 @@ using EcleticaBeerControl.Api.OpenApi;
 using EcleticaBeerControl.Domain.Models;
 using EcleticaBeerControl.Infrastructure;
 using EcleticaBeerControl.Persistence.EF;
+using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Serilog;
 using SerilogTracing;
 using System.Globalization;
@@ -32,19 +34,6 @@ try
                     .AddEFPersistence(builder.Environment)
                     .AddApplication();
 
-    builder.Services.AddApiVersioning(options =>
-    {
-        options.DefaultApiVersion = new ApiVersion(1);
-        options.ApiVersionReader = new UrlSegmentApiVersionReader();
-    })
-    .AddApiExplorer(options =>
-    {
-        options.GroupNameFormat = "'v'V";
-        options.SubstituteApiVersionInUrl = true;
-    });
-
-    builder.Services.ConfigureOptions<ConfigureSwaggerGenOptions>();
-
     var app = builder.Build();
 
     app.UseSwagger();
@@ -62,15 +51,24 @@ try
 
     });
 
-    await app.ApplyMigrationsIfNeededAsync();
+    if (app.Environment.IsProduction())
+        app.UseHttpsRedirection();
 
-    app.UseHttpsRedirection();
     app.UseBreweryResolver();
     app.UseGlobalErrorHandling();
+
     app.MapControllers();
     app.MapApplicationEndpoints();
     app.MapIdentityApi<User>();
+
+    app.MapHealthChecks("health", new HealthCheckOptions
+    {
+        ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+    });
+
     app.UseResponseCompression();
+
+    app.ApplyMigrations();
 
     await app.RunAsync();
     return 0;

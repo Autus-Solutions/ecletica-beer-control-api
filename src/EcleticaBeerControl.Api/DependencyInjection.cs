@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.ResponseCompression;
 using Newtonsoft.Json;
 using EcleticaBeerControl.Application.Members.Services;
 using EcleticaBeerControl.Domain.Interfaces.Services;
+using Asp.Versioning;
+using EcleticaBeerControl.Api.OpenApi;
 
 namespace EcleticaBeerControl.Api
 {
@@ -39,6 +41,7 @@ namespace EcleticaBeerControl.Api
 
             services.AddHttpContextAccessor()
                     .AddApiMiddlewares()
+                    .AddApiVersioning()
                     .AddApiIdentitySecurity()
                     .AddMediatR()
                     .AddFluentValidator()
@@ -51,6 +54,23 @@ namespace EcleticaBeerControl.Api
         {
             services.AddScoped<BreweryResolverMiddleware>();
             services.AddScoped<GlobalErrorHandlingMiddleware>();
+            return services;
+        }
+        private static IServiceCollection AddApiVersioning(this IServiceCollection services)
+        {
+            services.AddApiVersioning(options =>
+            {
+                options.DefaultApiVersion = new ApiVersion(1);
+                options.ApiVersionReader = new UrlSegmentApiVersionReader();
+            })
+            .AddApiExplorer(options =>
+            {
+                options.GroupNameFormat = "'v'V";
+                options.SubstituteApiVersionInUrl = true;
+            });
+
+            services.ConfigureOptions<ConfigureSwaggerGenOptions>();
+
             return services;
         }
 

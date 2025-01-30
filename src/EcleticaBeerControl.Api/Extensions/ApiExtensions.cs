@@ -21,17 +21,17 @@ namespace EcleticaBeerControl.Api.Extensions
             versionedGroup.MapBreweryEndpoints();
         }
 
-        public static async Task ApplyMigrationsIfNeededAsync(this WebApplication app)
+        public static void ApplyMigrations(this WebApplication app)
         {
             using var scope = app.Services.CreateScope();
             using var identitySchemaDb = scope.ServiceProvider.GetService<IdentityDbContext>();
             using var applicationSchemaDb = scope.ServiceProvider.GetService<ApplicationDbContext>();
 
             if (identitySchemaDb is not null)
-                await identitySchemaDb.Database.MigrateAsync();
+                identitySchemaDb.Database.Migrate();
 
             if (applicationSchemaDb is not null)
-                await applicationSchemaDb.Database.MigrateAsync();
+                applicationSchemaDb.Database.Migrate();
         }
     }
 }
