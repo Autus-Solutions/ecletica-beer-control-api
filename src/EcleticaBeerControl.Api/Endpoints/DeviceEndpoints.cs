@@ -1,6 +1,7 @@
 using EcleticaBeerControl.Application.Members.Commands.Devices;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 
 namespace EcleticaBeerControl.Api.Endpoints
 {
@@ -8,13 +9,13 @@ namespace EcleticaBeerControl.Api.Endpoints
     {
         public static void MapDeviceEndpoints(this IEndpointRouteBuilder app)
         {
-            var group = app.MapGroup("devices")
+            var devices = app.MapGroup("devices")
                             .RequireAuthorization();
 
-            group.MapPost("/", CreateDevice);
+            devices.MapPost("/", CreateDevice);
         }
 
-        private static async Task<Results<Ok<string>, BadRequest<string[]>>> CreateDevice(CreateDeviceCommand command, ISender sender)
+        private static async Task<Results<Ok<string>, BadRequest<string[]>>> CreateDevice([FromBody] CreateDeviceCommand command, ISender sender)
         {
             var response = await sender.Send(command);
 

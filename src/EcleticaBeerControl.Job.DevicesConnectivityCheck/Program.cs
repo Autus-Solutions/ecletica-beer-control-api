@@ -16,19 +16,19 @@ try
             .TraceToSharedLogger();
 
     var host = Host.CreateDefaultBuilder(args)
-    .UseEnvironment(Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT") ?? "Development")
-    .ConfigureHostConfiguration(builder =>
-    {
-        builder.AddUserSecrets<Program>();
-    })
-    .ConfigureServices((builder, services) =>
-    {
-        services.AddSerilog();
+        .UseEnvironment(Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT") ?? "Development")
+        .ConfigureHostConfiguration(builder =>
+        {
+            builder.AddUserSecrets<Program>();
+        })
+        .ConfigureServices((builder, services) =>
+        {
+            services.AddSerilog();
 
-        services.AddInfrastructure(builder.Configuration)
-                .AddHostedService<Job>();
-    })
-    .UseDefaultServiceProvider(options => options.ValidateScopes = false);
+            services.AddInfrastructure(builder.Configuration)
+                    .AddHostedService<Job>();
+        })
+        .UseDefaultServiceProvider(options => options.ValidateScopes = false);
 
     var app = host.Build();
     await app.RunAsync();
@@ -43,5 +43,3 @@ finally
 {
     await Log.CloseAndFlushAsync();
 }
-
-

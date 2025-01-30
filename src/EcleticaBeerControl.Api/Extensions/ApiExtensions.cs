@@ -24,10 +24,14 @@ namespace EcleticaBeerControl.Api.Extensions
         public static async Task ApplyMigrationsIfNeededAsync(this WebApplication app)
         {
             using var scope = app.Services.CreateScope();
-            using var db = scope.ServiceProvider.GetService<ApplicationDbContext>();
+            using var identitySchemaDb = scope.ServiceProvider.GetService<IdentityDbContext>();
+            using var applicationSchemaDb = scope.ServiceProvider.GetService<ApplicationDbContext>();
 
-            if (db is not null)
-                await db.Database.MigrateAsync();
+            if (identitySchemaDb is not null)
+                await identitySchemaDb.Database.MigrateAsync();
+
+            if (applicationSchemaDb is not null)
+                await applicationSchemaDb.Database.MigrateAsync();
         }
     }
 }

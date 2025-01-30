@@ -19,7 +19,7 @@ namespace EcleticaBeerControl.Api
     {
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
-            services.AddScoped<IBreweryService, BreweryService>();
+            services.AddScoped<IBreweryResolver, BreweryResolver>();
 
             services.AddControllers()
                     .AddNewtonsoftJson(options =>
@@ -80,7 +80,7 @@ namespace EcleticaBeerControl.Api
             services.AddAuthentication();
 
             services.AddIdentityApiEndpoints<User>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddEntityFrameworkStores<IdentityDbContext>()
                 .AddApiEndpoints();
 
             return services;

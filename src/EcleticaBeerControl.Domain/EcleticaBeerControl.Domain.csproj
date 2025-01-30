@@ -11,8 +11,4 @@
     <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="8.0.12" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Interfaces\Repositories\" />
-  </ItemGroup>
-
 </Project>

@@ -24,6 +24,7 @@
 
 	<ItemGroup>
 		<Folder Include="Mapper\Profiles\" />
+		<Folder Include="Interfaces\" />
 	</ItemGroup>
 
 </Project>

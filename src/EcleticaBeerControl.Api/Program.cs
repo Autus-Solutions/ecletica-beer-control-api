@@ -29,7 +29,7 @@ try
     builder.Services.AddSerilog();
 
     builder.Services.AddInfrastructure(builder.Configuration)
-                    .AddEFPersistence()
+                    .AddEFPersistence(builder.Environment)
                     .AddApplication();
 
     builder.Services.AddApiVersioning(options =>
@@ -47,32 +47,25 @@ try
 
     var app = builder.Build();
 
-    if (app.Environment.IsDevelopment())
+    app.UseSwagger();
+    app.UseSwaggerUI(options =>
     {
-        app.UseSwagger();
-        app.UseSwaggerUI(options =>
+        IReadOnlyList<ApiVersionDescription> descriptions = app.DescribeApiVersions();
+
+        foreach (ApiVersionDescription description in descriptions)
         {
-            IReadOnlyList<ApiVersionDescription> descriptions = app.DescribeApiVersions();
+            string url = $"/swagger/{description.GroupName}/swagger.json";
+            string name = description.GroupName.ToUpperInvariant();
 
-            foreach (ApiVersionDescription description in descriptions)
-            {
+            options.SwaggerEndpoint(url, name);
+        }
 
-                string url = $"/swagger/{description.GroupName}/swagger.json";
-                string name = description.GroupName.ToUpperInvariant();
+    });
 
-                options.SwaggerEndpoint(url, name);
-            }
+    await app.ApplyMigrationsIfNeededAsync();
 
-        });
-
-        await app.ApplyMigrationsIfNeededAsync();
-    }
-
-    if (app.Environment.IsProduction())
-    {
-        app.UseHttpsRedirection();
-    }
-
+    app.UseHttpsRedirection();
+    app.UseBreweryResolver();
     app.UseGlobalErrorHandling();
     app.MapControllers();
     app.MapApplicationEndpoints();

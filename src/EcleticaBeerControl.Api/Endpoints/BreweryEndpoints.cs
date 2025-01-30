@@ -1,7 +1,7 @@
-using Asp.Versioning.Builder;
 using EcleticaBeerControl.Application.Members.Commands.Breweries;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 
 namespace EcleticaBeerControl.Api.Endpoints
 {
@@ -9,13 +9,13 @@ namespace EcleticaBeerControl.Api.Endpoints
     {
         public static void MapBreweryEndpoints(this IEndpointRouteBuilder app)
         {
-            var brewery = app.MapGroup("brewery")
+            var breweries = app.MapGroup("brewery")
                             .RequireAuthorization();
 
-            brewery.MapPost("/", RegisterBrewery);
+            breweries.MapPost("/", RegisterBrewery);
         }
 
-        private static async Task<Results<Ok<string>, BadRequest<string[]>>> RegisterBrewery(RegisterBreweryIfNeededCommand command, ISender sender)
+        private static async Task<Results<Ok<string>, BadRequest<string[]>>> RegisterBrewery([FromBody] RegisterBreweryIfNeededCommand command, ISender sender)
         {
             var response = await sender.Send(command);
 

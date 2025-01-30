@@ -17,28 +17,27 @@ try
             .TraceToSharedLogger();
 
     var host = Host.CreateDefaultBuilder(args)
-    .UseEnvironment(Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT") ?? "Development")
-    .ConfigureHostConfiguration(builder =>
-    {
-        builder.AddUserSecrets<Program>();
-    })
-    .ConfigureServices((builder, services) =>
-    {
-        services.Configure<HostOptions>(hostOptions =>
+        .UseEnvironment(Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT") ?? "Development")
+        .ConfigureHostConfiguration(builder =>
         {
-            hostOptions.BackgroundServiceExceptionBehavior = BackgroundServiceExceptionBehavior.Ignore;
-        });
+            builder.AddUserSecrets<Program>();
+        })
+        .ConfigureServices((builder, services) =>
+        {
+            services.Configure<HostOptions>(hostOptions =>
+            {
+                hostOptions.BackgroundServiceExceptionBehavior = BackgroundServiceExceptionBehavior.Ignore;
+            });
 
-        services.AddSerilog();
+            services.AddSerilog();
 
-        services.AddInfrastructure(builder.Configuration)
-                .AddEFPersistence()
-                .AddWorker(builder.Configuration);
+            services.AddInfrastructure(builder.Configuration)
+                    .AddEFPersistence(builder.HostingEnvironment)
+                    .AddWorker(builder.Configuration);
 
-        services.AddHostedService<Worker>();
-    })
-    .UseDefaultServiceProvider(options => options.ValidateScopes = false);
-
+            services.AddHostedService<Worker>();
+        })
+        .UseDefaultServiceProvider(options => options.ValidateScopes = false);
 
     var app = host.Build();
     await app.RunAsync();

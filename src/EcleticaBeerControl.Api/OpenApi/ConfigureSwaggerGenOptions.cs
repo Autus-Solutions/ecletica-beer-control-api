@@ -25,8 +25,8 @@ namespace EcleticaBeerControl.Api.OpenApi
                     Description = "Ecletica Beer Control API",
                     Contact = new OpenApiContact
                     {
-                        Name = "Victor Oliveira",
-                        Email = "contact@ecletica.beer",
+                        Name = "Ecletica Beer Lab",
+                        Email = "contato@ecletica.beer",
                         Url = new Uri("https://ecletica.beer")
                     }
                 };

@@ -2,20 +2,20 @@
 using EcleticaBeerControl.Domain.Entities;
 using EcleticaBeerControl.Domain.Interfaces;
 using EcleticaBeerControl.Domain.Interfaces.Services;
-using EcleticaBeerControl.Domain.Models;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace EcleticaBeerControl.Persistence.EF.Database
 {
-    public sealed class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IBreweryService breweryService) : IdentityDbContext<User>(options)
+    public sealed class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IBreweryResolver breweryService) : DbContext(options)
     {
-        private readonly IBreweryService breweryService = breweryService;
+        private readonly IBreweryResolver breweryService = breweryService;
         private string CurrentBreweryId => breweryService.BreweryId!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.HasDefaultSchema("ebc");
 
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
 

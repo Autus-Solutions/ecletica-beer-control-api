@@ -1,6 +1,6 @@
 ﻿using EcleticaBeerControl.Domain.Entities.Base;
 
-namespace EcleticaBeerControl.Domain.Repositories
+namespace EcleticaBeerControl.Domain.Interfaces.Repositories
 {
     public interface IEntityRepository<TEntity> where TEntity : Entity
     {

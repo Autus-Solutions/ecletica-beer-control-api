@@ -20,6 +20,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\EcleticaBeerControl.Domain\EcleticaBeerControl.Domain.csproj" />
 		<ProjectReference Include="..\EcleticaBeerControl.Infrastructure\EcleticaBeerControl.Infrastructure.csproj" />
+		<ProjectReference Include="..\EcleticaBeerControl.Persistence.EF\EcleticaBeerControl.Persistence.EF.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
