@@ -1,0 +1,40 @@
+name: Build and Deploy Worker
+
+on:
+  workflow_dispatch:
+  ## push:
+   ## branches:
+    ##  - "development"
+      
+env:
+  IMAGE_NAME: ${{ vars.VPS_IP }}:32000/ebc-worker:development
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build Docker image
+        run: docker build src/EcleticaBeerControl.Worker --file Dockerfile 
+          --tag ${{ env.IMAGE_NAME }}
+
+      - name: Prepare to Push Docker image
+        run: sudo bash .github/scripts/prepare-insecure-registry.sh
+
+      - name: Push Docker image
+        run: docker push ${{ env.IMAGE_NAME }}
+
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions-hub/kubectl@master
+      env:
+        KUBE_CONTEXT: ${{ secrets.KUBE_CONTEXT }}
+        KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
+      with:
+        args: rollout restart deploy ecletica-beer-control-worker -n ebl
