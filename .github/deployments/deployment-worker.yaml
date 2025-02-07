@@ -22,32 +22,33 @@ spec:
         image: localhost:32000/ebc-worker:development
         ports:
         - containerPort: 3000
-    env:
-      - name: ConnectionStrings__Database
-        value: #{ConnectionStrings__Database}#
-      - name: ConnectionStrings__Amqp
-        value: #{ConnectionStrings__Amqp}#
-      - name: BetterStack__SourceToken
-        value: #{BetterStack__SourceToken}#
-      - name: MessageBroker__Host
-        value: #{MessageBroker__Host}#
-      - name: MessageBroker__VHost
-        value: #{MessageBroker__VHost}#
-      - name: MessageBroker__Port
-        value: #{MessageBroker__Port}#
-      - name: MessageBroker__Username
-        value: #{MessageBroker__Username}#
-      - name: MessageBroker__Password
-        value: #{MessageBroker__Password}#
-      - name: MessageBroker__Host
-        value: #{MqttBroker__Host}#
-      - name: MqttBroker__Port
-        value: #{MqttBroker__Port}#
-      - name: MqttBroker__Username
-        value: #{MqttBroker__Username}#
-      - name: MqttBroker__Password
-        value: #{MqttBroker__Password}#
-    imagePullPolicy: Always
+        imagePullPolicy: Always
+        env:
+          - name: ConnectionStrings__Database
+            value: #{ConnectionStrings__Database}#
+          - name: ConnectionStrings__Amqp
+            value: #{ConnectionStrings__Amqp}#
+          - name: BetterStack__SourceToken
+            value: #{BetterStack__SourceToken}#
+          - name: MessageBroker__Host
+            value: #{MessageBroker__Host}#
+          - name: MessageBroker__VHost
+            value: #{MessageBroker__VHost}#
+          - name: MessageBroker__Port
+            value: #{MessageBroker__Port}#
+          - name: MessageBroker__Username
+            value: #{MessageBroker__Username}#
+          - name: MessageBroker__Password
+            value: #{MessageBroker__Password}#
+          - name: MessageBroker__Host
+            value: #{MqttBroker__Host}#
+          - name: MqttBroker__Port
+            value: #{MqttBroker__Port}#
+          - name: MqttBroker__Username
+            value: #{MqttBroker__Username}#
+          - name: MqttBroker__Password
+            value: #{MqttBroker__Password}#
+
 ---
 apiVersion: v1
 kind: Service
