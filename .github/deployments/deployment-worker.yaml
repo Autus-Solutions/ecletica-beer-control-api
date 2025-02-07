@@ -75,7 +75,7 @@ metadata:
   namespace: ebl
 spec:
   minReplicas: 1
-  maxReplicas: #{HPA_MAX_REPLICAS}#
+  maxReplicas: 2
   metrics:
     - type: Resource
       resource:
