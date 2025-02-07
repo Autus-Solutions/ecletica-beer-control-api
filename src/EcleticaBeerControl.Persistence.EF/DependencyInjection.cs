@@ -17,6 +17,7 @@ namespace EcleticaBeerControl.Persistence.EF
             {
                 var databaseOptions = provider.GetRequiredService<IOptions<DatabaseOptions>>().Value;
 
+                options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
                 options.UseNpgsql(databaseOptions.ConnectionString, options =>
                 {
                     options.EnableRetryOnFailure(databaseOptions.MaxRetryCount);

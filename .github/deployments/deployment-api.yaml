@@ -1,0 +1,96 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ecletica-beer-control-api
+  namespace: ebl
+  labels:
+    app: ecletica-beer-control-api
+    tier: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ecletica-beer-control-api
+  template:
+    metadata:
+      labels:
+        app: ecletica-beer-control-api
+    spec:
+      containers:
+      - name: ecletica-beer-control-api
+        image: localhost:32000/ebc-api:development
+        ports:
+        - containerPort: 3000
+    env:
+      - name: ConnectionStrings__Database
+        value: #{ConnectionStrings__Database}#
+      - name: ConnectionStrings__Amqp
+        value: #{ConnectionStrings__Amqp}#
+      - name: BetterStack__SourceToken
+        value: #{BetterStack__SourceToken}#
+      - name: MessageBroker__Host
+        value: #{MessageBroker__Host}#
+      - name: MessageBroker__VHost
+        value: #{MessageBroker__VHost}#
+      - name: MessageBroker__Port
+        value: #{MessageBroker__Port}#
+      - name: MessageBroker__Username
+        value: #{MessageBroker__Username}#
+      - name: MessageBroker__Password
+        value: #{MessageBroker__Password}#
+      - name: MessageBroker__Host
+        value: #{MqttBroker__Host}#
+      - name: MqttBroker__Port
+        value: #{MqttBroker__Port}#
+      - name: MqttBroker__Username
+        value: #{MqttBroker__Username}#
+      - name: MqttBroker__Password
+        value: #{MqttBroker__Password}#
+    imagePullPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ebc-api-service
+  namespace: ebl
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 8080
+    - name: https
+      protocol: TCP
+      port: 443
+      targetPort: 8081
+  selector:
+    app: ecletica-beer-control-api
+
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: ecletica-beer-control-api
+  namespace: ebl
+spec:
+  minReplicas: 1
+  maxReplicas: #{HPA_MAX_REPLICAS}#
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 80
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 80
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ecletica-beer-control-api
