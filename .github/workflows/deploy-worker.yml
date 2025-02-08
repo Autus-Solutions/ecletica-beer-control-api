@@ -8,6 +8,8 @@ on:
       
 env:
   IMAGE_NAME: ${{ vars.VPS_IP }}:32000/ebc-worker:development
+  KUBE_CONTEXT: ${{ secrets.KUBE_CONTEXT }}
+  KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
 
 jobs:
   build-and-push:
@@ -19,8 +21,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Build Docker image
-        run: docker build src/EcleticaBeerControl.Worker --file Dockerfile 
-          --tag ${{ env.IMAGE_NAME }}
+        run: docker build src/EcleticaBeerControl.Worker --file Dockerfile --tag ${{ env.IMAGE_NAME }}
 
       - name: Prepare to Push Docker image
         run: sudo bash .github/scripts/prepare-insecure-registry.sh
@@ -59,4 +60,4 @@ jobs:
           KUBE_CONTEXT: ${{ env.KUBE_CONTEXT }}
           KUBE_CONFIG: ${{ env.KUBE_CONFIG }}
         with:
-          args: rollout restart deploy ecletica-beer-control-api -n ebl
+          args: rollout restart deploy ecletica-beer-control-worker -n ebl

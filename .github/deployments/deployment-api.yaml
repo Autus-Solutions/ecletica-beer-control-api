@@ -21,7 +21,7 @@ spec:
       - name: ecletica-beer-control-api
         image: localhost:32000/ebc-api:development
         ports:
-        - containerPort: 3000
+        - containerPort: 8080
         imagePullPolicy: Always
         env:
           - name: ConnectionStrings__Database
@@ -40,7 +40,7 @@ spec:
             value: #{MessageBroker__Username}#
           - name: MessageBroker__Password
             value: #{MessageBroker__Password}#
-          - name: MessageBroker__Host
+          - name: MqttBroker__Host
             value: #{MqttBroker__Host}#
           - name: MqttBroker__Port
             value: #{MqttBroker__Port}#
