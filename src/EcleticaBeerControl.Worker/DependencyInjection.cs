@@ -29,6 +29,7 @@ namespace EcleticaBeerControl.Worker
                 .WithClientId("ecletica-beer-control-api")
                 .WithTcpServer(configuration["MqttBroker:Host"]!, int.Parse(configuration["MqttBroker:Port"]!))
                 .WithProtocolVersion(MqttProtocolVersion.V500)
+                .WithCredentials(configuration["MqttBroker:Username"]!, configuration["MqttBroker:Password"]!)
                 .WithCleanSession()
                 .WithCleanStart()
                 .Build()
