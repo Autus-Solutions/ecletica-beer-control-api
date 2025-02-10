@@ -12,20 +12,20 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["EcleticaBeerControl.Api/EcleticaBeerControl.Api.csproj", "EcleticaBeerControl.Api/"]
-COPY ["EcleticaBeerControl.Application/EcleticaBeerControl.Application.csproj", "EcleticaBeerControl.Application/"]
-COPY ["EcleticaBeerControl.Domain/EcleticaBeerControl.Domain.csproj", "EcleticaBeerControl.Domain/"]
-COPY ["EcleticaBeerControl.Infrastructure/EcleticaBeerControl.Infrastructure.csproj", "EcleticaBeerControl.Infrastructure/"]
-COPY ["EcleticaBeerControl.Persistence.EF/EcleticaBeerControl.Persistence.EF.csproj", "EcleticaBeerControl.Persistence.EF/"]
-RUN dotnet restore "./EcleticaBeerControl.Api/EcleticaBeerControl.Api.csproj"
+COPY ["src/EcleticaBeerControl.Api/EcleticaBeerControl.Api.csproj", "src/EcleticaBeerControl.Api/"]
+COPY ["src/EcleticaBeerControl.Application/EcleticaBeerControl.Application.csproj", "src/EcleticaBeerControl.Application/"]
+COPY ["src/EcleticaBeerControl.Domain/EcleticaBeerControl.Domain.csproj", "src/EcleticaBeerControl.Domain/"]
+COPY ["src/EcleticaBeerControl.Infrastructure/EcleticaBeerControl.Infrastructure.csproj", "src/EcleticaBeerControl.Infrastructure/"]
+COPY ["src/EcleticaBeerControl.Persistence.EF/EcleticaBeerControl.Persistence.EF.csproj", "src/EcleticaBeerControl.Persistence.EF/"]
+RUN dotnet restore "src/EcleticaBeerControl.Api/EcleticaBeerControl.Api.csproj"
 COPY . .
-WORKDIR "/src/EcleticaBeerControl.Api"
-RUN dotnet build "./EcleticaBeerControl.Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
+WORKDIR "/src/src/EcleticaBeerControl.Api"
+RUN dotnet build "EcleticaBeerControl.Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./EcleticaBeerControl.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "EcleticaBeerControl.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 # This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
 FROM base AS final
