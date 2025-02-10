@@ -20,8 +20,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Copy Dockerfile to root path
+        uses: canastro/copy-action@0.0.2
+        with:
+          source: "src/EcleticaBeerControl.Worker/Dockerfile"
+          target: "Dockerfile"
+
       - name: Build Docker image
-        run: docker build src/EcleticaBeerControl.Worker/. --tag ${{ env.IMAGE_NAME }}
+        run: docker build . --tag ${{ env.IMAGE_NAME }}
 
       - name: Prepare to Push Docker image
         run: sudo bash .github/scripts/prepare-insecure-registry.sh
