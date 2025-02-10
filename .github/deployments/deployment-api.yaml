@@ -35,7 +35,7 @@ spec:
           - name: MessageBroker__VHost
             value: #{MESSAGEBROKER__VHOST}#
           - name: MessageBroker__Port
-            value: #{MESSAGEBROKER__PORT}#
+            value: "#{MESSAGEBROKER__PORT}#"
           - name: MessageBroker__Username
             value: #{MESSAGEBROKER__USERNAME}#
           - name: MessageBroker__Password
@@ -43,7 +43,7 @@ spec:
           - name: MqttBroker__Host
             value: #{MQTTBROKER__HOST}#
           - name: MqttBroker__Port
-            value: #{MQTTBROKER__PORT}#
+            value: "#{MQTTBROKER__PORT}#"
           - name: MqttBroker__Username
             value: #{MQTTBROKER__USERNAME}#
           - name: MqttBroker__Password
