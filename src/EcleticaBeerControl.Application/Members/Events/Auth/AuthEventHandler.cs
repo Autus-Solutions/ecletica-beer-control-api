@@ -15,6 +15,7 @@ namespace EcleticaBeerControl.Application.Members.Events.Devices
         public async Task Handle(BreweryRegistredEvent notification, CancellationToken cancellationToken)
         {
             Log.Information("Updating current user metadata ...");
+            await Task.FromResult(notification);
         }
     }
 }
