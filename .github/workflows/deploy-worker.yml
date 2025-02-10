@@ -27,7 +27,7 @@ jobs:
           target: "Dockerfile"
 
       - name: Build Docker image
-        run: docker build . --tag ${{ env.IMAGE_NAME }}
+        run: docker build . -f WorkerDockerfile -t ${{ env.IMAGE_NAME }}
 
       - name: Prepare to Push Docker image
         run: sudo bash .github/scripts/prepare-insecure-registry.sh
