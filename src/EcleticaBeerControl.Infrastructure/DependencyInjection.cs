@@ -29,7 +29,6 @@ namespace EcleticaBeerControl.Infrastructure
                 .MinimumLevel.Override("Microsoft.AspNetCore.Hosting", LogEventLevel.Warning)
                 .MinimumLevel.Override("Microsoft.AspNetCore.Routing", LogEventLevel.Warning)
                 .Enrich.WithProperty("Application", ApplicationName)
-                .WriteTo.BetterStack(sourceToken: configuration["BetterStack:SourceToken"]!)
                 .WriteTo.Console(Formatters.CreateConsoleTextFormatter(theme: TemplateTheme.Code))
                 .CreateLogger();
 
