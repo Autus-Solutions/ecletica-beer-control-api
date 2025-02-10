@@ -6,8 +6,8 @@ namespace EcleticaBeerControl.Domain.Entities
 {
     public class Device : BreweryEntity
     {
-        public string Name { get; init; } = string.Empty;
-        public string Identifier { get; init; } = string.Empty;
+        public required string Name { get; init; } = string.Empty;
+        public required string Identifier { get; init; } = string.Empty;
         public string? Description { get; init; }
         public DeviceStatus Status { get; init; } = DeviceStatus.Connecting;
 

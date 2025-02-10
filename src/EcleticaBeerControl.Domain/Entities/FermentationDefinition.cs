@@ -5,11 +5,11 @@ namespace EcleticaBeerControl.Domain.Entities
 {
     public class FermentationDefinition : BreweryEntity
     {
-        public string DeviceIdentifier { get; set; } = string.Empty;
-        public string Title { get; set; } = string.Empty;
+        public required string DeviceIdentifier { get; set; } = string.Empty;
+        public required string Title { get; set; } = string.Empty;
         public string? Description { get; set; }
-        public JsonDocument FermentationProfile { get; init; } = JsonDocument.Parse("{}");
-        public virtual Device Device { get; set; }
+        public required JsonDocument FermentationProfile { get; init; } = JsonDocument.Parse("{}");
+        public virtual Device? Device { get; set; }
 
         public static FermentationDefinition Create(string breweryId,
                 string deviceIdentifier,
