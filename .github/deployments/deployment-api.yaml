@@ -25,29 +25,29 @@ spec:
         imagePullPolicy: Always
         env:
           - name: ConnectionStrings__Database
-            value: #{ConnectionStrings__Database}#
+            value: #{CONNECTIONSTRINGS__DATABASE}#
           - name: ConnectionStrings__Amqp
-            value: #{ConnectionStrings__Amqp}#
+            value: #{CONNECTIONSTRINGS__AMQP}#
           - name: BetterStack__SourceToken
-            value: #{BetterStack__SourceToken}#
+            value: #{BETTERSTACK__SOURCETOKEN}#
           - name: MessageBroker__Host
-            value: #{MessageBroker__Host}#
+            value: #{MESSAGEBROKER__HOST}#
           - name: MessageBroker__VHost
-            value: #{MessageBroker__VHost}#
+            value: #{MESSAGEBROKER__VHOST}#
           - name: MessageBroker__Port
-            value: #{MessageBroker__Port}#
+            value: #{MESSAGEBROKER__PORT}#
           - name: MessageBroker__Username
-            value: #{MessageBroker__Username}#
+            value: #{MESSAGEBROKER__USERNAME}#
           - name: MessageBroker__Password
-            value: #{MessageBroker__Password}#
+            value: #{MESSAGEBROKER__PASSWORD}#
           - name: MqttBroker__Host
-            value: #{MqttBroker__Host}#
+            value: #{MQTTBROKER__HOST}#
           - name: MqttBroker__Port
-            value: #{MqttBroker__Port}#
+            value: #{MQTTBROKER__PORT}#
           - name: MqttBroker__Username
-            value: #{MqttBroker__Username}#
+            value: #{MQTTBROKER__USERNAME}#
           - name: MqttBroker__Password
-            value: #{MqttBroker__Password}#
+            value: #{MQTTBROKER__PASSWORD}#
 ---
 apiVersion: v1
 kind: Service
