@@ -40,8 +40,6 @@ spec:
             value: #{CONNECTIONSTRINGS__TIMESERIES}#
           - name: ConnectionStrings__Amqp
             value: #{CONNECTIONSTRINGS__AMQP}#
-          - name: BetterStack__SourceToken
-            value: #{BETTERSTACK__SOURCETOKEN}#
           - name: MessageBroker__Host
             value: #{MESSAGEBROKER__HOST}#
           - name: MessageBroker__VHost
