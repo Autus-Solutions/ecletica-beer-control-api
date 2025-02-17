@@ -1,9 +1,7 @@
-using Asp.Versioning;
 using Asp.Versioning.ApiExplorer;
 using EcleticaBeerControl.Api;
 using EcleticaBeerControl.Api.Extensions;
 using EcleticaBeerControl.Api.Middlewares;
-using EcleticaBeerControl.Api.OpenApi;
 using EcleticaBeerControl.Domain.Models;
 using EcleticaBeerControl.Infrastructure;
 using EcleticaBeerControl.Persistence.EF;
@@ -28,7 +26,6 @@ try
 
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
-    builder.Services.AddSerilog();
 
     builder.Services.AddInfrastructure(builder.Configuration)
                     .AddEFPersistence(builder.Environment)
@@ -48,7 +45,6 @@ try
 
             options.SwaggerEndpoint(url, name);
         }
-
     });
 
     if (app.Environment.IsProduction())
@@ -67,7 +63,6 @@ try
     });
 
     app.UseResponseCompression();
-
     app.ApplyMigrations();
 
     await app.RunAsync();

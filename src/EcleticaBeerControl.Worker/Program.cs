@@ -29,8 +29,6 @@ try
                 hostOptions.BackgroundServiceExceptionBehavior = BackgroundServiceExceptionBehavior.Ignore;
             });
 
-            services.AddSerilog();
-
             services.AddInfrastructure(builder.Configuration)
                     .AddEFPersistence(builder.HostingEnvironment)
                     .AddWorker(builder.Configuration);

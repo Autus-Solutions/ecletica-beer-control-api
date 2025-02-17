@@ -23,8 +23,6 @@ try
         })
         .ConfigureServices((builder, services) =>
         {
-            services.AddSerilog();
-
             services.AddInfrastructure(builder.Configuration)
                     .AddHostedService<Job>();
         })
