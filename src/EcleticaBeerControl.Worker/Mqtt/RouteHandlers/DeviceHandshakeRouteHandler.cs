@@ -1,4 +1,6 @@
 ﻿using EcleticaBeerControl.Infrastructure.Mqtt;
+using EcleticaBeerControl.Worker.Payloads;
+using Newtonsoft.Json;
 using Serilog;
 
 namespace EcleticaBeerControl.Worker.Mqtt.RoutesHandlers
@@ -7,17 +9,11 @@ namespace EcleticaBeerControl.Worker.Mqtt.RoutesHandlers
     {
         public string Route => RouteKeys.DeviceApplicationHandshakeResultRoute;
 
+
         public Task Handle(string payload, string contentType, IDictionary<string, string> brewerProperties)
         {
-            Log.Information(@"Message arrived: Route => {Route}, 
-                                Payload => {Payload}, 
-                                ContentType => {ContentType}
-                                brewerProperties => {brewerProperties}",
-                                Route,
-                                payload,
-                                contentType,
-                                brewerProperties);
-
+            var convertedPayload = JsonConvert.DeserializeObject<DeviceTemperatureMetric>(payload);
+            Log.Information($"Temperatura do dispositivo `{brewerProperties["device_identifier"]}` atualizada: {convertedPayload!.Degrees}");
             return Task.CompletedTask;
         }
     }
