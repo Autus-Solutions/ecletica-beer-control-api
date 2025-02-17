@@ -1,24 +1,29 @@
 ﻿using EcleticaBeerControl.Infrastructure.Mqtt;
+using EcleticaBeerControl.Persistence.EF.Database;
+using EcleticaBeerControl.Worker.Payloads;
+using Newtonsoft.Json;
 using Serilog;
 
 namespace EcleticaBeerControl.Worker.Mqtt.RoutesHandlers
 {
-    public sealed class DeviceTemperatureChangedRouteHandler : IMqttRouteHandler
+    public sealed class DeviceTemperatureChangedRouteHandler(TimeseriesDbContext timeseriesDbContext) : IMqttRouteHandler
     {
-        public string Route => RouteKeys.DeviceApplicationTemepratureChangedRoute;
+        private readonly TimeseriesDbContext _timeseriesDbContext = timeseriesDbContext;
 
-        public Task Handle(string payload, string contentType, IDictionary<string, string> userProperties)
+        public string Route => RouteKeys.DeviceApplicationHandshakeResultRoute;
+
+        public async Task Handle(string payload, string contentType, IDictionary<string, string> brewerProperties)
         {
-            Log.Information(@"Message arrived: Route => {Route}, 
-                                Payload => {Payload}, 
-                                ContentType => {ContentType}
-                                UserProperties => {UserProperties}",
-                                Route,
-                                payload,
-                                contentType,
-                                userProperties);
+            var convertedPayload = JsonConvert.DeserializeObject<DeviceTemperatureMetric>(payload);
+            Log.Information($"Temperatura do dispositivo `{brewerProperties["device_identifier"]}` atualizada: {convertedPayload!.Degrees}");
 
-            return Task.CompletedTask;
+            _timeseriesDbContext.Add(new DeviceTemperatureMetric
+            {
+                Degrees = convertedPayload.Degrees,
+                DegreeFormat = convertedPayload.DegreeFormat,
+            });
+
+            await _timeseriesDbContext.SaveChangesAsync();
         }
     }
 }

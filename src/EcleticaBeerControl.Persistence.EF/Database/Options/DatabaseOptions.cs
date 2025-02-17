@@ -1,8 +1,7 @@
 ﻿namespace EcleticaBeerControl.Persistence.EF.Database.Options
 {
-    internal sealed class DatabaseOptions
+    internal sealed class DatabaseOptions : BaseDatabaseOptions
     {
-        public required string ConnectionString { get; set; } = string.Empty;
         public int MaxRetryCount { get; set; }
         public int CommandTimeout { get; set; }
         public bool EnableDetailedErrors { get; set; }

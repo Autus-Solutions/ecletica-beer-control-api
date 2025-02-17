@@ -1,0 +1,15 @@
+﻿using EcleticaBeerControl.Domain.DomainEvents;
+using EcleticaBeerControl.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
+
+namespace EcleticaBeerControl.Persistence.EF.Database
+{
+    public sealed class TimeseriesDbContext(DbContextOptions<TimeseriesDbContext> options) : DbContext(options)
+    {
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(TimeseriesDbContext).Assembly);
+        }
+    }
+}

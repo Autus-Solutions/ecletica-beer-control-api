@@ -41,12 +41,19 @@ namespace EcleticaBeerControl.Persistence.EF
                     options.CommandTimeout(databaseOptions.CommandTimeout);
                 });
 
-                if (environment.IsDevelopment())
-                {
-                    options.EnableDetailedErrors(databaseOptions.EnableDetailedErrors);
-                    options.EnableSensitiveDataLogging(databaseOptions.EnableSensitiveDataLogging);
-                }
+            });
 
+            return services;
+        }
+
+        public static IServiceCollection AddTimeseriesEFPersistence(this IServiceCollection services, IHostEnvironment environment)
+        {
+            services.ConfigureOptions<TimeseriesDatabaseOptionsSetup>();
+
+            services.AddDbContext<TimeseriesDbContext>((provider, options) =>
+            {
+                var databaseOptions = provider.GetRequiredService<IOptions<TimeseriesDatabaseOptions>>().Value;
+                options.UseNpgsql(databaseOptions.ConnectionString);
             });
 
             return services;
