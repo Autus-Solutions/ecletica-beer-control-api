@@ -36,6 +36,8 @@ spec:
             value: #{ENVIRONMENT}#
           - name: ConnectionStrings__Database
             value: #{CONNECTIONSTRINGS__DATABASE}#
+          - name: ConnectionStrings__Timeseries
+            value: #{CONNECTIONSTRINGS__TIMESERIES}#
           - name: ConnectionStrings__Amqp
             value: #{CONNECTIONSTRINGS__AMQP}#
           - name: BetterStack__SourceToken

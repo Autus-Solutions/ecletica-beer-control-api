@@ -53,10 +53,13 @@ namespace EcleticaBeerControl.Infrastructure
         private static IServiceCollection ConfigurHealthChecks(this IServiceCollection services, IConfiguration configuration)
         {
             var databaseConnectionString = configuration.GetConnectionString("Database");
+            var timeseriesConnectionString = configuration.GetConnectionString("Timeseries");
             var amqpConnectionString = configuration.GetConnectionString("Amqp");
+            var mqttConnectionString = configuration.GetConnectionString("Mqtt");
 
             services.AddHealthChecks()
-                    .AddNpgSql(databaseConnectionString!);
+                    .AddNpgSql(databaseConnectionString!)
+                    .AddNpgSql(timeseriesConnectionString!);
 
             return services;
         }

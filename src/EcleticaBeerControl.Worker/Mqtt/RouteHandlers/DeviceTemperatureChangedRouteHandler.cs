@@ -17,10 +17,11 @@ namespace EcleticaBeerControl.Worker.Mqtt.RoutesHandlers
         {
             var temperature = JsonConvert.DeserializeObject<Temperature>(payload);
             var deviceIdentifier = brewerProperties["device_identifier"];
+            var temperatureEntity = TemperatureAdapter.Adapt(deviceIdentifier, temperature!);
 
-            Log.Information($"Temperatura do dispositivo `{deviceIdentifier}` atualizada: {temperature!.Degrees}");
+            Log.Information($"Temperatura do dispositivo `{deviceIdentifier}` atualizada: {temperatureEntity!.Value}");
 
-            _timeseriesDbContext.Add(TemperatureAdapter.Adapt(deviceIdentifier, temperature));
+            _timeseriesDbContext.Add(temperatureEntity);
 
             await _timeseriesDbContext.SaveChangesAsync();
         }
