@@ -10,6 +10,8 @@ namespace EcleticaBeerControl.Persistence.EF.Mapping.Timeseries
         {
             builder.ToTable("temperature");
 
+            builder.HasNoKey();
+
             builder.Property(x => x.Time).HasColumnName("time");
             builder.Property(x => x.DeviceId).HasColumnName("device_id");
             builder.Property(x => x.Value).HasColumnName("value");
