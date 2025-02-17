@@ -10,7 +10,7 @@ namespace EcleticaBeerControl.Worker.Mqtt.RoutesHandlers
     {
         private readonly TimeseriesDbContext _timeseriesDbContext = timeseriesDbContext;
 
-        public string Route => RouteKeys.DeviceApplicationHandshakeResultRoute;
+        public string Route => RouteKeys.DeviceApplicationTemepratureChangedRoute;
 
         public async Task Handle(string payload, string contentType, IDictionary<string, string> brewerProperties)
         {

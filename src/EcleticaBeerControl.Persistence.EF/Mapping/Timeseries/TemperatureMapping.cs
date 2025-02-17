@@ -8,7 +8,7 @@ namespace EcleticaBeerControl.Persistence.EF.Mapping.Timeseries
     {
         public void Configure(EntityTypeBuilder<Temperature> builder)
         {
-            builder.ToTable("temperature");
+            builder.ToTable("temperatures");
 
             builder.HasNoKey();
 

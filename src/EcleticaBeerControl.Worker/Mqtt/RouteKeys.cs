@@ -5,7 +5,6 @@
         #region Device To Application Subscriptions
 
         public static readonly string DeviceApplicationTemepratureChangedRoute = "device/application/temperature-changed";
-        public static readonly string DeviceApplicationHandshakeResultRoute = "device/application/handshake-result";
 
         #endregion
 
