@@ -1,6 +1,4 @@
-﻿using EcleticaBeerControl.Domain.DomainEvents;
-using EcleticaBeerControl.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace EcleticaBeerControl.Persistence.EF.Database
 {

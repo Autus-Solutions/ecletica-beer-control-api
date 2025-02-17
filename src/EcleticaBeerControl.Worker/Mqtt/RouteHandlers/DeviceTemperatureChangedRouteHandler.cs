@@ -1,5 +1,6 @@
 ﻿using EcleticaBeerControl.Infrastructure.Mqtt;
 using EcleticaBeerControl.Persistence.EF.Database;
+using EcleticaBeerControl.Worker.Adapters;
 using EcleticaBeerControl.Worker.Payloads;
 using Newtonsoft.Json;
 using Serilog;
@@ -14,14 +15,12 @@ namespace EcleticaBeerControl.Worker.Mqtt.RoutesHandlers
 
         public async Task Handle(string payload, string contentType, IDictionary<string, string> brewerProperties)
         {
-            var convertedPayload = JsonConvert.DeserializeObject<Temperature>(payload);
-            Log.Information($"Temperatura do dispositivo `{brewerProperties["device_identifier"]}` atualizada: {convertedPayload!.Degrees}");
+            var temperature = JsonConvert.DeserializeObject<Temperature>(payload);
+            var deviceIdentifier = brewerProperties["device_identifier"];
 
-            _timeseriesDbContext.Add(new Temperature
-            {
-                Degrees = convertedPayload.Degrees,
-                DegreeFormat = convertedPayload.DegreeFormat,
-            });
+            Log.Information($"Temperatura do dispositivo `{deviceIdentifier}` atualizada: {temperature!.Degrees}");
+
+            _timeseriesDbContext.Add(TemperatureAdapter.Adapt(deviceIdentifier, temperature));
 
             await _timeseriesDbContext.SaveChangesAsync();
         }
