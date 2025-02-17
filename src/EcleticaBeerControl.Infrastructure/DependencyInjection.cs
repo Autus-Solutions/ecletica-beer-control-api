@@ -58,9 +58,7 @@ namespace EcleticaBeerControl.Infrastructure
             var mqttConnectionString = configuration.GetConnectionString("Mqtt");
 
             services.AddHealthChecks()
-                    .AddNpgSql(databaseConnectionString!, name: "database")
-                    .AddNpgSql(timeseriesConnectionString!, name: "timeseries_database");
-
+                    .AddNpgSql(databaseConnectionString!);
             return services;
         }
     }
