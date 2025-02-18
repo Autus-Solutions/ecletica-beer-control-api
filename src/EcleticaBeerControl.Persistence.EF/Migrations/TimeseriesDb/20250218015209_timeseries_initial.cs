@@ -24,7 +24,7 @@ namespace EcleticaBeerControl.Persistence.EF.Migrations.TimeseriesDb
                     table.PrimaryKey("PK_temperatures", x => new { x.device_id, x.time });
                 });
 
-            migrationBuilder.Sql(@"SELECT create_hypertable(\r\n  'temperatures',\r\n  by_range('time', INTERVAL '30 days')\r\n)");
+            migrationBuilder.Sql(@"SELECT create_hypertable('temperatures', by_range('time', INTERVAL '30 days'));");
         }
 
         /// <inheritdoc />
