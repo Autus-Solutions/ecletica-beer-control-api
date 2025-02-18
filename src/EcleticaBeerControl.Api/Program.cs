@@ -29,6 +29,7 @@ try
 
     builder.Services.AddInfrastructure(builder.Configuration)
                     .AddEFPersistence(builder.Environment)
+                    .AddTimeseriesEFPersistence(builder.Environment)
                     .AddApplication();
 
     var app = builder.Build();

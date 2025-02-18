@@ -27,7 +27,7 @@ namespace EcleticaBeerControl.Worker.Mqtt
             {
                 await _mqttClient.ReconnectAsync(CancellationToken.None);
             }
-            catch
+            catch (Exception ex)
             {
 
             }

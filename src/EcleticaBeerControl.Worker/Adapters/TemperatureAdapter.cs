@@ -8,9 +8,10 @@ namespace EcleticaBeerControl.Worker.Adapters
         {
             return new Temperature
             {
-                Time = DateTime.Now,
+                Time = DateTime.UtcNow,
                 DeviceId = deviceIdentifier,
-                Value = temperature.Degrees
+                Value = temperature.Degrees,
+                CreateBy = "ebc-worker"
             };
         }
     }

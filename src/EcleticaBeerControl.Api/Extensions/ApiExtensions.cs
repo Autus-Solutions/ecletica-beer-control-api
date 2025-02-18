@@ -26,12 +26,16 @@ namespace EcleticaBeerControl.Api.Extensions
             using var scope = app.Services.CreateScope();
             using var identitySchemaDb = scope.ServiceProvider.GetService<IdentityDbContext>();
             using var applicationSchemaDb = scope.ServiceProvider.GetService<ApplicationDbContext>();
+            using var timeseriesSchemaDb = scope.ServiceProvider.GetService<TimeseriesDbContext>();
 
             if (identitySchemaDb is not null)
                 identitySchemaDb.Database.Migrate();
 
             if (applicationSchemaDb is not null)
                 applicationSchemaDb.Database.Migrate();
+
+            if (timeseriesSchemaDb is not null)
+                timeseriesSchemaDb.Database.Migrate();
         }
     }
 }
