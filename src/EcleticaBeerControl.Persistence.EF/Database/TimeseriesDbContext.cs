@@ -1,5 +1,6 @@
 ﻿using EcleticaBeerControl.Domain.DomainEvents;
 using EcleticaBeerControl.Domain.Entities;
+using EcleticaBeerControl.Persistence.EF.Mapping.Timeseries;
 using Microsoft.EntityFrameworkCore;
 
 namespace EcleticaBeerControl.Persistence.EF.Database
@@ -9,6 +10,8 @@ namespace EcleticaBeerControl.Persistence.EF.Database
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.ApplyConfiguration(new TemperatureMapping());
             modelBuilder.Ignore<DomainEvent>();
         }
 

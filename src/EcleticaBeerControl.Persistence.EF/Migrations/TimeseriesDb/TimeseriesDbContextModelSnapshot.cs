@@ -24,41 +24,21 @@ namespace EcleticaBeerControl.Persistence.EF.Migrations.TimeseriesDb
 
             modelBuilder.Entity("EcleticaBeerControl.Domain.Entities.Temperature", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
-
-                    b.Property<string>("CreateBy")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("DeletedBy")
-                        .HasColumnType("text");
-
                     b.Property<string>("DeviceId")
-                        .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("device_id");
 
                     b.Property<DateTime>("Time")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("text");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("time");
 
                     b.Property<double?>("Value")
-                        .HasColumnType("double precision");
+                        .HasColumnType("double precision")
+                        .HasColumnName("value");
 
-                    b.HasKey("Id");
+                    b.HasKey("DeviceId", "Time");
 
-                    b.ToTable("Temperatures");
+                    b.ToTable("temperatures", (string)null);
                 });
 #pragma warning restore 612, 618
         }
