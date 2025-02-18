@@ -25,8 +25,10 @@ namespace EcleticaBeerControl.Infrastructure
             const string ApplicationName = "Ecletica Beer Control";
 
             Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Information()
                 .MinimumLevel.Override("Microsoft.AspNetCore.Hosting", LogEventLevel.Warning)
                 .MinimumLevel.Override("Microsoft.AspNetCore.Routing", LogEventLevel.Warning)
+                .MinimumLevel.Override("Microsoft.EntityFrameworkCore", LogEventLevel.Warning)
                 .Enrich.WithProperty("Application", ApplicationName)
                 .WriteTo.Console(Formatters.CreateConsoleTextFormatter(theme: TemplateTheme.Code))
                 .CreateLogger();

@@ -2,14 +2,13 @@
 using EcleticaBeerControl.Persistence.EF.Database.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 
 namespace EcleticaBeerControl.Persistence.EF
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddEFPersistence(this IServiceCollection services, IHostEnvironment environment)
+        public static IServiceCollection AddEFPersistence(this IServiceCollection services)
         {
             services.ConfigureOptions<DatabaseOptionsSetup>();
 
@@ -24,11 +23,11 @@ namespace EcleticaBeerControl.Persistence.EF
                     options.CommandTimeout(databaseOptions.CommandTimeout);
                 });
 
-                if (environment.IsDevelopment())
-                {
-                    options.EnableDetailedErrors(databaseOptions.EnableDetailedErrors);
-                    options.EnableSensitiveDataLogging(databaseOptions.EnableSensitiveDataLogging);
-                }
+#if DEBUG
+                options.EnableDetailedErrors(databaseOptions.EnableDetailedErrors);
+                options.EnableSensitiveDataLogging(databaseOptions.EnableSensitiveDataLogging);
+#endif
+
             });
 
             services.AddDbContext<IdentityDbContext>((provider, options) =>
@@ -46,14 +45,18 @@ namespace EcleticaBeerControl.Persistence.EF
             return services;
         }
 
-        public static IServiceCollection AddTimeseriesEFPersistence(this IServiceCollection services, IHostEnvironment environment)
+        public static IServiceCollection AddTimeseriesEFPersistence(this IServiceCollection services)
         {
             services.ConfigureOptions<TimeseriesDatabaseOptionsSetup>();
 
             services.AddDbContext<TimeseriesDbContext>((provider, options) =>
             {
                 var databaseOptions = provider.GetRequiredService<IOptions<TimeseriesDatabaseOptions>>().Value;
-                options.UseNpgsql(databaseOptions.ConnectionString);
+                options.UseNpgsql(databaseOptions.ConnectionString, options =>
+                {
+                    options.EnableRetryOnFailure(databaseOptions.MaxRetryCount);
+                    options.CommandTimeout(databaseOptions.CommandTimeout);
+                });
             });
 
             return services;

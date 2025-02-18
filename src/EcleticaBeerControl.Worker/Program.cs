@@ -30,8 +30,8 @@ try
             });
 
             services.AddInfrastructure(builder.Configuration)
-                    .AddEFPersistence(builder.HostingEnvironment)
-                    .AddTimeseriesEFPersistence(builder.HostingEnvironment)
+                    .AddEFPersistence()
+                    .AddTimeseriesEFPersistence()
                     .AddWorker(builder.Configuration);
 
             services.AddHostedService<Worker>();

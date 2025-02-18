@@ -15,22 +15,14 @@ namespace EcleticaBeerControl.Worker.Mqtt.RoutesHandlers
 
         public async Task Handle(string payload, string contentType, IDictionary<string, string> brewerProperties)
         {
-            try
-            {
-                var temperature = JsonConvert.DeserializeObject<Temperature>(payload);
-                var deviceIdentifier = brewerProperties["device_identifier"];
-                var temperatureEntity = TemperatureAdapter.Adapt(deviceIdentifier, temperature!);
+            var temperature = JsonConvert.DeserializeObject<Temperature>(payload);
+            var deviceIdentifier = brewerProperties["device_identifier"];
+            var temperatureEntity = TemperatureAdapter.Adapt(deviceIdentifier, temperature!);
 
-                Log.Information($"Temperatura do dispositivo `{deviceIdentifier}` atualizada: {temperatureEntity!.Value}");
+            Log.Information($"Temperatura do dispositivo `{deviceIdentifier}` atualizada: {temperatureEntity!.Value}");
 
-                _timeseriesDbContext.Add(temperatureEntity);
-
-                await _timeseriesDbContext.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-
-            }
+            _timeseriesDbContext.Temperatures.Add(temperatureEntity);
+            await _timeseriesDbContext.SaveChangesAsync();
         }
     }
 }

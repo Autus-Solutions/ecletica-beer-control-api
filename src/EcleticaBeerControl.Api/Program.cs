@@ -28,8 +28,8 @@ try
     builder.Services.AddSwaggerGen();
 
     builder.Services.AddInfrastructure(builder.Configuration)
-                    .AddEFPersistence(builder.Environment)
-                    .AddTimeseriesEFPersistence(builder.Environment)
+                    .AddEFPersistence()
+                    .AddTimeseriesEFPersistence()
                     .AddApplication();
 
     var app = builder.Build();
