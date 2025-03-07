@@ -38,4 +38,4 @@ spec:
     - hosts:
         - "api.ecletica.beer"
      # cert-manager will create this secret
-      secretName: ecletica-api-tls
+      secretName: ebl-api-tls
