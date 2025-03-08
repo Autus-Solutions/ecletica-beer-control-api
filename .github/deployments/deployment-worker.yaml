@@ -31,7 +31,6 @@ spec:
             cpu: 500m
             memory: "450Mi"
         imagePullPolicy: Always
-        restartPolicy: Always
         env:
           - name: ASPNETCORE_ENVIRONMENT
             value: #{ENVIRONMENT}#
