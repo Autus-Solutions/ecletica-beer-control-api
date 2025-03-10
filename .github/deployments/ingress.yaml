@@ -14,7 +14,7 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-buffer-size: "128k"
     nginx.ingress.kubernetes.io/proxy-buffers-number: "4"
     # ssl certificate
-    cert-manager.io/issuer: ebl-prod-issuer
+    cert-manager.io/issuer: ebl-issuer
     cert-manager.io/issuer-kind: OriginIssuer
     cert-manager.io/issuer-group: cert-manager.k8s.cloudflare.com
     # dns record
