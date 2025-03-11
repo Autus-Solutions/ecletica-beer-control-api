@@ -21,15 +21,10 @@ namespace EcleticaBeerControl.Worker.Mqtt
 
         private async Task Instance_DisconnectedAsync(MqttClientDisconnectedEventArgs arg)
         {
-            await Task.Delay(TimeSpan.FromSeconds(5));
-
-            try
+            while (!_mqttClient.IsConnected)
             {
+                await Task.Delay(TimeSpan.FromSeconds(5));
                 await _mqttClient.ReconnectAsync(CancellationToken.None);
-            }
-            catch (Exception ex)
-            {
-
             }
         }
     }
