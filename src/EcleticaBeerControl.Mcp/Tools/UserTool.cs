@@ -1,27 +1,32 @@
 ﻿using EcleticaBeerControl.Domain.Models;
 using ModelContextProtocol.Server;
 using System.ComponentModel;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Text.Json.Serialization.Metadata;
-
 
 namespace EcleticaBeerControl.Mcp.Tools
 {
     [McpServerToolType]
-    public static class UserTool
+    public class UserTool
     {
         [McpServerTool, Description("Retorna uma lista de usários da aplicação")]
-        public static string GetUsers()
+        public IList<User> GetUsers()
         {
-            return "Acessando a lista...";
+            return new List<User>() {
+                new User()
+                {
+                    Email = "victorolivera.dev"
+                }
+            };
         }
 
-
         [McpServerTool, Description("Retorna usuários da aplicação pelo nome")]
-        public static string GetUsersByName([Description("Nome do usuário")] string name)
+        public IList<User> GetUsersByName([Description("Nome do usuário")] string name)
         {
-            return name;
+            return new List<User>() {
+                new User()
+                {
+                    Email = name
+                }
+            };
         }
     }
 }
