@@ -7,10 +7,8 @@ using Serilog;
 
 namespace EcleticaBeerControl.Worker.Mqtt.RoutesHandlers
 {
-    public sealed class DeviceTemperatureChangedRouteHandler(TimeseriesDbContext timeseriesDbContext) : IMqttRouteHandler
+    public sealed class DeviceTemperatureChangedRouteHandler() : IMqttRouteHandler
     {
-        private readonly TimeseriesDbContext _timeseriesDbContext = timeseriesDbContext;
-
         public string Route => RouteKeys.DeviceApplicationTemepratureChangedRoute;
 
         public async Task Handle(string payload, string contentType, IDictionary<string, string> brewerProperties)
@@ -20,9 +18,6 @@ namespace EcleticaBeerControl.Worker.Mqtt.RoutesHandlers
             var temperatureEntity = TemperatureAdapter.Adapt(deviceIdentifier, temperature!);
 
             Log.Information($"Temperatura do dispositivo `{deviceIdentifier}` atualizada: {temperatureEntity!.Value}");
-
-            _timeseriesDbContext.Temperatures.Add(temperatureEntity);
-            await _timeseriesDbContext.SaveChangesAsync();
         }
     }
 }
