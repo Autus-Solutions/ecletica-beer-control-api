@@ -15,12 +15,17 @@ try
 
     var builder = WebApplication.CreateBuilder(args);
 
+
     builder.Services
             .AddMcpServer()
             .WithToolsFromAssembly();
 
+    builder.Services.AddProblemDetails();
+
     var app = builder.Build();
+
     app.MapMcp();
+    app.UseExceptionHandler();
 
     await app.RunAsync();
     return 0;

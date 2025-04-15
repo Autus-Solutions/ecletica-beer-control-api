@@ -1,5 +1,4 @@
-﻿using EcleticaBeerControl.Domain.Interfaces;
-using EcleticaBeerControl.Domain.Models;
+﻿using EcleticaBeerControl.Domain.Models;
 using ModelContextProtocol.Protocol.Types;
 using ModelContextProtocol.Server;
 using System.ComponentModel;
