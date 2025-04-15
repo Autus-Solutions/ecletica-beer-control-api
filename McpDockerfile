@@ -25,15 +25,15 @@ COPY ["EcleticaBeerControl.Mcp/EcleticaBeerControl.Mcp.csproj", "EcleticaBeerCon
 COPY ["EcleticaBeerControl.Infrastructure/EcleticaBeerControl.Infrastructure.csproj", "EcleticaBeerControl.Infrastructure/"]
 COPY ["EcleticaBeerControl.Domain/EcleticaBeerControl.Domain.csproj", "EcleticaBeerControl.Domain/"]
 COPY ["EcleticaBeerControl.Persistence.EF/EcleticaBeerControl.Persistence.EF.csproj", "EcleticaBeerControl.Persistence.EF/"]
-RUN dotnet restore "./EcleticaBeerControl.Mcp/EcleticaBeerControl.Mcp.csproj"
+RUN dotnet restore "src/EcleticaBeerControl.Mcp/EcleticaBeerControl.Mcp.csproj"
 COPY . .
-WORKDIR "/src/EcleticaBeerControl.Mcp"
-RUN dotnet build "./EcleticaBeerControl.Mcp.csproj" -c $BUILD_CONFIGURATION -o /app/build
+WORKDIR "/src/src/EcleticaBeerControl.Mcp"
+RUN dotnet build "EcleticaBeerControl.Mcp.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./EcleticaBeerControl.Mcp.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=true
+RUN dotnet publish "EcleticaBeerControl.Mcp.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=true
 
 # This stage is used as the base for the final stage when launching from VS to support debugging in regular mode (Default when not using the Debug configuration)
 FROM base as aotdebug
@@ -50,4 +50,4 @@ WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
 COPY --from=publish /app/publish .
-ENTRYPOINT ["./EcleticaBeerControl.Mcp"]
+ENTRYPOINT ["EcleticaBeerControl.Mcp"]
