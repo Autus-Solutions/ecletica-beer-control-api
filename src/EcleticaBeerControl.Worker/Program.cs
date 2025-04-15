@@ -31,7 +31,7 @@ try
 
             services.AddInfrastructure(builder.Configuration)
                     .AddEFPersistence()
-                    .AddTimeseriesEFPersistence()
+                    //.AddTimeseriesEFPersistence()
                     .AddWorker(builder.Configuration);
 
             services.AddHostedService<Worker>();
