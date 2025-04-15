@@ -21,10 +21,10 @@ RUN apt-get update \
     clang zlib1g-dev
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["EcleticaBeerControl.Mcp/EcleticaBeerControl.Mcp.csproj", "EcleticaBeerControl.Mcp/"]
-COPY ["EcleticaBeerControl.Infrastructure/EcleticaBeerControl.Infrastructure.csproj", "EcleticaBeerControl.Infrastructure/"]
-COPY ["EcleticaBeerControl.Domain/EcleticaBeerControl.Domain.csproj", "EcleticaBeerControl.Domain/"]
-COPY ["EcleticaBeerControl.Persistence.EF/EcleticaBeerControl.Persistence.EF.csproj", "EcleticaBeerControl.Persistence.EF/"]
+COPY ["src/EcleticaBeerControl.Mcp/EcleticaBeerControl.Mcp.csproj", "src/EcleticaBeerControl.Mcp/"]
+COPY ["src/EcleticaBeerControl.Infrastructure/EcleticaBeerControl.Infrastructure.csproj", "src/EcleticaBeerControl.Infrastructure/"]
+COPY ["src/EcleticaBeerControl.Domain/EcleticaBeerControl.Domain.csproj", "src/EcleticaBeerControl.Domain/"]
+COPY ["src/EcleticaBeerControl.Persistence.EF/EcleticaBeerControl.Persistence.EF.csproj", "src/EcleticaBeerControl.Persistence.EF/"]
 RUN dotnet restore "src/EcleticaBeerControl.Mcp/EcleticaBeerControl.Mcp.csproj"
 COPY . .
 WORKDIR "/src/src/EcleticaBeerControl.Mcp"
