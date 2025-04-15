@@ -10,7 +10,7 @@ namespace EcleticaBeerControl.Mcp.Tools
     public class UserTool
     {
         [McpServerTool, Description("Retorna uma lista de usários da aplicação")]
-        public Content GetUsers()
+        public string GetUsers()
         {
             var list = new List<User>() {
                 new User()
@@ -19,17 +19,12 @@ namespace EcleticaBeerControl.Mcp.Tools
                 }
             };
 
-            return new Content
-            {
-                Text = JsonSerializer.Serialize(list),
-                MimeType = "application/json",
-                Type = "text"
-            };
+            return JsonSerializer.Serialize(list);
         }
 
 
         [McpServerTool, Description("Retorna usuários da aplicação pelo nome")]
-        public Content GetUsersByName([Description("Nome do usuário")] string name)
+        public string GetUsersByName([Description("Nome do usuário")] string name)
         {
             var user = new List<User>() {
                 new User()
@@ -38,12 +33,7 @@ namespace EcleticaBeerControl.Mcp.Tools
                 }
             };
 
-            return new Content
-            {
-                Text = JsonSerializer.Serialize(user),
-                MimeType = "application/json",
-                Type = "text"
-            };
+            return JsonSerializer.Serialize(user);
         }
     }
 }
