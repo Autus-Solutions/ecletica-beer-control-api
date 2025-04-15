@@ -32,6 +32,16 @@ spec:
             name: ebc-api-service
             port:
               number: 80
+  - host: "mcp.ecletica.beer"
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: ebc-mcp-service
+            port:
+              number: 80
   tls:
     # specifying a host in the TLS section will tell cert-manager what
     # DNS SANs should be on the created certificate.
