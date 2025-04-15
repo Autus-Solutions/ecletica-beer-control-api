@@ -62,7 +62,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: ebc-api-service
+  name: ebc-mcp-service
   namespace: ebl
 spec:
   type: ClusterIP
