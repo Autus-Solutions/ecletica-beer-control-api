@@ -37,5 +37,6 @@ spec:
     # DNS SANs should be on the created certificate.
     - hosts:
         - "api.ecletica.beer"
+        - "mcp.ecletica.beer"
      # cert-manager will create this secret
       secretName: ebl-api-tls

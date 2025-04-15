@@ -39,6 +39,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EcleticaBeerControl.Tests.U
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EcleticaBeerControl.Tests.Generator", "EcleticaBeerControl.Tests.Generator\EcleticaBeerControl.Tests.Generator.csproj", "{F8030AF7-8CD8-406C-8B21-CCFBC0D77E57}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EcleticaBeerControl.Mcp", "EcleticaBeerControl.Mcp\EcleticaBeerControl.Mcp.csproj", "{80DDC8FE-427C-471A-B142-9B72F9987943}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,6 +83,10 @@ Global
 		{F8030AF7-8CD8-406C-8B21-CCFBC0D77E57}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F8030AF7-8CD8-406C-8B21-CCFBC0D77E57}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F8030AF7-8CD8-406C-8B21-CCFBC0D77E57}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80DDC8FE-427C-471A-B142-9B72F9987943}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80DDC8FE-427C-471A-B142-9B72F9987943}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80DDC8FE-427C-471A-B142-9B72F9987943}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80DDC8FE-427C-471A-B142-9B72F9987943}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -96,6 +102,7 @@ Global
 		{E8B4F6DA-2A8F-4A12-8C79-8834B3743ABC} = {943375EB-E29B-4461-B180-D10540806277}
 		{2188863A-CC4F-4CAA-9822-6DD488DD0CC3} = {7A6FF518-8F8F-40CE-B1C5-7AC16086B387}
 		{F8030AF7-8CD8-406C-8B21-CCFBC0D77E57} = {7A6FF518-8F8F-40CE-B1C5-7AC16086B387}
+		{80DDC8FE-427C-471A-B142-9B72F9987943} = {485293C3-18C7-4BE8-8EAA-208E951F2F4D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BFE3509C-C637-4FE3-86AD-0D61605E57BC}
