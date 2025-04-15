@@ -7,7 +7,7 @@ namespace EcleticaBeerControl.Mcp.Tools
     [McpServerToolType]
     public class UserTool
     {
-        [McpServerTool, Description("Retorna todos os usuários da aplicação")]
+        [McpServerTool, Description("Retorna uma lista de usários da aplicação")]
         public IList<User> GetUsers()
         {
             return new List<User>() {

@@ -1,7 +1,6 @@
 using System.Globalization;
 using SerilogTracing;
 using Serilog;
-using EcleticaBeerControl.Mcp.Tools;
 
 var defaultCultureInfo = new CultureInfo("pt-BR");
 CultureInfo.DefaultThreadCurrentCulture = defaultCultureInfo;
@@ -18,7 +17,8 @@ try
 
     builder.Services
             .AddMcpServer()
-            .WithTools<UserTool>();
+            .WithStdioServerTransport()
+            .WithToolsFromAssembly();
 
     var app = builder.Build();
     app.MapMcp();
