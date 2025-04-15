@@ -17,7 +17,6 @@ try
 
     builder.Services
             .AddMcpServer()
-            .WithStdioServerTransport()
             .WithToolsFromAssembly();
 
     var app = builder.Build();
