@@ -12,28 +12,14 @@ namespace EcleticaBeerControl.Mcp.Tools
         [McpServerTool, Description("Retorna uma lista de usários da aplicação")]
         public string GetUsers()
         {
-            var list = new List<User>() {
-                new User()
-                {
-                    Email = "victorolivera.dev"
-                }
-            };
-
-            return JsonSerializer.Serialize(list);
+            return "Acessando a lista...";
         }
 
 
         [McpServerTool, Description("Retorna usuários da aplicação pelo nome")]
         public string GetUsersByName([Description("Nome do usuário")] string name)
         {
-            var user = new List<User>() {
-                new User()
-                {
-                    Email = name
-                }
-            };
-
-            return JsonSerializer.Serialize(user);
+            return name;
         }
     }
 }
