@@ -1,5 +1,4 @@
 ﻿using EcleticaBeerControl.Infrastructure.Mqtt;
-using EcleticaBeerControl.Persistence.EF.Database;
 using EcleticaBeerControl.Worker.Adapters;
 using EcleticaBeerControl.Worker.Payloads;
 using Newtonsoft.Json;

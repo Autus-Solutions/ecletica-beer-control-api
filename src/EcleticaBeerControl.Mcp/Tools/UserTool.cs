@@ -7,8 +7,8 @@ namespace EcleticaBeerControl.Mcp.Tools
     [McpServerToolType]
     public class UserTool
     {
-        [McpServerTool, Description("Retorna uma lista de todos os usuários")]
-        public IList<User> GetUsers()
+        [McpServerTool(Name = "ListaUsuarios", Title = "Listagem de Usuários"), Description("Retorna uma lista de todos os usuários")]
+        public IList<User> GetUsers(IMcpServer thisServer)
         {
             return new List<User>() {
                 new User()
@@ -18,8 +18,8 @@ namespace EcleticaBeerControl.Mcp.Tools
             };
         }
 
-        [McpServerTool, Description("Retorna usuários pelo nome")]
-        public IList<User> GetUsersByName([Description("Nome do usuário")] string username)
+        [McpServerTool(Name = "ListaUsuarioPorNome", Title = "Listagem de Usuários pelo nome"), Description("Retorna usuários pelo nome")]
+        public IList<User> GetUsersByName(IMcpServer thisServer, [Description("Nome do usuário")] string username)
         {
             return new List<User>() {
                 new User()
