@@ -19,12 +19,9 @@ try
             .AddMcpServer()
             .WithToolsFromAssembly();
 
-    builder.Services.AddProblemDetails();
-
     var app = builder.Build();
 
     app.MapMcp();
-    app.UseExceptionHandler();
 
     await app.RunAsync();
     return 0;
