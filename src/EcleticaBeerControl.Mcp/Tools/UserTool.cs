@@ -13,7 +13,13 @@ namespace EcleticaBeerControl.Mcp.Tools
             return new List<User>() {
                 new User()
                 {
-                    Email = "victorolivera.dev"
+                    UserName = "Victor Oliveira",
+                    Email = "contato@victoroliveira.dev"
+                },
+                new User()
+                {
+                    UserName = "Victor Oliveira 2",
+                    Email = "contato2@victoroliveira.dev"
                 }
             };
         }
