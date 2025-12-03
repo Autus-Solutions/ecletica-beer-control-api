@@ -14,7 +14,7 @@ namespace EcleticaBeerControl.Infrastructure
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             services.ConfigureSerilog(configuration)
-                    .ConfigureRabbitMq(configuration)
+                    //.ConfigureRabbitMq(configuration) Not now! :D
                     .ConfigurHealthChecks(configuration);
 
             return services;
@@ -55,9 +55,6 @@ namespace EcleticaBeerControl.Infrastructure
         private static IServiceCollection ConfigurHealthChecks(this IServiceCollection services, IConfiguration configuration)
         {
             var databaseConnectionString = configuration.GetConnectionString("Database");
-            var timeseriesConnectionString = configuration.GetConnectionString("Timeseries");
-            var amqpConnectionString = configuration.GetConnectionString("Amqp");
-            var mqttConnectionString = configuration.GetConnectionString("Mqtt");
 
             services.AddHealthChecks()
                     .AddNpgSql(databaseConnectionString!);
