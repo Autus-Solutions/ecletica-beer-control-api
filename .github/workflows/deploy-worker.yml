@@ -17,4 +17,5 @@ jobs:
       app_name: ebc-worker
       namespace: ebl
       image_pull_secret_name: ghcr-pull-secret
+      dockerfile: WorkerDockerfile
     secrets: inherit
