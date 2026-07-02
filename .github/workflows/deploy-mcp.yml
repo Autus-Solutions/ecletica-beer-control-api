@@ -17,4 +17,5 @@ jobs:
       app_name: ebc-mcp
       namespace: ebl
       image_pull_secret_name: ghcr-pull-secret
+      dockerfile: McpDockerfile
     secrets: inherit
