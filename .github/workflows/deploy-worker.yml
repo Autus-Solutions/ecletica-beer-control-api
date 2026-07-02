@@ -1,61 +1,20 @@
-name: Deploy Worker
+name: Deploy EBC Worker
 
 on:
-  workflow_dispatch:
   push:
     branches:
+      - main
       - development
+      - qa
 
 jobs:
-  sync-runtime-secrets:
-    name: Sync runtime secrets
-    uses: Autus-Solutions/autus-infra/.github/workflows/reusable-k8s-secret-sync.yml@main
-    with:
-      namespace: ebl
-      secret_name: ecletica-beer-control-worker-secrets
-      keys: |
-        ASPNETCORE_ENVIRONMENT
-        ConnectionStrings__Database
-        ConnectionStrings__Timeseries
-        ConnectionStrings__Amqp
-        MessageBroker__Host
-        MessageBroker__VHost
-        MessageBroker__Port
-        MessageBroker__Username
-        MessageBroker__Password
-        MqttBroker__Host
-        MqttBroker__Port
-        MqttBroker__Username
-        MqttBroker__Password
-    secrets:
-      KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
-      KUBE_CONTEXT: ${{ secrets.KUBE_CONTEXT }}
-      ASPNETCORE_ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
-      CONNECTIONSTRINGS__DATABASE: ${{ secrets.CONNECTIONSTRINGS__DATABASE }}
-      CONNECTIONSTRINGS__TIMESERIES: ${{ secrets.CONNECTIONSTRINGS__TIMESERIES }}
-      CONNECTIONSTRINGS__AMQP: ${{ secrets.CONNECTIONSTRINGS__AMQP }}
-      MESSAGEBROKER__HOST: ${{ secrets.MESSAGEBROKER__HOST }}
-      MESSAGEBROKER__VHOST: ${{ secrets.MESSAGEBROKER__VHOST }}
-      MESSAGEBROKER__PORT: ${{ secrets.MESSAGEBROKER__PORT }}
-      MESSAGEBROKER__USERNAME: ${{ secrets.MESSAGEBROKER__USERNAME }}
-      MESSAGEBROKER__PASSWORD: ${{ secrets.MESSAGEBROKER__PASSWORD }}
-      MQTTBROKER__HOST: ${{ secrets.MQTTBROKER__HOST }}
-      MQTTBROKER__PORT: ${{ secrets.MQTTBROKER__PORT }}
-      MQTTBROKER__USERNAME: ${{ secrets.MQTTBROKER__USERNAME }}
-      MQTTBROKER__PASSWORD: ${{ secrets.MQTTBROKER__PASSWORD }}
-
-  deploy:
-    needs: sync-runtime-secrets
+  build-and-deploy:
+    permissions:
+      contents: read
+      packages: write
     uses: Autus-Solutions/autus-infra/.github/workflows/reusable-k8s-build-deploy.yml@main
     with:
-      app_name: ecletica-beer-control-worker
+      app_name: ebc-worker
       namespace: ebl
-      dockerfile: ./WorkerDockerfile
-      context: .
-      container_port: "80"
-      enable_probes: "false"
-      ingress_hosts: ""
       image_pull_secret_name: ghcr-pull-secret
-    secrets:
-      KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
-      KUBE_CONTEXT: ${{ secrets.KUBE_CONTEXT }}
+    secrets: inherit
