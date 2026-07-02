@@ -9,7 +9,9 @@ Os workflows deste repositorio delegam build, push de imagem e deploy Kubernetes
 Autus-Solutions/autus-infra
 ```
 
-Os manifests em `.github/deployments` sao legado operacional e devem ser usados apenas como referencia ou rollback. A fonte de verdade da infraestrutura compartilhada da Autus fica no repositorio `autus-infra`.
+A fonte de verdade da infraestrutura compartilhada da Autus fica no repositorio `autus-infra`.
+
+Os manifests legados que apontavam para o registry local do MicroK8s foram removidos deste branch de migracao para evitar deploys fora do padrao Autus.
 
 Secrets de aplicacao devem existir no Kubernetes como:
 
