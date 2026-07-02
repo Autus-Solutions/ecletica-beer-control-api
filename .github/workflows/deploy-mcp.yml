@@ -46,6 +46,9 @@ jobs:
 
   deploy:
     needs: sync-runtime-secrets
+    permissions:
+      contents: read
+      packages: write
     uses: Autus-Solutions/autus-infra/.github/workflows/reusable-k8s-build-deploy.yml@main
     with:
       app_name: ecletica-beer-control-mcp
