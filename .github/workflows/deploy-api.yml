@@ -31,18 +31,18 @@ jobs:
       KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
       KUBE_CONTEXT: ${{ secrets.KUBE_CONTEXT }}
       ASPNETCORE_ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
-      ConnectionStrings__Database: ${{ secrets.CONNECTIONSTRINGS__DATABASE }}
-      ConnectionStrings__Timeseries: ${{ secrets.CONNECTIONSTRINGS__TIMESERIES }}
-      ConnectionStrings__Amqp: ${{ secrets.CONNECTIONSTRINGS__AMQP }}
-      MessageBroker__Host: ${{ secrets.MESSAGEBROKER__HOST }}
-      MessageBroker__VHost: ${{ secrets.MESSAGEBROKER__VHOST }}
-      MessageBroker__Port: ${{ secrets.MESSAGEBROKER__PORT }}
-      MessageBroker__Username: ${{ secrets.MESSAGEBROKER__USERNAME }}
-      MessageBroker__Password: ${{ secrets.MESSAGEBROKER__PASSWORD }}
-      MqttBroker__Host: ${{ secrets.MQTTBROKER__HOST }}
-      MqttBroker__Port: ${{ secrets.MQTTBROKER__PORT }}
-      MqttBroker__Username: ${{ secrets.MQTTBROKER__USERNAME }}
-      MqttBroker__Password: ${{ secrets.MQTTBROKER__PASSWORD }}
+      CONNECTIONSTRINGS__DATABASE: ${{ secrets.CONNECTIONSTRINGS__DATABASE }}
+      CONNECTIONSTRINGS__TIMESERIES: ${{ secrets.CONNECTIONSTRINGS__TIMESERIES }}
+      CONNECTIONSTRINGS__AMQP: ${{ secrets.CONNECTIONSTRINGS__AMQP }}
+      MESSAGEBROKER__HOST: ${{ secrets.MESSAGEBROKER__HOST }}
+      MESSAGEBROKER__VHOST: ${{ secrets.MESSAGEBROKER__VHOST }}
+      MESSAGEBROKER__PORT: ${{ secrets.MESSAGEBROKER__PORT }}
+      MESSAGEBROKER__USERNAME: ${{ secrets.MESSAGEBROKER__USERNAME }}
+      MESSAGEBROKER__PASSWORD: ${{ secrets.MESSAGEBROKER__PASSWORD }}
+      MQTTBROKER__HOST: ${{ secrets.MQTTBROKER__HOST }}
+      MQTTBROKER__PORT: ${{ secrets.MQTTBROKER__PORT }}
+      MQTTBROKER__USERNAME: ${{ secrets.MQTTBROKER__USERNAME }}
+      MQTTBROKER__PASSWORD: ${{ secrets.MQTTBROKER__PASSWORD }}
 
   deploy:
     needs: sync-runtime-secrets
